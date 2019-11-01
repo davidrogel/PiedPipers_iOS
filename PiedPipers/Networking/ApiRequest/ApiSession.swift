@@ -7,6 +7,7 @@
 //
 
 import Alamofire
+import KeychainSwift
 
 struct APISession
 {
@@ -20,13 +21,20 @@ struct APISession
         }
         
         let req = request.getRequest()
-        
-        Alamofire.request(req).responseData { (response) in
+        AF.request(req).responseData { (response) in
             DispatchQueue.main.async {
+                
                 guard let statusCode = response.response?.statusCode else
                 {
                     return completion?(.failure(.unknown(urlString))) ?? ()
                 }
+                
+                guard let headers = response.response?.allHeaderFields else
+                {
+                    return completion?(.failure(.unknown(urlString))) ?? ()
+                }
+                
+                printHeaders(headers: headers)
                 
                 switch statusCode
                 {
@@ -36,8 +44,7 @@ struct APISession
                         return completion?(.failure(.unknown(urlString))) ?? ()
                     }
                     
-                    if Request.Response.self == Data.self,
-                        let data = data as? Request.Response
+                    if Request.Response.self == Data.self, let data = data as? Request.Response
                     {
                         return completion?(.success(data)) ?? ()
                     }
@@ -47,13 +54,44 @@ struct APISession
                         return completion?(.failure(.parseData(urlString))) ?? ()
                     }
                     
-                    return completion?(.success(model)) ?? ()
+                    if Request.Response.self == User.self, let userModel = model as? User
+                    {
+                        let header = headers.filter { $0.key == "Authorization" }
+                        
+                        if header.capacity > 0, let value = header.first?.value as? String
+                        {
+//                            StoreManager.save(dataOnKeyChain: value, withKey: userModel.id)
+
+                            // TODO: Guardar en el StoreManager la info
+                            print("save authorization: \(value) with user cuid\(userModel.id)")
+                        }
+                    }
                     
+                    
+                    return completion?(.success(model)) ?? ()
+                case 403:
+                    let error = APIErrorResponse(statusCode, " ", urlString, data: response.data)
+                    return completion?(.failure(error)) ?? ()
                 default:
                     let error = APIErrorResponse(statusCode, "Service Error", urlString, data: response.data)
                     return completion?(.failure(error)) ?? ()
                 }
             }
         }
+    }
+}
+
+extension APISession
+{
+    fileprivate static func printHeaders(headers: [AnyHashable : Any])
+    {
+        #if DEBUG
+
+        for head in headers
+        {
+           print("Key: \(head.key)\n\tValue:  \(head.value)")
+        }
+
+        #endif
     }
 }

@@ -9,11 +9,15 @@
 /* Begin PBXBuildFile section */
 		54A69674D6E2689A3387D271 /* Pods_PiedPipers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFF1BC005050C460CD36563D /* Pods_PiedPipers.framework */; };
 		63335AD1236C9A6E00F8CC8F /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63335AD0236C9A6E00F8CC8F /* StoreManager.swift */; };
+		63335AD3236CBF4200F8CC8F /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63335AD2236CBF4200F8CC8F /* Profile.swift */; };
+		63335AD5236CBF8500F8CC8F /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63335AD4236CBF8500F8CC8F /* APIConstants.swift */; };
+		63335AD7236CC69A00F8CC8F /* ProfileRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63335AD6236CC69A00F8CC8F /* ProfileRequests.swift */; };
+		63335AD9236CDF9F00F8CC8F /* RequestsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63335AD8236CDF9F00F8CC8F /* RequestsTests.swift */; };
 		63E265AE236B6400007FEA74 /* ApiSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E265AB236B6400007FEA74 /* ApiSession.swift */; };
 		63E265AF236B6400007FEA74 /* ApiRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E265AC236B6400007FEA74 /* ApiRequest.swift */; };
 		63E265B0236B6400007FEA74 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E265AD236B6400007FEA74 /* APIError.swift */; };
 		63E265B2236B64DD007FEA74 /* APIErrorCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E265B1236B64DD007FEA74 /* APIErrorCodes.swift */; };
-		63E265B5236B738D007FEA74 /* CreateUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E265B4236B738D007FEA74 /* CreateUserRequest.swift */; };
+		63E265B5236B738D007FEA74 /* UserRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E265B4236B738D007FEA74 /* UserRequests.swift */; };
 		63E265B7236B73C0007FEA74 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E265B6236B73C0007FEA74 /* User.swift */; };
 		63E265BA236C66C6007FEA74 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E265B9236C66C6007FEA74 /* Utils.swift */; };
 		63F4E7FB2368E04700C52D47 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F4E7FA2368E04700C52D47 /* AppDelegate.swift */; };
@@ -23,7 +27,7 @@
 		63F4E8042368E04A00C52D47 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63F4E8032368E04A00C52D47 /* Assets.xcassets */; };
 		63F4E8072368E04A00C52D47 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 63F4E8052368E04A00C52D47 /* LaunchScreen.storyboard */; };
 		63F4E8122368E04A00C52D47 /* PiedPipersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F4E8112368E04A00C52D47 /* PiedPipersTests.swift */; };
-		63F4E81F236910F600C52D47 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F4E81E236910F600C52D47 /* Profile.swift */; };
+		63F4E81F236910F600C52D47 /* Dummy_Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F4E81E236910F600C52D47 /* Dummy_Profile.swift */; };
 		A3E7EE7450DE3CEA8023F0B2 /* Pods_PiedPipersTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33F0D6D30771D11ED6AE142F /* Pods_PiedPipersTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -40,11 +44,15 @@
 /* Begin PBXFileReference section */
 		33F0D6D30771D11ED6AE142F /* Pods_PiedPipersTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PiedPipersTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		63335AD0236C9A6E00F8CC8F /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
+		63335AD2236CBF4200F8CC8F /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		63335AD4236CBF8500F8CC8F /* APIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
+		63335AD6236CC69A00F8CC8F /* ProfileRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRequests.swift; sourceTree = "<group>"; };
+		63335AD8236CDF9F00F8CC8F /* RequestsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestsTests.swift; sourceTree = "<group>"; };
 		63E265AB236B6400007FEA74 /* ApiSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiSession.swift; sourceTree = "<group>"; };
 		63E265AC236B6400007FEA74 /* ApiRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiRequest.swift; sourceTree = "<group>"; };
 		63E265AD236B6400007FEA74 /* APIError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		63E265B1236B64DD007FEA74 /* APIErrorCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIErrorCodes.swift; sourceTree = "<group>"; };
-		63E265B4236B738D007FEA74 /* CreateUserRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateUserRequest.swift; sourceTree = "<group>"; };
+		63E265B4236B738D007FEA74 /* UserRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRequests.swift; sourceTree = "<group>"; };
 		63E265B6236B73C0007FEA74 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		63E265B9236C66C6007FEA74 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		63F4E7F72368E04700C52D47 /* PiedPipers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PiedPipers.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -58,7 +66,7 @@
 		63F4E80D2368E04A00C52D47 /* PiedPipersTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PiedPipersTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		63F4E8112368E04A00C52D47 /* PiedPipersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiedPipersTests.swift; sourceTree = "<group>"; };
 		63F4E8132368E04A00C52D47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		63F4E81E236910F600C52D47 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		63F4E81E236910F600C52D47 /* Dummy_Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy_Profile.swift; sourceTree = "<group>"; };
 		89DC3482C4DC8880BF2323E5 /* Pods-PiedPipersTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PiedPipersTests.debug.xcconfig"; path = "Target Support Files/Pods-PiedPipersTests/Pods-PiedPipersTests.debug.xcconfig"; sourceTree = "<group>"; };
 		AFF1BC005050C460CD36563D /* Pods_PiedPipers.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PiedPipers.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7F5047FA0520D4CC98BBA3D /* Pods-PiedPipers.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PiedPipers.debug.xcconfig"; path = "Target Support Files/Pods-PiedPipers/Pods-PiedPipers.debug.xcconfig"; sourceTree = "<group>"; };
@@ -121,6 +129,7 @@
 				63E265AC236B6400007FEA74 /* ApiRequest.swift */,
 				63E265AB236B6400007FEA74 /* ApiSession.swift */,
 				63E265B1236B64DD007FEA74 /* APIErrorCodes.swift */,
+				63335AD4236CBF8500F8CC8F /* APIConstants.swift */,
 			);
 			path = ApiRequest;
 			sourceTree = "<group>";
@@ -128,7 +137,8 @@
 		63E265B3236B7333007FEA74 /* Requests */ = {
 			isa = PBXGroup;
 			children = (
-				63E265B4236B738D007FEA74 /* CreateUserRequest.swift */,
+				63E265B4236B738D007FEA74 /* UserRequests.swift */,
+				63335AD6236CC69A00F8CC8F /* ProfileRequests.swift */,
 			);
 			path = Requests;
 			sourceTree = "<group>";
@@ -182,6 +192,7 @@
 			isa = PBXGroup;
 			children = (
 				63F4E8112368E04A00C52D47 /* PiedPipersTests.swift */,
+				63335AD8236CDF9F00F8CC8F /* RequestsTests.swift */,
 				63F4E8132368E04A00C52D47 /* Info.plist */,
 			);
 			path = PiedPipersTests;
@@ -192,6 +203,7 @@
 			children = (
 				63F4E81D2369107E00C52D47 /* Dummy */,
 				63E265B6236B73C0007FEA74 /* User.swift */,
+				63335AD2236CBF4200F8CC8F /* Profile.swift */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -199,7 +211,7 @@
 		63F4E81D2369107E00C52D47 /* Dummy */ = {
 			isa = PBXGroup;
 			children = (
-				63F4E81E236910F600C52D47 /* Profile.swift */,
+				63F4E81E236910F600C52D47 /* Dummy_Profile.swift */,
 			);
 			path = Dummy;
 			sourceTree = "<group>";
@@ -403,10 +415,13 @@
 				63E265B2236B64DD007FEA74 /* APIErrorCodes.swift in Sources */,
 				63E265AE236B6400007FEA74 /* ApiSession.swift in Sources */,
 				63E265BA236C66C6007FEA74 /* Utils.swift in Sources */,
+				63335AD3236CBF4200F8CC8F /* Profile.swift in Sources */,
 				63F4E7FF2368E04700C52D47 /* ViewController.swift in Sources */,
 				63E265AF236B6400007FEA74 /* ApiRequest.swift in Sources */,
-				63F4E81F236910F600C52D47 /* Profile.swift in Sources */,
-				63E265B5236B738D007FEA74 /* CreateUserRequest.swift in Sources */,
+				63F4E81F236910F600C52D47 /* Dummy_Profile.swift in Sources */,
+				63E265B5236B738D007FEA74 /* UserRequests.swift in Sources */,
+				63335AD7236CC69A00F8CC8F /* ProfileRequests.swift in Sources */,
+				63335AD5236CBF8500F8CC8F /* APIConstants.swift in Sources */,
 				63F4E7FB2368E04700C52D47 /* AppDelegate.swift in Sources */,
 				63F4E7FD2368E04700C52D47 /* SceneDelegate.swift in Sources */,
 				63335AD1236C9A6E00F8CC8F /* StoreManager.swift in Sources */,
@@ -420,6 +435,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				63F4E8122368E04A00C52D47 /* PiedPipersTests.swift in Sources */,
+				63335AD9236CDF9F00F8CC8F /* RequestsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

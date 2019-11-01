@@ -24,6 +24,7 @@ class APIErrorResponse: Error
     }
 }
 
+// factory - TODO
 extension APIErrorResponse
 {
     static func network(_ url: String) -> APIErrorResponse

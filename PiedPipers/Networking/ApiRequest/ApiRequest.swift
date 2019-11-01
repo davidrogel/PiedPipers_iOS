@@ -10,8 +10,10 @@ import Foundation
 
 enum Methods: String, Codable
 {
-    case GET, POST
+    case GET, POST, PATCH
 }
+
+let urlToServer = "http://ec2-52-87-34-66.compute-1.amazonaws.com"
 
 protocol APIRequest
 {
@@ -19,21 +21,26 @@ protocol APIRequest
     
     typealias APIRequestResponse = Result<Response, APIErrorResponse>
     typealias APIRequestCompletion = (APIRequestResponse) -> ()
+    typealias Endpoint = String
     
     var method: Methods { get }
-    var body: Any { get }
     var baseUrl: String { get }
-    var path: String { get }
+    var path: Endpoint { get }
+    
+    var body: Any { get }
     var headers: [String: String] { get }
     var parameters: [String: String] { get }
 }
 
 extension APIRequest
 {
-    var parameters: [String: String] { return [:] }
     var body: Any { return [:] }
     var headers: [String: String] { return [:] }
-    
+    var parameters: [String: String] { return [:] }
+}
+
+extension APIRequest
+{
     func makeRequest(_ completion: APIRequestCompletion?)
     {
         APISession.request(self, completion)
