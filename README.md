@@ -1,6 +1,6 @@
-#PiedPipers_iOS
+# PiedPipers_iOS
 
-##Install dependencies
+## Install dependencies
 
 Open Terminal in the folder proyect and then...
 
