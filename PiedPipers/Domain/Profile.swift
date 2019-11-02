@@ -89,9 +89,12 @@ extension Profile: Codable
     func encode(to encoder: Encoder) throws
     {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        
         try container.encode(cuid, forKey: .cuid)
+        
         try container.encodeIfPresent(name, forKey: .name)
         try container.encodeIfPresent(location, forKey: .location)
+        try container.encodeIfPresent(contact, forKey: .contact)
         try container.encodeIfPresent(instruments, forKey: .instruments)
         try container.encodeIfPresent(videos, forKey: .videos)
         try container.encodeIfPresent(description, forKey: .description)
