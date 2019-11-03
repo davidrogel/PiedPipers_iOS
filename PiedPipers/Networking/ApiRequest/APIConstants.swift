@@ -26,5 +26,6 @@ let userUpdate = "/users/update"
 
 // Profile
 let profileGet = "/profile"
+let profileByIdGet = "/profile/"
 let avatarUpdate = "/profile/avatar"
 let tagsGet = "/profile/tags"

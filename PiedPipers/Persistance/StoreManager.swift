@@ -11,34 +11,37 @@ import KeychainSwift
 
 final class StoreManager
 {
-    fileprivate static let keychain = KeychainSwift()
+    /// Singleton pattern
+    public static let shared = StoreManager()
     
-    public static func save(dataOnKeyChain data: String, withKey key: String)
+    private let keychain = KeychainSwift()
+    
+    public func save(dataOnKeyChain data: String, withKey key: String)
     {
         keychain.set(data, forKey: key)
     }
     
-    public static func save(dataOnKeyChain data: Bool, withKey key: String)
+    public func save(dataOnKeyChain data: Bool, withKey key: String)
     {
         keychain.set(data, forKey: key)
     }
     
-    public static func save(dataOnKeyChain data: Data, withKey key: String)
+    public func save(dataOnKeyChain data: Data, withKey key: String)
     {
         keychain.set(data, forKey: key)
     }
     
-    public static func getString(withKey key: String) -> String
+    public func getString(withKey key: String) -> String
     {
         return keychain.get(key) ?? ""
     }
     
-    public static func getBoolean(withKey key: String) -> Bool?
+    public func getBoolean(withKey key: String) -> Bool?
     {
         return keychain.getBool(key)
     }
     
-    public static func getData(withKey key: String) -> Data?
+    public func getData(withKey key: String) -> Data?
     {
         return keychain.getData(key)
     }

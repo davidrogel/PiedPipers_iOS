@@ -21,7 +21,7 @@ struct GetProfileRequest: APIRequest
     var path: Self.Endpoint { return profileGet }
     
     var headers: [String : String] {
-        let authToken = StoreManager.getString(withKey: currentUserCuid)
+        let authToken = StoreManager.shared.getString(withKey: currentUserCuid)
         return ["Authorization":authToken]
     }
     
@@ -36,10 +36,10 @@ struct GetProfileByIdRequest: APIRequest
     
     var baseUrl: String { return urlToServer }
     
-    var path: Self.Endpoint { return (profileGet + findUserCuid) }
+    var path: Self.Endpoint { return (profileByIdGet + findUserCuid) }
     
     var headers: [String : String] {
-        let authToken = StoreManager.getString(withKey: currentUserCuid)
+        let authToken = StoreManager.shared.getString(withKey: currentUserCuid)
         return ["Authorization":authToken]
     }
     
@@ -47,4 +47,25 @@ struct GetProfileByIdRequest: APIRequest
     let findUserCuid: String
 }
 
-
+struct UpdateProfileRequest: APIRequest
+{
+    typealias Response = Profile
+    
+    var method: Methods { return .PATCH }
+    
+    var baseUrl: String { return urlToServer }
+    
+    var path: Self.Endpoint { return profileGet }
+    
+    var headers: [String : String] {
+        let authToken = StoreManager.shared.getString(withKey: currentUserCuid)
+        return ["Authorization":authToken, "Content-Type":"application/json"]
+    }
+    
+    var body: Any {
+        return profile.toBody()
+    }
+    
+    let currentUserCuid: String
+    let profile: Profile
+}

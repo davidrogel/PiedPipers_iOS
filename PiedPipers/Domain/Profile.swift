@@ -101,3 +101,24 @@ extension Profile: Codable
         try container.encodeIfPresent(photo, forKey: .photo)
     }
 }
+
+// TODO - Limpiar los warning
+extension Profile
+{
+    func toBody() -> [String:Any]
+    {
+        let body:[String:Any] =
+        [
+            "cuid":cuid,
+            "name":name ?? nil,
+            "location": ["lat":location?.lat, "long":location?.long],
+            "contact": ["type":contact?.type.rawValue, "data":contact?.data],
+            "instruments":instruments ?? nil,
+            "videos":videos ?? nil,
+            "description":description ?? nil,
+            "photo":photo ?? nil
+        ]
+        
+        return body
+    }
+}

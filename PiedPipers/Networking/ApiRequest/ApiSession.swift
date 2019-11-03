@@ -21,6 +21,7 @@ struct APISession
         }
         
         let req = request.getRequest()
+        
         AF.request(req).responseData { (response) in
             DispatchQueue.main.async {
                 
@@ -33,8 +34,6 @@ struct APISession
                 {
                     return completion?(.failure(.unknown(urlString))) ?? ()
                 }
-                
-                printHeaders(headers: headers)
                 
                 switch statusCode
                 {
@@ -60,13 +59,12 @@ struct APISession
                         
                         if header.capacity > 0, let value = header.first?.value as? String
                         {
-//                            StoreManager.save(dataOnKeyChain: value, withKey: userModel.id)
-
+                            StoreManager.shared.save(dataOnKeyChain: value, withKey: userModel.id)
+                            
                             // TODO: Guardar en el StoreManager la info
                             print("save authorization: \(value) with user cuid\(userModel.id)")
                         }
                     }
-                    
                     
                     return completion?(.success(model)) ?? ()
                 case 403:
@@ -78,20 +76,5 @@ struct APISession
                 }
             }
         }
-    }
-}
-
-extension APISession
-{
-    fileprivate static func printHeaders(headers: [AnyHashable : Any])
-    {
-        #if DEBUG
-
-        for head in headers
-        {
-           print("Key: \(head.key)\n\tValue:  \(head.value)")
-        }
-
-        #endif
     }
 }

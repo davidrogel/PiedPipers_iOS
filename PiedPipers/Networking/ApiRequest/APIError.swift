@@ -24,6 +24,25 @@ class APIErrorResponse: Error
     }
 }
 
+//struct APIError : Error
+//{
+//    let code: Int
+//    let ecode: Int
+//    let message: String
+//    
+//    init(_ code: Int, _ ecode: Int, _ message: String)
+//    {
+//        self.code = code
+//        self.ecode = ecode
+//        self.message = message
+//    }
+//}
+//
+//extension APIError
+//{
+//    
+//}
+
 // factory - TODO
 extension APIErrorResponse
 {

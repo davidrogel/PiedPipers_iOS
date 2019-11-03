@@ -11,7 +11,7 @@ import XCTest
 
 class RequestsTests: XCTestCase
 {
-    let timeout:TimeInterval = 10000.0
+    let timeout: TimeInterval = 1500.0
     
     let email = "otroCorreo2@correo.com"
     let pass = "vouteEsnaquizar"
@@ -41,6 +41,8 @@ class RequestsTests: XCTestCase
     }
     """
     
+    var user: User?
+    
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
@@ -49,9 +51,12 @@ class RequestsTests: XCTestCase
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
     
+    // MARK: - NETWORK TESTING
+    
+    // MARK: CREATE USER
     func testCreateUserOnServer()
     {
-        let e = expectation(description: "Alamofire")
+        let e = expectation(description: "CreateUser")
 
         let createUserRequest = CreateUserRequest(email: email, password: pass)
             
@@ -71,17 +76,19 @@ class RequestsTests: XCTestCase
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
+    // MARK: LOGIN WITH USER
     func testUserLoginOnServer()
     {
-        let e = expectation(description: "Alamofire")
+        let e = expectation(description: "LoginUser")
         
         let loginUserRequest = LoginUserRequest(email: email, password: pass)
         
-        loginUserRequest.makeRequest { (result) in
+        loginUserRequest.makeRequest { [weak self](result) in
             switch result
             {
             case .success(let data):
                 print("Data:", data)
+                self?.user = data
             case .failure(let err):
                 print("Error:", CodeError(rawValue: err.statusCode).debugDescription)
                 XCTFail()
@@ -92,8 +99,93 @@ class RequestsTests: XCTestCase
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
+    // MARK: GET CURRENT USER PROFILE
+    func testGetCurrentUserProfileOnServer()
+    {
+        let e = expectation(description: "GetUser")
+        
+//        if let id = user?.id
+//        {
+            let getUserProfileRequest = GetProfileRequest(currentUserCuid: "ck2g3ps39000c93pcfox7e8jn")
+            
+            getUserProfileRequest.makeRequest { (result) in
+                switch result
+                {
+                case .success(let data):
+                    print("CurrentUserProfile:", data)
+                case .failure(let err):
+                    print("Error:", CodeError(rawValue: err.statusCode).debugDescription)
+                    XCTFail()
+                }
+                e.fulfill()
+            }
+//        }
+//        else
+//        {
+//            e.fulfill()
+//            XCTFail()
+//        }
+        
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
     
-    // DECODE ENCODE PROFILE
+    // MARK: GET USER BY ID
+    
+    func testGetUserByIdOnServer()
+    {
+        let e = expectation(description: "GetUserById")
+        
+        let getUserProfileByIdRequest = GetProfileByIdRequest(currentUserCuid: "ck2g3ps39000c93pcfox7e8jn", findUserCuid: "ck2g3ps39000c93pcfox7e8jn")
+        
+        getUserProfileByIdRequest.makeRequest { (result) in
+            switch result
+            {
+            case .success(let data):
+                print("UserProfileById:", data)
+            case .failure(let err):
+                print("Error:", CodeError(rawValue: err.statusCode).debugDescription)
+                XCTFail()
+            }
+            e.fulfill()
+        }
+        
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    // MARK: UPDATE CURRENT USER PROFILE
+    
+    func testUpdateCurrentUserProfile()
+    {
+        let e = expectation(description: "UpdateUserProfile")
+        
+        let cuid = "ck2g3ps39000c93pcfox7e8jn"
+        
+        let updateUserProfileRequest = UpdateProfileRequest(currentUserCuid: cuid, profile: Profile(cuid: cuid, name: "Not tiene gracia", location: Location(lat: 666.000, long: 999.000), description: "Chistes para todos!!!"))
+        
+        updateUserProfileRequest.makeRequest { (result) in
+            switch result
+            {
+            case .success(let data):
+                print("UserProfileById:", data)
+            case .failure(let err):
+                print("Error:", CodeError(rawValue: err.statusCode).debugDescription)
+                XCTFail()
+            }
+            e.fulfill()
+        }
+        
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    // MARK: - DECODE ENCODE PROFILE
+    
+    func testProfileToJsonAndViceversa()
+    {
+        let data = try? JSONSerialization.data(withJSONObject: Profile(cuid: "ck2g3ps39000c93pcfox7e8jn", name: "Not David Rogel", description: "Ha muerto").toBody(), options: [])
+        let decoder = JSONDecoder()
+        let n_profile = try? decoder.decode(Profile.self, from: data!)
+        XCTAssertNotNil(n_profile)
+    }
     
     func testDecodeProfile()
     {
