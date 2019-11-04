@@ -107,17 +107,46 @@ extension Profile
 {
     func toBody() -> [String:Any]
     {
-        let body:[String:Any] =
-        [
-            "cuid":cuid,
-            "name":name ?? nil,
-            "location": ["lat":location?.lat, "long":location?.long],
-            "contact": ["type":contact?.type.rawValue, "data":contact?.data],
-            "instruments":instruments ?? nil,
-            "videos":videos ?? nil,
-            "description":description ?? nil,
-            "photo":photo ?? nil
-        ]
+        var body = [String:Any]()
+//        var body:[String:Any] = [
+//            "cuid":cuid
+//        ]
+        
+        if let name = name
+        {
+            body["name"] = name
+        }
+        
+        if let location = location
+        {
+            let locat:[String:Any] = ["lat":NSNumber(value: location.lat), "long":NSNumber(value: location.long)]
+            body["location"] = locat
+        }
+        
+        if let contact = contact
+        {
+            body["contact"] = ["type":contact.type.rawValue, "data":contact.data]
+        }
+        
+        if let instruments = instruments
+        {
+            body["instruments"] = instruments
+        }
+        
+        if let videos = videos
+        {
+            body["videos"] = videos
+        }
+        
+        if let description = description
+        {
+            body["description"] = description
+        }
+        
+        if let photo = photo
+        {
+            body["photo"] = photo
+        }
         
         return body
     }

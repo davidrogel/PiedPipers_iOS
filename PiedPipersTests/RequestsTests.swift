@@ -11,7 +11,7 @@ import XCTest
 
 class RequestsTests: XCTestCase
 {
-    let timeout: TimeInterval = 1500.0
+    let timeout: TimeInterval = 15000.0
     
     let email = "otroCorreo2@correo.com"
     let pass = "vouteEsnaquizar"
@@ -160,7 +160,7 @@ class RequestsTests: XCTestCase
         
         let cuid = "ck2g3ps39000c93pcfox7e8jn"
         
-        let updateUserProfileRequest = UpdateProfileRequest(currentUserCuid: cuid, profile: Profile(cuid: cuid, name: "Not tiene gracia", location: Location(lat: 666.000, long: 999.000), description: "Chistes para todos!!!"))
+        let updateUserProfileRequest = UpdateProfileRequest(currentUserCuid: cuid, profile: Profile(cuid: cuid, name: "Not tiene gracia", location: Location(lat: 20.19, long: 20.20), description: "Chistes para todos!!!"))
         
         updateUserProfileRequest.makeRequest { (result) in
             switch result
@@ -181,7 +181,8 @@ class RequestsTests: XCTestCase
     
     func testProfileToJsonAndViceversa()
     {
-        let data = try? JSONSerialization.data(withJSONObject: Profile(cuid: "ck2g3ps39000c93pcfox7e8jn", name: "Not David Rogel", description: "Ha muerto").toBody(), options: [])
+        let data = try? JSONSerialization.data(withJSONObject: Profile(cuid: "ck2g3ps39000c93pcfox7e8jn", name: "Not tiene gracia", location: Location(lat: 666.000, long: 999.000), description: "Chistes para todos!!!").toBody(), options: [])
+//        if JSONSerialization.isValidJSONObject(data)
         let decoder = JSONDecoder()
         let n_profile = try? decoder.decode(Profile.self, from: data!)
         XCTAssertNotNil(n_profile)

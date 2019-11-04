@@ -42,9 +42,6 @@
                   Identifier = "RequestsTests/testCreateUserOnServer()">
                </Test>
                <Test
-                  Identifier = "RequestsTests/testDecodeProfile()">
-               </Test>
-               <Test
                   Identifier = "RequestsTests/testEncodeProfile()">
                </Test>
             </SkippedTests>
