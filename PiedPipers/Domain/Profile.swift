@@ -31,7 +31,7 @@ struct Contact: Codable
 struct Profile
 {
     typealias Photo = String
-    
+
     let cuid: String
     let name: String?
     let location: Location?
@@ -40,7 +40,7 @@ struct Profile
     let videos: [String]?
     let description: String?
     let photo: Photo?
-    
+
     init(cuid: String, name: String? = nil,
          location: Location? = nil, contact: Contact? = nil,
          instruments: [String]? = nil, videos: [String]? = nil,

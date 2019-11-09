@@ -51,6 +51,24 @@ class RequestsTests: XCTestCase
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
     
+    // MARK: - REMOTE REPOSITORY TESTING
+    
+    func testGetRemoteUser()
+    {
+        let e = expectation(description: "GetUserRemote")
+        
+        Repository.remote.getProfile(currenUserCUID: "ck2g3ps39000c93pcfox7e8jn", success: { (profile) in
+            print("Se ha obtenido un user")
+            e.fulfill()
+        }) { (error) in
+            print("ha habido un error")
+            XCTFail()
+            e.fulfill()
+        }
+        
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
     // MARK: - NETWORK TESTING
     
     // MARK: CREATE USER
