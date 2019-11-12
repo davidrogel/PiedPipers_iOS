@@ -10,7 +10,7 @@ import Foundation
 
 enum Methods: String, Codable
 {
-    case GET, POST, PATCH
+    case GET, POST, PATCH, DELETE
 }
 
 let urlToServer = "http://ec2-52-87-34-66.compute-1.amazonaws.com"

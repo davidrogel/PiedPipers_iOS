@@ -23,6 +23,7 @@ import Foundation
 let userCreate = "/users/create"
 let userLogin = "/users/login"
 let userUpdate = "/users/update"
+let userDelete = "/users"
 
 // Profile
 let profileGet = "/profile"

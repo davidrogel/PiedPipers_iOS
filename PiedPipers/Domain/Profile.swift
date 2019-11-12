@@ -40,11 +40,13 @@ struct Profile
     let videos: [String]?
     let description: String?
     let photo: Photo?
+    let friendlyLocation: String?
 
     init(cuid: String, name: String? = nil,
          location: Location? = nil, contact: Contact? = nil,
          instruments: [String]? = nil, videos: [String]? = nil,
-         description: String? = nil, photo: Photo? = nil)
+         description: String? = nil, photo: Photo? = nil,
+         friendlyLocation: String? = nil)
     {
         self.cuid = cuid
         self.name = name
@@ -54,6 +56,7 @@ struct Profile
         self.videos = videos
         self.description = description
         self.photo = photo
+        self.friendlyLocation = friendlyLocation
     }
 }
 
@@ -69,6 +72,7 @@ extension Profile: Codable
         case videos
         case description
         case photo
+        case friendlyLocation
     }
     
     init(from decoder: Decoder) throws
@@ -84,6 +88,7 @@ extension Profile: Codable
         videos = try container.decodeIfPresent([String].self, forKey: .videos)
         description = try container.decodeIfPresent(String.self, forKey: .description)
         photo = try container.decodeIfPresent(Photo.self, forKey: .photo)
+        friendlyLocation = try container.decodeIfPresent(String.self, forKey: .friendlyLocation)
     }
     
     func encode(to encoder: Encoder) throws
@@ -99,6 +104,7 @@ extension Profile: Codable
         try container.encodeIfPresent(videos, forKey: .videos)
         try container.encodeIfPresent(description, forKey: .description)
         try container.encodeIfPresent(photo, forKey: .photo)
+        try container.encodeIfPresent(friendlyLocation, forKey: .friendlyLocation)
     }
 }
 
@@ -146,6 +152,11 @@ extension Profile
         if let photo = photo
         {
             body["photo"] = photo
+        }
+        
+        if let friendlyLocation = friendlyLocation
+        {
+            body["friendlyLocation"] = friendlyLocation
         }
         
         return body

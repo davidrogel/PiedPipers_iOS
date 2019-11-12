@@ -66,7 +66,7 @@ struct LoginUserRequest: APIRequest
 
 struct UpdateUserRequest: APIRequest
 {
-    typealias Response = String
+    typealias Response = User
     
     var method: Methods { return .PATCH }
     
@@ -75,7 +75,9 @@ struct UpdateUserRequest: APIRequest
     var path: Self.Endpoint { return userUpdate }
     
     var headers: [String : String] {
-        return ["Content-Type":"application/json"]
+        let authToken = StoreManager.shared.getString(withKey: currentUserCuid)
+        return ["Content-Type":"application/json",
+                "Authorization":authToken]
     }
     
     var body: Any {
@@ -84,5 +86,24 @@ struct UpdateUserRequest: APIRequest
         ]
     }
     
+    let currentUserCuid: String
     let password: String
+}
+
+struct DeleteUserRequest: APIRequest
+{
+    typealias Response = Int
+    
+    var method: Methods { return .DELETE }
+    
+    var baseUrl: String { return urlToServer }
+     
+    var path: Self.Endpoint { return userDelete }
+    
+    var headers: [String : String] {
+        let authToken = StoreManager.shared.getString(withKey: currentUserCuid)
+        return ["Authorization":authToken]
+    }
+    
+    let currentUserCuid: String
 }
