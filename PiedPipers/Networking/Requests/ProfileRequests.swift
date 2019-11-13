@@ -69,3 +69,26 @@ struct UpdateProfileRequest: APIRequest
     let currentUserCuid: String
     let profile: Profile
 }
+
+struct UpdateProfileAvatar: APIRequest
+{
+    typealias Response = Profile
+    
+    var method: Methods { return .POST }
+    
+    var baseUrl: String { return urlToServer }
+    
+    var path: Self.Endpoint { return avatarUpdate }
+    
+    var headers: [String : String] {
+        let authToken = StoreManager.shared.getString(withKey: currentUserCuid)
+        return ["Authorization":authToken, "Content-Type":"application/json"]
+    }
+    
+    var body: Any {
+        return ""
+    }
+    
+    let currentUserCuid: String
+    let data: Data?
+}
