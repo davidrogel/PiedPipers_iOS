@@ -8,10 +8,4 @@
 
 import Foundation
 
-extension AnyHashable
-{
-    public static func == (lhs: AnyHashable, rhs: String) -> Bool
-    {
-        return lhs.description == rhs
-    }
-}
+// TODO: Delete this! 🔪
