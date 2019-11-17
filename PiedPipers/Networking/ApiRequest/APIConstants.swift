@@ -30,3 +30,7 @@ let profileGet = "/profile"
 let profileByIdGet = "/profile/"
 let avatarUpdate = "/profile/avatar"
 let tagsGet = "/profile/tags"
+
+// Searching
+let searchProfile = "/search/profile"
+let searchLocals = "/search/local"
