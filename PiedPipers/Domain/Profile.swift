@@ -8,26 +8,6 @@
 
 import Foundation
 
-struct Location: Codable
-{
-    let lat: Double
-    let long: Double
-}
-
-enum ContactType: String, Codable
-{
-    case email
-    case phone
-}
-
-typealias Type = ContactType
-
-struct Contact: Codable
-{
-    let type: Type
-    let data: String
-}
-
 struct Profile
 {
     typealias Photo = String
@@ -108,12 +88,12 @@ extension Profile: Codable
     }
 }
 
-// TODO - Limpiar los warning
 extension Profile
 {
     func toBody() -> [String:Any]
     {
         var body = [String:Any]()
+        // No es necesario en CUID en el body
 //        var body:[String:Any] = [
 //            "cuid":cuid
 //        ]
