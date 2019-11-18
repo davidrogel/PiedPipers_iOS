@@ -11,20 +11,21 @@ import Foundation
 struct Profile
 {
     typealias Photo = String
-
+    typealias _Video = Video
+    
     let cuid: String
     let name: String?
     let location: Location?
     let contact: Contact?
     let instruments: [String]?
-    let videos: [String]?
+    let videos: [_Video]?
     let description: String?
     let photo: Photo?
     let friendlyLocation: String?
 
     init(cuid: String, name: String? = nil,
          location: Location? = nil, contact: Contact? = nil,
-         instruments: [String]? = nil, videos: [String]? = nil,
+         instruments: [String]? = nil, videos: [_Video]? = nil,
          description: String? = nil, photo: Photo? = nil,
          friendlyLocation: String? = nil)
     {
@@ -65,7 +66,7 @@ extension Profile: Codable
         location = try container.decodeIfPresent(Location.self, forKey: .location)
         contact = try container.decodeIfPresent(Contact.self, forKey: .contact)
         instruments = try container.decodeIfPresent([String].self, forKey: .instruments)
-        videos = try container.decodeIfPresent([String].self, forKey: .videos)
+        videos = try container.decodeIfPresent([_Video].self, forKey: .videos)
         description = try container.decodeIfPresent(String.self, forKey: .description)
         photo = try container.decodeIfPresent(Photo.self, forKey: .photo)
         friendlyLocation = try container.decodeIfPresent(String.self, forKey: .friendlyLocation)

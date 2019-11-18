@@ -8,18 +8,10 @@
 
 import Foundation
 
-enum Fmt
+// Darle una vuelta (O₂)
+fileprivate enum Fmt
 {
     static func currency() -> NumberFormatter
-    {
-        return NumberFormatter()
-    }
-}
-
-// Esto sirve por ahora pero habría que extraerlo y montar una clase más bonika
-extension Double
-{
-    func toCurrency() -> String
     {
         let numberFormatter = NumberFormatter()
         // para mostrar el punto o coma en los miles
@@ -28,13 +20,40 @@ extension Double
         numberFormatter.alwaysShowsDecimalSeparator = true
         numberFormatter.numberStyle = .currency
         numberFormatter.locale = Locale.current
+        
+        return numberFormatter
+    }
+    
+    static func datetime() -> DateFormatter
+    {
+        let dateFormatter = DateFormatter()
+        
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        dateFormatter.timeZone = TimeZone.current
+        
+        return dateFormatter
+    }
+}
 
-        guard let currencyStr = numberFormatter.string(from: NSNumber(value: self)) else
+// esto estaría bien que no dependiese del Double para obtener la currency
+extension Double
+{
+    func toCurrency() -> String
+    {
+        guard let currencyStr = Fmt.currency().string(from: NSNumber(value: self)) else
         {
             return String.init(format: "%.2f", locale: .current, self)
         }
         
         return currencyStr
+    }
+}
+
+extension Date
+{
+    static func date(from string: String) -> Date?
+    {
+        return Fmt.datetime().date(from: string)
     }
 }
 

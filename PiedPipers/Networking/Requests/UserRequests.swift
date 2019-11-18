@@ -92,6 +92,7 @@ struct UpdateUserRequest: APIRequest
 
 struct DeleteUserRequest: APIRequest
 {
+    // La respuesta es 200 si se ha borrado con exito
     typealias Response = Int
     
     var method: Methods { return .DELETE }
