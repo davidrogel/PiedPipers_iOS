@@ -41,6 +41,25 @@ class RequestsTests: XCTestCase
     }
     """
     
+    let localData = """
+    {
+        "cuid": "ck2rib3ih0000jl4g67j1c675",
+        "dateAdded": "2019-11-09T11:49:44.222Z",
+        "name": "Sala mandra!",
+        "location": {
+            "lat": 40.33,
+            "long": 0.5
+        },
+        "price": 20,
+        "contact": {
+            "type": "phone",
+            "data": "+34671646356"
+        },
+        "photos": [],
+        "description": "Lorem ipsum dolor ..."
+    }
+    """
+    
     var user: User?
     
     override func setUp() {
@@ -233,5 +252,46 @@ class RequestsTests: XCTestCase
         {
             XCTFail()
         }
+    }
+    
+    // MARK: - ENCODE DECODE LOCAL
+    
+    func testDecodeLocal()
+    {
+        do
+        {
+            let jsonData = localData.data(using: .utf8)
+            let decoder = JSONDecoder()
+            let local = try decoder.decode(Local.self, from: jsonData!)
+            XCTAssertNotNil(local)
+        }
+        catch
+        {
+            XCTFail()
+        }
+    }
+    
+    func testEncodeLocal()
+    {
+        do
+        {
+            let encoder = JSONEncoder()
+            let local = try encoder.encode(localData)
+            XCTAssertNotNil(local)
+        }
+        catch
+        {
+            XCTFail()
+        }
+    }
+    
+    // MARK: - DATES FORMATTEX
+    
+    func testServerStringToDate()
+    {
+        // "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        let _date = Date.date(from: "2019-02-11T10:11:40.000Z")
+        guard let date = _date else { XCTFail(); return }
+        print("FECHA:", date)
     }
 }
