@@ -25,7 +25,8 @@ struct Video
     let thumbnail: ThumbnailURL?
     
     init(id: String, video: VideoURL? = nil,
-         embedVideo: EmbedVideoURL? = nil, thumbnail: ThumbnailURL? = nil)
+         embedVideo: EmbedVideoURL? = nil,
+         thumbnail: ThumbnailURL? = nil)
     {
         self.id = id
         self.video = video
@@ -64,5 +65,35 @@ extension Video: Codable
         try container.encodeIfPresent(video, forKey: .video)
         try container.encodeIfPresent(embedVideo, forKey: .embedVideo)
         try container.encodeIfPresent(thumbnail, forKey: .thumbnail)
+    }
+}
+
+extension Video
+{
+    // el body solo se usa cuando se va a actualizar el Profile
+    // y en ese caso solo es necesario pasar un array con los
+    // IDs de los videos ---> ?v=[ID]
+    func toBody() -> [String:Any]
+    {
+        let body:[String:Any] = [
+            "id":id
+        ]
+        
+//        if let video = video
+//        {
+//            body["video"] = video
+//        }
+//
+//        if let embedVideo = embedVideo
+//        {
+//            body["embedVideo"] = embedVideo
+//        }
+//
+//        if let thumbnail = thumbnail
+//        {
+//            body["thumbnail"] = thumbnail
+//        }
+        
+        return body
     }
 }

@@ -64,5 +64,3 @@ extension Local: Codable
         try container.encode(description, forKey: .description)
     }
 }
-
-

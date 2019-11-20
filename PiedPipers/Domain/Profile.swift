@@ -8,6 +8,7 @@
 
 import Foundation
 
+
 struct Profile
 {
     typealias Photo = String
@@ -122,7 +123,9 @@ extension Profile
         
         if let videos = videos
         {
-            body["videos"] = videos
+            body["videos"] = videos.map({ (video) -> [String:Any] in
+                video.toBody()
+            })
         }
         
         if let description = description
@@ -130,10 +133,11 @@ extension Profile
             body["description"] = description
         }
         
-        if let photo = photo
-        {
-            body["photo"] = photo
-        }
+        // La foto nunca se envía al servidor desde aquí, tiene una Request especial
+//        if let photo = photo
+//        {
+//            body["photo"] = photo
+//        }
         
         if let friendlyLocation = friendlyLocation
         {
