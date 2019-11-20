@@ -27,7 +27,6 @@
 		63E265B5236B738D007FEA74 /* UserRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E265B4236B738D007FEA74 /* UserRequests.swift */; };
 		63E265B7236B73C0007FEA74 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E265B6236B73C0007FEA74 /* User.swift */; };
 		63E265BA236C66C6007FEA74 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E265B9236C66C6007FEA74 /* Utils.swift */; };
-		63E8926B2385FBF00083146F /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E8926A2385FBF00083146F /* SearchViewController.swift */; };
 		63F4E7FB2368E04700C52D47 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F4E7FA2368E04700C52D47 /* AppDelegate.swift */; };
 		63F4E7FD2368E04700C52D47 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F4E7FC2368E04700C52D47 /* SceneDelegate.swift */; };
 		63F4E7FF2368E04700C52D47 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F4E7FE2368E04700C52D47 /* ViewController.swift */; };
@@ -65,6 +64,7 @@
 		63378A122381C236000C7751 /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		63378A152381CB74000C7751 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		634126F023835DF300B7B45F /* Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
+		6348F6412385FD77005AA01B /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		63E265AB236B6400007FEA74 /* ApiSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiSession.swift; sourceTree = "<group>"; };
 		63E265AC236B6400007FEA74 /* ApiRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiRequest.swift; sourceTree = "<group>"; };
 		63E265AD236B6400007FEA74 /* APIError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
@@ -72,7 +72,6 @@
 		63E265B4236B738D007FEA74 /* UserRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRequests.swift; sourceTree = "<group>"; };
 		63E265B6236B73C0007FEA74 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		63E265B9236C66C6007FEA74 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
-		63E8926A2385FBF00083146F /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchViewController.swift; path = ../../../../../../../Documents/SearchViewController.swift; sourceTree = "<group>"; };
 		63F4E7F72368E04700C52D47 /* PiedPipers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PiedPipers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63F4E7FA2368E04700C52D47 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		63F4E7FC2368E04700C52D47 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -150,6 +149,14 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
+		6348F6422385FD87005AA01B /* SearchView */ = {
+			isa = PBXGroup;
+			children = (
+				6348F6412385FD77005AA01B /* SearchViewController.swift */,
+			);
+			path = SearchView;
+			sourceTree = "<group>";
+		};
 		63E265AA236B63F0007FEA74 /* ApiRequest */ = {
 			isa = PBXGroup;
 			children = (
@@ -183,17 +190,9 @@
 		63E892682385FBC70083146F /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				63E892692385FBD40083146F /* SearchView */,
+				6348F6422385FD87005AA01B /* SearchView */,
 			);
 			path = Screens;
-			sourceTree = "<group>";
-		};
-		63E892692385FBD40083146F /* SearchView */ = {
-			isa = PBXGroup;
-			children = (
-				63E8926A2385FBF00083146F /* SearchViewController.swift */,
-			);
-			path = SearchView;
 			sourceTree = "<group>";
 		};
 		63F4E7EE2368E04700C52D47 = {
@@ -497,7 +496,6 @@
 				63378A162381CB74000C7751 /* Utilities.swift in Sources */,
 				634126F123835DF300B7B45F /* Video.swift in Sources */,
 				63F57C372373660700C59F9E /* Repository.swift in Sources */,
-				63E8926B2385FBF00083146F /* SearchViewController.swift in Sources */,
 				63335AD5236CBF8500F8CC8F /* APIConstants.swift in Sources */,
 				63378A112381C1E7000C7751 /* Location.swift in Sources */,
 				63F4E7FB2368E04700C52D47 /* AppDelegate.swift in Sources */,
