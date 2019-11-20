@@ -20,17 +20,27 @@ import Foundation
 //}
 
 // User
+/// /users/create
 let userCreate = "/users/create"
+/// /users/login
 let userLogin = "/users/login"
+/// /users/update
 let userUpdate = "/users/update"
+/// /users
 let userDelete = "/users"
 
 // Profile
+/// /profile
 let profileGet = "/profile"
+/// /profile/     /profile/:cuid
 let profileByIdGet = "/profile/"
+/// /profile/avatar
 let avatarUpdate = "/profile/avatar"
+/// /profile/tags
 let tagsGet = "/profile/tags"
 
 // Searching
+/// /search/profile
 let searchProfile = "/search/profile"
+/// /search/local
 let searchLocals = "/search/local"
