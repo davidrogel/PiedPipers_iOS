@@ -8,9 +8,20 @@
 
 import Foundation
 
-struct GetProfileBySearching: APIRequest
+struct SearchProfileParameters: Codable
 {
-    typealias Response = [ProfileList]
+    let name: String?
+    let instruments: [String]?
+    let friendlyLocation: String?
+    let lat: Double?
+    let long: Double?
+}
+
+// TODO - Lipiar comentarios y llevarse de aqui las estructs de los parámetros
+
+struct GetProfileBySearchingRequest: APIRequest
+{
+    typealias Response = ProfileList
     
     var method: Methods { return .GET }
     
@@ -29,54 +40,61 @@ struct GetProfileBySearching: APIRequest
     
     let currentUserCuid: String
     
-    let name: String?
-    let instruments: [String]?
-    let friendlyLocation: String?
-    let lat: Double?
-    let long: Double?
+//    let name: String?
+//    let instruments: [String]?
+//    let friendlyLocation: String?
+//    let lat: Double?
+//    let long: Double?
     let limit: Int
     let offset: Int
     
-    init(cuid:String, name: String? = nil, instruments: [String]? = nil,
+    let profileParameters: SearchProfileParameters?
+    
+    init(cuid:String, profileParameters: SearchProfileParameters? = nil/*name: String? = nil, instruments: [String]? = nil,
          friendlyLocation: String? = nil, lat: Double? = nil,
-         long: Double? = nil, limit: Int, offset: Int)
+         long: Double? = nil*/, limit: Int, offset: Int)
     {
         self.currentUserCuid = cuid
-        self.name = name
-        self.instruments = instruments
-        self.friendlyLocation = friendlyLocation
-        self.lat = lat
-        self.long = long
+        self.profileParameters = profileParameters
+//        self.name = name
+//        self.instruments = instruments
+//        self.friendlyLocation = friendlyLocation
+//        self.lat = lat
+//        self.long = long
         self.limit = limit
         self.offset = offset
     }
 }
 
-extension GetProfileBySearching
+extension GetProfileBySearchingRequest
 {
     private func generateParams() -> [String:String]
     {
         var params = [String:String]()
         
-        if let name = name
+        if let profileParameters = profileParameters
         {
-            params["name"] = name
-        }
-        
-        if let instruments = instruments
-        {
-            params["instruments"] = instruments.joined(separator: ",")
-        }
-        
-        if let friendlyLocation = friendlyLocation
-        {
-            params["friendlyLocation"] = friendlyLocation
-        }
-        
-        if let lat = lat, let long = long
-        {
-            params["lat"] = lat.description
-            params["long"] = long.description
+            if let name = profileParameters.name
+            {
+                params["name"] = name
+            }
+            
+            if let instruments = profileParameters.instruments
+            {
+                params["instruments"] = instruments.joined(separator: ",")
+            }
+            
+            if let friendlyLocation = profileParameters.friendlyLocation
+            {
+                params["friendlyLocation"] = friendlyLocation
+            }
+            
+            if let lat = profileParameters.lat,
+                let long = profileParameters.long
+            {
+                params["lat"] = lat.description
+                params["long"] = long.description
+            }
         }
         
         params["limit"] = limit.description
@@ -86,9 +104,17 @@ extension GetProfileBySearching
     }
 }
 
-struct GetLocalBySearching: APIRequest
+struct SearchLocalParameters: Codable
 {
-    typealias Response = [LocalList]
+    let name: String?
+    let price: Double?
+    let lat: Double?
+    let long: Double?
+}
+
+struct GetLocalBySearchingRequest: APIRequest
+{
+    typealias Response = LocalList
     
     var method: Methods { return .GET }
     
@@ -107,46 +133,54 @@ struct GetLocalBySearching: APIRequest
     
     let currentUserCuid: String
     
-    let name: String?
-    let price: Double?
-    let lat: Double?
-    let long: Double?
+//    let name: String?
+//    let price: Double?
+//    let lat: Double?
+//    let long: Double?
     let limit: Int
     let offset: Int
     
-    init(cuid:String, name: String? = nil, price: Double? = nil, lat: Double? = nil,
-         long: Double? = nil, limit: Int, offset: Int)
+    let localParameters: SearchLocalParameters?
+    
+    init(cuid:String, localParameters: SearchLocalParameters? = nil /*name: String? = nil, price: Double? = nil, lat: Double? = nil,
+         long: Double? = nil*/, limit: Int, offset: Int)
     {
         self.currentUserCuid = cuid
-        self.name = name
-        self.price = price
-        self.lat = lat
-        self.long = long
+//        self.name = name
+//        self.price = price
+//        self.lat = lat
+//        self.long = long
         self.limit = limit
         self.offset = offset
+        
+        self.localParameters = localParameters
     }
 }
 
-extension GetLocalBySearching
+extension GetLocalBySearchingRequest
 {
     private func generateParams() -> [String:String]
     {
         var params = [String:String]()
         
-        if let name = name
+        if let localParameters = localParameters
         {
-            params["name"] = name
-        }
-        
-        if let price = price
-        {
-            params["price"] = price.description
-        }
-        
-        if let lat = lat, let long = long
-        {
-            params["lat"] = lat.description
-            params["long"] = long.description
+            if let name = localParameters.name
+            {
+                params["name"] = name
+            }
+            
+            if let price = localParameters.price
+            {
+                params["price"] = price.description
+            }
+            
+            if let lat = localParameters.lat,
+                let long = localParameters.long
+            {
+                params["lat"] = lat.description
+                params["long"] = long.description
+            }
         }
         
         params["limit"] = limit.description

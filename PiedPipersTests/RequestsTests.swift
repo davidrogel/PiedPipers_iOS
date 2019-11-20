@@ -16,7 +16,9 @@ class RequestsTests: XCTestCase
     let email = "otroCorreo2@correo.com"
     let pass = "vouteEsnaquizar"
     
-    let profileToEncode = Profile(cuid: "CUID", name: "name", location: Location(lat: 20.0, long: 20.0), contact: Contact(type: .email, data: "Correo.a.encodear@correo.com"), instruments: ["bateria", "guitarra", "voz"], videos: ["video1", "video2"], description: "una descripción rexulona", photo: "una foto")
+    let cuid = "ck2g3ps39000c93pcfox7e8jn"
+    
+    let profileToEncode = Profile(cuid: "CUID", name: "name", location: Location(lat: 20.0, long: 20.0), contact: Contact(type: .email, data: "Correo.a.encodear@correo.com"), instruments: ["bateria", "guitarra", "voz"], videos: nil, description: "una descripción rexulona", photo: "una foto")
     
     let profileData = """
     {
@@ -34,7 +36,7 @@ class RequestsTests: XCTestCase
             "bateria"
         ],
         "videos": [
-            "https://www.youtube.com/watch?v=41DH065Lfeo&list=RD41DH065Lfeo&start_radio=1"
+            { "id": "idLocoDeYT" }
         ],
         "description": "Lorem ipsum dolor ...",
         "photo": "/Users/albertogarcia-munoz/Documents/Repositories/ProyectoFinal/PiedPipers/public/img/ck2g2765h0000q64g4y8tfk0a.png"
@@ -60,6 +62,102 @@ class RequestsTests: XCTestCase
     }
     """
     
+    let localList = """
+        {
+            "total": 2,
+            "offset": 10,
+            "items": [
+                {
+                    "cuid": "ck2rib3ih0000jl4g67j1c675",
+                    "dateAdded": "2019-11-09T11:49:44.222Z",
+                    "name": "Sala mandra!",
+                    "location": {
+                        "lat": 40.33,
+                        "long": 0.5
+                    },
+                    "price": 20,
+                    "contact": {
+                        "type": "phone",
+                        "data": "+34671646356"
+                    },
+                    "photos": [],
+                    "description": "Lorem ipsum dolor ..."
+                },
+                {
+                    "cuid": "ck2rib3ih0000jl4g67j1c675",
+                    "dateAdded": "2019-11-09T11:49:44.222Z",
+                    "name": "Sala mandra!",
+                    "location": {
+                        "lat": 40.33,
+                        "long": 0.5
+                    },
+                    "price": 20,
+                    "contact": {
+                        "type": "phone",
+                        "data": "+34671646356"
+                    },
+                    "photos": [],
+                    "description": "Lorem ipsum dolor ..."
+                }
+            ]
+        }
+    """
+    
+    let profileList = """
+        {
+            "total": 2,
+            "offset": 1,
+            "items": [
+                {
+                    "cuid": "ck2kpq6490000e24g49j90wuq",
+                    "name": "Test user 123",
+                    "location": {
+                        "lat": 40.34,
+                        "long": 0.5
+                    },
+                    "friendlyLocation": "Vienna",
+                    "contact": {
+                        "type": "email",
+                        "data": "test_user@gmail.com"
+                    },
+                    "instruments": [
+                        "bateria"
+                    ],
+                    "videos": [
+                        {
+                            "id": "idrarodeYT",
+                            "video": "https://www.youtube.com/watch?v=41DH065Lfeo&list=RD41DH065Lfeo&start_radio=1",
+                            "embedVideo": "",
+                            "thumbnail": "thumb.jpg"
+                        }
+                    ],
+                    "description": "Lorem ipsum dolor ..."
+                },
+                {
+                    "cuid": "ck2kpq6490000e24g49j90wuq",
+                    "name": "Test user 123",
+                    "location": {
+                        "lat": 40.34,
+                        "long": 0.5
+                    },
+                    "friendlyLocation": "Vienna",
+                    "contact": {
+                        "type": "email",
+                        "data": "test_user@gmail.com"
+                    },
+                    "instruments": [
+                        "bateria"
+                    ],
+                    "videos": [
+                        { "id":"idloco" },
+                        { "id":"idloco" }
+                    ],
+                    "description": "Lorem ipsum dolor ..."
+                }
+            ]
+        }
+    """
+    
     var user: User?
     
     override func setUp() {
@@ -76,7 +174,7 @@ class RequestsTests: XCTestCase
     {
         let e = expectation(description: "GetUserRemote")
         
-        Repository.remote.getProfile(currenUserCUID: "ck2g3ps39000c93pcfox7e8jn", success: { (profile) in
+        Repository.remote.getProfile(currenUserCUID: cuid, success: { (profile) in
             print("Se ha obtenido un user")
             e.fulfill()
         }) { (error) in
@@ -143,7 +241,7 @@ class RequestsTests: XCTestCase
         
 //        if let id = user?.id
 //        {
-            let getUserProfileRequest = GetProfileRequest(currentUserCuid: "ck2g3ps39000c93pcfox7e8jn")
+            let getUserProfileRequest = GetProfileRequest(currentUserCuid: cuid)
             
             getUserProfileRequest.makeRequest { (result) in
                 switch result
@@ -172,7 +270,7 @@ class RequestsTests: XCTestCase
     {
         let e = expectation(description: "GetUserById")
         
-        let getUserProfileByIdRequest = GetProfileByIdRequest(currentUserCuid: "ck2g3ps39000c93pcfox7e8jn", findUserCuid: "ck2g3ps39000c93pcfox7e8jn")
+        let getUserProfileByIdRequest = GetProfileByIdRequest(currentUserCuid: cuid, findUserCuid: cuid)
         
         getUserProfileByIdRequest.makeRequest { (result) in
             switch result
@@ -195,8 +293,6 @@ class RequestsTests: XCTestCase
     {
         let e = expectation(description: "UpdateUserProfile")
         
-        let cuid = "ck2g3ps39000c93pcfox7e8jn"
-        
         let updateUserProfileRequest = UpdateProfileRequest(currentUserCuid: cuid, profile: Profile(cuid: cuid, name: "Not tiene gracia", location: Location(lat: 20.19, long: 20.20), description: "Chistes para todos!!!"))
         
         updateUserProfileRequest.makeRequest { (result) in
@@ -214,12 +310,79 @@ class RequestsTests: XCTestCase
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
+    // MARK: GET INSTRUMENTS
+    
+    func testGetInstrumentsList()
+    {
+        let e = expectation(description: "GetInstrumentsList")
+        
+        let getInstrumentsRequest = GetInstrumentsRequest(currentUserCuid: cuid)
+        
+        getInstrumentsRequest.makeRequest { (result) in
+            switch result
+            {
+            case .success(let data):
+                print("Instruments:", data)
+            case .failure(let err):
+                print("Error:", CodeError(rawValue: err.statusCode).debugDescription)
+                XCTFail()
+            }
+            e.fulfill()
+        }
+        
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    // MARK: SEARCHING PROFILE & LOCAL
+    
+    func testSearchLocals()
+    {
+        let e = expectation(description: "SearchLocals")
+        
+        let getLocalsBySearchingRequest = GetLocalBySearchingRequest(cuid: cuid, limit: 10, offset: 10)
+        
+        getLocalsBySearchingRequest.makeRequest { (result) in
+            switch result
+            {
+            case .success(let data):
+                print("Locals?:", data)
+            case .failure(let err):
+                print("Error:", CodeError(rawValue: err.statusCode).debugDescription)
+                XCTFail()
+            }
+            e.fulfill()
+        }
+        
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func testSearchProfiles()
+    {
+        let e = expectation(description: "SearchProfiles")
+               
+           let getProfilesBySearchingRequest = GetProfileBySearchingRequest(cuid: cuid, limit: 10, offset: 10)
+           
+           getProfilesBySearchingRequest.makeRequest { (result) in
+               switch result
+               {
+               case .success(let data):
+                   print("Profiles?:", data)
+               case .failure(let err):
+                   print("Error:", CodeError(rawValue: err.statusCode).debugDescription)
+                   XCTFail()
+               }
+               e.fulfill()
+           }
+           
+           waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
     // MARK: - DECODE ENCODE PROFILE
     
     func testProfileToJsonAndViceversa()
     {
-        let data = try? JSONSerialization.data(withJSONObject: Profile(cuid: "ck2g3ps39000c93pcfox7e8jn", name: "Not tiene gracia", location: Location(lat: 666.000, long: 999.000), description: "Chistes para todos!!!").toBody(), options: [])
-//        if JSONSerialization.isValidJSONObject(data)
+        let data = try? JSONSerialization.data(withJSONObject: Profile(cuid: cuid, name: "Not tiene gracia", location: Location(lat: 10.00, long: 20.00), description: "Chistes para todos!!!").toBody(), options: [])
+        // Este test falla ya que el toBody() no guarda el CUID y en el Profile es obligatorio, por ahora no se usa esta logica pero es un PROBLEMA a tener en cuenta cuando se dé
         let decoder = JSONDecoder()
         let n_profile = try? decoder.decode(Profile.self, from: data!)
         XCTAssertNotNil(n_profile)
@@ -278,6 +441,66 @@ class RequestsTests: XCTestCase
             let encoder = JSONEncoder()
             let local = try encoder.encode(localData)
             XCTAssertNotNil(local)
+        }
+        catch
+        {
+            XCTFail()
+        }
+    }
+    
+    // MARK: - ENCODE DECODE LISTS
+    
+    func testDecodeLocalList()
+    {
+        do
+        {
+            let jsonData = localList.data(using: .utf8)
+            let decoder = JSONDecoder()
+            let localList = try decoder.decode(LocalList.self, from: jsonData!)
+            XCTAssertNotNil(localList)
+        }
+        catch
+        {
+            XCTFail()
+        }
+    }
+    
+    func testEncodeLocalList()
+    {
+        do
+        {
+            let encoder = JSONEncoder()
+            let _localList = try encoder.encode(localList)
+            XCTAssertNotNil(_localList)
+        }
+        catch
+        {
+            XCTFail()
+        }
+    }
+    
+    func testDecodeProfileList()
+    {
+        do
+        {
+            let jsonData = profileList.data(using: .utf8)
+            let decoder = JSONDecoder()
+            let profileList = try decoder.decode(ProfileList.self, from: jsonData!)
+            XCTAssertNotNil(profileList)
+        }
+        catch
+        {
+            XCTFail()
+        }
+    }
+    
+    func testEncodeProfileList()
+    {
+        do
+        {
+            let encoder = JSONEncoder()
+            let _profileList = try encoder.encode(profileList)
+            XCTAssertNotNil(_profileList)
         }
         catch
         {

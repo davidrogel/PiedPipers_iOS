@@ -8,13 +8,6 @@
 
 import Foundation
 
-// tener una manera de generar cabeceras facilmente
-//enum Headers: String
-//{
-//    case ContentType = "Content-Type"
-//    case ApplicationJSON = "application/json"
-//}
-
 struct CreateUserRequest: APIRequest
 {
     typealias Response = User

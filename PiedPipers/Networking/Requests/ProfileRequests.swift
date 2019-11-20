@@ -8,8 +8,6 @@
 
 import Foundation
 
-/// Obtiene el perfil del usuario loggeado
-/// es necesario pasar un token de autorización
 struct GetProfileRequest: APIRequest
 {
     typealias Response = Profile
@@ -70,7 +68,26 @@ struct UpdateProfileRequest: APIRequest
     let profile: Profile
 }
 
-struct UpdateProfileAvatar: APIRequest
+struct GetInstrumentsRequest: APIRequest
+{
+    typealias Response = [String:[String]]
+    
+    var method: Methods { return .GET }
+    
+    var baseUrl: String { return urlToServer }
+    
+    var path: Self.Endpoint { return tagsGet }
+    
+    var headers: [String : String] {
+        let authToken = StoreManager.shared.getString(withKey: currentUserCuid)
+        return ["Authorization":authToken]
+    }
+    
+    let currentUserCuid: String
+}
+
+// TODO: Terminal el Avatar!!!
+struct UpdateProfileAvatarRequest: APIRequest
 {
     typealias Response = Profile
     
@@ -86,9 +103,9 @@ struct UpdateProfileAvatar: APIRequest
     }
     
     var body: Any {
-        return ""
+        return ["photo":data]
     }
     
     let currentUserCuid: String
-    let data: Data?
+    let data: Data
 }

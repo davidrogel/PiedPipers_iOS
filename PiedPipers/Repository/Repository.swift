@@ -17,9 +17,33 @@ final class Repository
 
 protocol RepositoryFactory: class
 {
+    // USER REQUESTS
+    /// Crea un usuario
+    func createUser(withEmail email: String, withPassword pass: String, success: @escaping (User?) -> Void, failure: @escaping (Error?) -> Void)
+    /// Loggin con un usuario creado
+    func loginUser(withEmail email: String, withPassword pass: String, success: @escaping (User?) -> Void, failure: @escaping (Error?) -> Void)
+    /// Actualizar usuario
+    func updateUser(currentUserCUID cuid: String, newPassword pass: String, success: @escaping (User?) -> Void, failure: @escaping (Error?) -> Void)
+    /// Borra un usuario
+    func deleteUser(currentUserCUID cuid: String, success: @escaping (Int) -> Void, failure: @escaping (Error?) -> Void)
+    
+    // PROFILE REQUESTS
+    /// Obtener tú perfil
     func getProfile(currenUserCUID cuid: String, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
+    /// Obtener el perfil de otro usuario
     func getProfile(currentUserCUID cuid: String, userPickedCUID otherCuid: String, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
+    /// Actualizar tú perfil
     func updateProfile(currentUserCUID cuid: String, newProfile profile: Profile, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
+    /// Obtener los instrumentos que se pueden usar
+    func getAvaliableInstruments(currentUserCUID cuid: String, success: @escaping ([String]?) -> Void, failure: @escaping (Error?) -> Void)
+    
+        // FALTA EL AVATAR DEL PROFILE REQUEST
+    
+    // SEARCH REQUESTS
+    
+    func searchProfiles(currentUserCUID cuid: String, withParameters parameters: SearchProfileParameters, limit: Int, offset: Int, success: @escaping (ProfileList?) -> Void, failure: @escaping (Error?) -> Void)
+    
+    func searchLocals(currentUserCUID cuid: String, withParameters parameters: SearchLocalParameters, limit: Int, offset: Int, success: @escaping (LocalList?) -> Void, failure: @escaping (Error?) -> Void)
 }
 
 final class FakeRepository: RepositoryFactory
@@ -43,12 +67,112 @@ final class FakeRepository: RepositoryFactory
     {
         success(userProfile)
     }
+    
+    func searchProfiles(currentUserCUID cuid: String, withParameters parameters: SearchProfileParameters, limit: Int, offset: Int, success: @escaping (ProfileList?) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        // TODO
+        success(nil)
+    }
+    
+    func searchLocals(currentUserCUID cuid: String, withParameters parameters: SearchLocalParameters, limit: Int, offset: Int, success: @escaping (LocalList?) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        // TODO
+        success(nil)
+    }
+    
+    func getAvaliableInstruments(currentUserCUID cuid: String, success: @escaping ([String]?) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        success(["batería", "guitarra", "bajo", "voz"])
+    }
+    
+    // USER
+    func createUser(withEmail email: String, withPassword pass: String, success: @escaping (User?) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        // TODO
+    }
+    
+    func loginUser(withEmail email: String, withPassword pass: String, success: @escaping (User?) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        // TODO
+    }
+    
+    func updateUser(currentUserCUID cuid: String, newPassword pass: String, success: @escaping (User?) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        // TODO
+    }
+    
+    func deleteUser(currentUserCUID cuid: String, success: @escaping (Int) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        // TODO
+    }
 }
 
 final class RemoteRepository: RepositoryFactory
 {
-    public static let shared: RemoteRepository = RemoteRepository()
-
+    // USER
+    
+    func createUser(withEmail email: String, withPassword pass: String, success: @escaping (User?) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        let createUserRequest = CreateUserRequest(email: email, password: pass)
+            
+        createUserRequest.makeRequest { (result) in
+            switch result
+            {
+            case .success(let data):
+                success(data)
+            case .failure(let err):
+                failure(err)
+            }
+        }
+    }
+    
+    func loginUser(withEmail email: String, withPassword pass: String, success: @escaping (User?) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        let loginUserRequest = LoginUserRequest(email: email, password: pass)
+        
+        loginUserRequest.makeRequest { (result) in
+            switch result
+            {
+            case .success(let data):
+                success(data)
+            case .failure(let err):
+                failure(err)
+            }
+        }
+    }
+    
+    func updateUser(currentUserCUID cuid: String, newPassword pass: String, success: @escaping (User?) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        let updateUserRequest = UpdateUserRequest(currentUserCuid: cuid, password: pass)
+        
+        updateUserRequest.makeRequest { (result) in
+            switch result
+            {
+            case .success(let data):
+                success(data)
+            case .failure(let err):
+                failure(err)
+            }
+        }
+    }
+    
+    func deleteUser(currentUserCUID cuid: String, success: @escaping (Int) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        let deleteUserRequest = DeleteUserRequest(currentUserCuid: cuid)
+        
+        deleteUserRequest.makeRequest { (result) in
+            switch result
+            {
+            case .success(let data):
+                success(data)
+            case .failure(let err):
+                failure(err)
+            }
+        }
+    }
+    
+    // PROFILE
+    
     func getProfile(currenUserCUID cuid: String, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
     {
         let getUserProfileRequest = GetProfileRequest(currentUserCuid: cuid)
@@ -96,4 +220,51 @@ final class RemoteRepository: RepositoryFactory
             }
         }
     }
+    
+    func getAvaliableInstruments(currentUserCUID cuid: String, success: @escaping ([String]?) -> Void, failure: @escaping (Error?) -> Void) {
+        let getInstrumentsRequest = GetInstrumentsRequest(currentUserCuid: cuid)
+        
+        getInstrumentsRequest.makeRequest { (result) in
+            switch result
+            {
+            case .success(let data):
+                success(data.first?.value)
+            case .failure(let err):
+                failure(err)
+            }
+        }
+    }
+    
+    // SEARCHING
+    
+    func searchProfiles(currentUserCUID cuid: String, withParameters parameters: SearchProfileParameters, limit: Int, offset: Int, success: @escaping (ProfileList?) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        let getProfilesBySearchingRequest = GetProfileBySearchingRequest(cuid: cuid,profileParameters: parameters, limit: 10, offset: 10)
+        
+        getProfilesBySearchingRequest.makeRequest { (result) in
+            switch result
+            {
+            case .success(let data):
+                success(data)
+            case .failure(let err):
+                failure(err)
+            }
+        }
+    }
+    
+    func searchLocals(currentUserCUID cuid: String, withParameters parameters: SearchLocalParameters, limit: Int, offset: Int, success: @escaping (LocalList?) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        let getLocalsBySearchingRequest = GetLocalBySearchingRequest(cuid: cuid, localParameters: parameters, limit: limit, offset: offset)
+        
+        getLocalsBySearchingRequest.makeRequest { (result) in
+            switch result
+            {
+            case .success(let data):
+                success(data)
+            case .failure(let err):
+                failure(err)
+            }
+        }
+    }
+    
 }
