@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 struct Profile
 {
     typealias Photo = String

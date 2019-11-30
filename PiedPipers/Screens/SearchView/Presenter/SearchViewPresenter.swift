@@ -25,7 +25,6 @@ protocol SearchViewDelegate: class
     func show(profiles: [ProfilePresentable])
     func show(locals: [LocalPresentable])
     func show(withErrorMessage errorMessage: String)
-    
 }
 
 final class SearchViewPresenter
@@ -37,23 +36,12 @@ final class SearchViewPresenter
 //        return ""
 //    }()
     
-    lazy var currentUserCUID:String = "ck2g2765h0000q64g4y8tfk0a"
+    let currentUserCUID:String = "ck2g2765h0000q64g4y8tfk0a"
     
     init(searchViewDelegate viewDelegate: SearchViewDelegate)
     {
         searchViewDelegate = viewDelegate
         
-//        repo.searchProfiles(currentUserCUID: "", withParameters: SearchProfileParameters(),
-//                            limit: 0, offset: 0, success: { (profileList) in
-//            guard let profiles = profileList else { fatalError() }
-//
-//            self.searchViewDelegate.show(profiles: profiles.items.map({ (profile) -> ProfilePresentable in
-//                ProfilePresentable(profileName: profile.name!)
-//            }))
-//
-//        }) { (err) in
-//            fatalError()
-//        }
     }
     
     public func requestProfiles(cuid: String, parameters: SearchProfileParameters, limit: Int, offset: Int)
@@ -70,23 +58,36 @@ final class SearchViewPresenter
             
         }) {
             [weak self] (error) in
-            
             self?.showErrorNotFound(withMsg: "Error 404!")
         }
     }
     
-    public func requestLocals()
+    public func requestLocals(cuid: String, parameters: SearchLocalParameters, limit: Int, offset: Int)
     {
-        
+        searchViewDelegate.showLoadingStatus()
+        repo.searchLocals(currentUserCUID: cuid, withParameters: parameters, limit: limit, offset: offset, success: {
+            [weak self] (localList) in
+            
+            guard let locals = localList else {
+                self?.showErrorNotFound(withMsg: "Error 404!")
+                return
+            }
+            
+            self?.showLocals(localList: locals)
+            
+        }) {
+            [weak self] (error) in
+            self?.showErrorNotFound(withMsg: "Error 404!")
+        }
     }
     
-    fileprivate func showErrorNotFound(withMsg msg: String)
+    private func showErrorNotFound(withMsg msg: String)
     {
         searchViewDelegate.hideLoadingStatus()
         searchViewDelegate.show(withErrorMessage: msg)
     }
     
-    fileprivate func showProfiles(profileList profiles: ProfileList)
+    private func showProfiles(profileList profiles: ProfileList)
     {
         let presentables:[ProfilePresentable] = profiles.items.map { (profile) -> ProfilePresentable in
             ProfilePresentable(profileName: profile.name!)
@@ -94,5 +95,15 @@ final class SearchViewPresenter
         
         searchViewDelegate.hideLoadingStatus()
         searchViewDelegate.show(profiles: presentables)
+    }
+    
+    private func showLocals(localList locals: LocalList)
+    {
+        let presentables:[LocalPresentable] = locals.items.map { (local) -> LocalPresentable in
+            LocalPresentable(localName: local.name)
+        }
+        
+        searchViewDelegate.hideLoadingStatus()
+        searchViewDelegate.show(locals: presentables)
     }
 }
