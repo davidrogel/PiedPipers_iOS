@@ -20,7 +20,7 @@ class ProfilePresenter {
         self.editing = editing
     }
     
-    private func convert2ProfilePresentable(profile: Dummy_Profile) -> ProfilePresentable {
+    private func convert2ProfilePresentable(profile: Profile) -> ProfilePresentable {
         
         var namePresentable: String?
         var cityPresentable: String?

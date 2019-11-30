@@ -13,7 +13,7 @@ enum contactTypePresentable: String {
     case phone
 }
 
-typealias TypePresentable = contactType // Uso el mismo enum que el Profile
+typealias TypePresentable = ContactType // Uso el mismo enum que el Profile
 
 struct ContactPresentable {
     let type: TypePresentable
