@@ -6,7 +6,7 @@
 //  Copyright © 2019 david rogel pernas. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 // Darle una vuelta (O₂)
 fileprivate enum Fmt
@@ -62,5 +62,13 @@ extension AnyHashable
     public static func == (lhs: AnyHashable, rhs: String) -> Bool
     {
         return lhs.description == rhs
+    }
+}
+
+extension UIStackView
+{
+    func addArrangedSubviews(_ views: [UIView])
+    {
+        views.forEach{ self.addArrangedSubview($0) }
     }
 }

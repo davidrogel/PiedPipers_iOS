@@ -52,6 +52,8 @@ final class FakeRepository: RepositoryFactory
     private let userProfile = Profile(cuid: "", name: "name", location: Location(lat: 20.0, long: 20.0), contact: Contact(type: .email, data: "Correo.a.encodear@correo.com"), instruments: ["bateria", "guitarra", "voz"], videos: nil, description: "una descripción rexulona", photo: "una foto")
 
     private let otherProfile = Profile(cuid: "", name: "name", location: Location(lat: 20.0, long: 20.0), contact: Contact(type: .email, data: "Correo.a.encodear@correo.com"), instruments: ["bateria", "guitarra", "voz"], videos: nil, description: "una descripción rexulona", photo: "una foto")
+    
+    private let local = Local(cuid: "", name: "un local", dateAdded: "", location: Location(lat: 10.0, long: 10.0), price: 40.0, contact: Contact(type: .email, data: "arroba@correo.ru"), photos: ["una foto", "dos fotos", "tres... fotos?"], description: "una descripción de un local molón")
 
     func getProfile(currenUserCUID cuid: String, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
     {
@@ -70,14 +72,17 @@ final class FakeRepository: RepositoryFactory
     
     func searchProfiles(currentUserCUID cuid: String, withParameters parameters: SearchProfileParameters, limit: Int, offset: Int, success: @escaping (ProfileList?) -> Void, failure: @escaping (Error?) -> Void)
     {
-        // TODO
-        success(nil)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            success(ProfileList(total: 3, offset: 3, items: [self.userProfile, self.userProfile, self.userProfile]))
+        }
     }
     
     func searchLocals(currentUserCUID cuid: String, withParameters parameters: SearchLocalParameters, limit: Int, offset: Int, success: @escaping (LocalList?) -> Void, failure: @escaping (Error?) -> Void)
     {
-        // TODO
-        success(nil)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+//            success(LocalList(total: 3, offset: 3, items: [self.local, self.local, self.local]))
+            success(LocalList(total: 0, offset: 0, items: []))
+        }
     }
     
     func getAvaliableInstruments(currentUserCUID cuid: String, success: @escaping ([String]?) -> Void, failure: @escaping (Error?) -> Void)
