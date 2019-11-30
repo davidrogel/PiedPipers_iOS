@@ -8,12 +8,12 @@
 
 import UIKit
 
-struct ProfilePresentable
+struct SearchProfilePresentable
 {
     let profileName: String
 }
 
-struct LocalPresentable
+struct SearchLocalPresentable
 {
     let localName: String
 }
@@ -22,8 +22,8 @@ protocol SearchViewDelegate: class
 {
     func showLoadingStatus()
     func hideLoadingStatus()
-    func show(profiles: [ProfilePresentable])
-    func show(locals: [LocalPresentable])
+    func show(profiles: [SearchProfilePresentable])
+    func show(locals: [SearchLocalPresentable])
     func show(withErrorMessage errorMessage: String)
 }
 
@@ -89,8 +89,8 @@ final class SearchViewPresenter
     
     private func showProfiles(profileList profiles: ProfileList)
     {
-        let presentables:[ProfilePresentable] = profiles.items.map { (profile) -> ProfilePresentable in
-            ProfilePresentable(profileName: profile.name!)
+        let presentables:[SearchProfilePresentable] = profiles.items.map { (profile) -> SearchProfilePresentable in
+            SearchProfilePresentable(profileName: profile.name!)
         }
         
         searchViewDelegate.hideLoadingStatus()
@@ -99,8 +99,8 @@ final class SearchViewPresenter
     
     private func showLocals(localList locals: LocalList)
     {
-        let presentables:[LocalPresentable] = locals.items.map { (local) -> LocalPresentable in
-            LocalPresentable(localName: local.name)
+        let presentables:[SearchLocalPresentable] = locals.items.map { (local) -> SearchLocalPresentable in
+            SearchLocalPresentable(localName: local.name)
         }
         
         searchViewDelegate.hideLoadingStatus()

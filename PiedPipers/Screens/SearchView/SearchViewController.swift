@@ -40,7 +40,7 @@ class SearchViewController: UIViewController
     
     private var presenter: SearchViewPresenter!
     
-    var profiles: [ProfilePresentable] = []
+    var profiles: [SearchProfilePresentable] = []
     {
         didSet
         {
@@ -49,7 +49,7 @@ class SearchViewController: UIViewController
         }
     }
     
-    var locals: [LocalPresentable] = []
+    var locals: [SearchLocalPresentable] = []
     {
         didSet
         {
@@ -190,7 +190,7 @@ extension SearchViewController: SearchViewDelegate
         loadingView.hideAndStopAnimate()
     }
     
-    func show(profiles: [ProfilePresentable])
+    func show(profiles: [SearchProfilePresentable])
     {
         if profiles.isEmpty
         {
@@ -203,7 +203,7 @@ extension SearchViewController: SearchViewDelegate
         self.profiles = profiles
     }
     
-    func show(locals: [LocalPresentable])
+    func show(locals: [SearchLocalPresentable])
     {
         if locals.isEmpty
         {
