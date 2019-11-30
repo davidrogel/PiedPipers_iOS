@@ -14,6 +14,8 @@ final class StoreManager
     /// Singleton pattern
     public static let shared = StoreManager()
     
+    private let userDefaults = UserDefaults.standard
+    
     private let keychain = KeychainSwift()
     
     public func save(dataOnKeyChain data: String, withKey key: String)
@@ -44,5 +46,16 @@ final class StoreManager
     public func getData(withKey key: String) -> Data?
     {
         return keychain.getData(key)
+    }
+    
+    func getLoggedUser() -> String {
+        guard let currentUserCuid = userDefaults.string(forKey: "currentCuid") else {
+            return ""
+        }
+        return currentUserCuid
+    }
+    
+    func setLoggedUser(user: String) {
+        userDefaults.set(user, forKey: "currentCuid")
     }
 }

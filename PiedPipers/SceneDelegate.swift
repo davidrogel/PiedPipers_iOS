@@ -17,13 +17,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard let sceneWindow = (scene as? UIWindowScene) else { return }
+        guard let windowScene = (scene as? UIWindowScene) else { return }
         
-        window = UIWindow(frame: sceneWindow.coordinateSpace.bounds)
-        window?.windowScene = sceneWindow
+        window = UIWindow(frame: windowScene.coordinateSpace.bounds)
+        window?.windowScene = windowScene
         
-        window?.rootViewController = SearchViewController()
+        let tabBarController = Assembler.provideInitialTabBarController()
+        tabBarController.delegate = self
+        
         window?.makeKeyAndVisible()
+        window?.rootViewController = tabBarController
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -57,3 +60,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 }
 
+extension SceneDelegate: UITabBarControllerDelegate {
+
+//    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+//        switch viewController.nibName {
+//        case "HomeViewController":
+//            return true
+//        case "ProfileViewController":
+//            let userCuid = StoreManager.shared.getLoggedUser()
+//            if userCuid == "" {
+//                let loginViewController = LoginViewController()
+//                loginViewController.modalPresentationStyle = .fullScreen
+//                tabBarController.present(loginViewController, animated: true, completion: nil)
+//                return false
+//            } else {
+//                return true
+//            }
+//
+//        default:
+//            return true
+//        }
+//    }
+}

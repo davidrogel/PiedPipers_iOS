@@ -1,0 +1,51 @@
+//
+//  InstrumentCollectionViewCell.swift
+//  PiedPipers
+//
+//  Created by Jon Gonzalez on 13/11/2019.
+//  Copyright © 2019 david rogel pernas. All rights reserved.
+//
+
+import UIKit
+
+class InstrumentCollectionViewCell: UICollectionViewCell {
+    
+    static let nibName = String(describing: InstrumentCollectionViewCell.self)
+    static let reusableId = String(describing: InstrumentCollectionViewCell.self)
+    
+    
+    @IBOutlet weak var instrumentLabel: UILabel!
+    @IBOutlet weak var removeButton: UIImageView!
+    
+    var name: String! {
+        didSet {
+            instrumentLabel.text = name
+        }
+    }
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        instrumentLabel.layer.cornerRadius = 14
+        instrumentLabel.layer.masksToBounds = true
+        let device = UIDevice()
+        if (device.name == "iPhone SE") {
+            instrumentLabel.font = .systemFont(ofSize: 14)
+        }
+        
+        removeButton.isHidden = true
+    }
+    
+    func showRemoveButton() {
+        removeButton.isHidden = false
+        self.sendSubviewToBack(instrumentLabel)
+    }
+    
+    func hideRemoveButton() {
+        removeButton.isHidden = true
+    }
+    
+    func selectedToRemove() {
+        instrumentLabel.backgroundColor = UIColor(ciColor: .gray)
+        //removeButton.image = UIImage(named: .)
+    }
+
+}
