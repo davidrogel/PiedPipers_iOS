@@ -42,7 +42,7 @@ class InstrumentCollectionViewCell: UICollectionViewCell {
     func hideRemoveButton() {
         instrumentLabel.backgroundColor = UIColor.systemIndigo
         removeButton.isHidden = true
-        removeButton.image = UIImage(named: "Remove")
+        removeButton.image = UIImage(systemName: "multiply.circle.fill")
     }
     
     func selectedToRemove() {

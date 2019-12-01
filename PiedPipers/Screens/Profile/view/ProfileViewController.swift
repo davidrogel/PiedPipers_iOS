@@ -217,7 +217,7 @@ extension ProfileViewController: ProfileViewProtocol {
     
     func setEditProfileView() {
         //TODO
-        presenter.isEditing.toggle()
+        presenter.isEditing = true
         
         nameLabel.borderStyle = .roundedRect
         nameLabel.isEnabled = true
@@ -226,7 +226,9 @@ extension ProfileViewController: ProfileViewProtocol {
         friendlyLocationLabel.isEnabled = true
         editButton.isHidden = true
         avatarImage.image = UIImage(named: "addImage")
+        followView.isHidden = true
         contactView.isHidden = false
+        instruments.append("Add")
         instrumentCollection.reloadData()
         videoView.isHidden = false
         aboutMeView.isHidden = false
