@@ -40,12 +40,14 @@ class InstrumentCollectionViewCell: UICollectionViewCell {
     }
     
     func hideRemoveButton() {
+        instrumentLabel.backgroundColor = UIColor.systemIndigo
         removeButton.isHidden = true
+        removeButton.image = UIImage(named: "Remove")
     }
     
     func selectedToRemove() {
         instrumentLabel.backgroundColor = UIColor(ciColor: .gray)
-        //removeButton.image = UIImage(named: .)
+        removeButton.image = UIImage(systemName: "checkmark.circle.fill")
     }
 
 }

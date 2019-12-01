@@ -18,7 +18,7 @@ class ProfileViewController: UIViewController {
     // MARK: Presenter elements
     public private(set) var presenter: ProfilePresenterProtocol!
     
-    func configure(with presenter: ProfilePresenter) {
+    func configure(with presenter: ProfilePresenterProtocol) {
         self.presenter = presenter
     }
     
@@ -94,6 +94,9 @@ class ProfileViewController: UIViewController {
         if presenter.isEditing {
             presenter.isEditing.toggle()
             presenter.loadCurrentUserProfile()
+        } else {
+            StoreManager.shared.removeStoreCuid()
+            tabBarController?.selectedIndex = 0
         }
     }
     
@@ -186,6 +189,7 @@ extension ProfileViewController: ProfileViewProtocol {
         contactText.text = model.contact?.data
         
         instrumentView.isHidden = false
+        
         instruments = model.instruments ?? []
         let items: Double = Double(instruments.count)
         let rows = CGFloat((items / 3.0).rounded(.up))
@@ -261,7 +265,6 @@ extension ProfileViewController: UICollectionViewDataSource {
             fatalError()
         }
         let instrument = instruments[indexPath.item]
-        
         cell.name = instrument
         if (presenter.isEditing) {
             cell.showRemoveButton()

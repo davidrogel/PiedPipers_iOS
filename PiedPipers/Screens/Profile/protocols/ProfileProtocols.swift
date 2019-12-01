@@ -18,6 +18,5 @@ protocol ProfileViewProtocol: AnyObject {
 protocol ProfilePresenterProtocol: AnyObject {
     var isEditing: Bool { get set }
     func loadCurrentUserProfile()
-    //func isUserLogged() -> String
     func prepareEditView()
 }

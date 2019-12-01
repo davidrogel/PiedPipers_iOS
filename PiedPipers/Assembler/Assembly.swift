@@ -33,4 +33,11 @@ final class Assembler {
 
         return currentUserViewController
     }
+    
+    static func provideLoginScreen() -> UIViewController {
+        let loginViewController = LoginViewController()
+        let presenter = LoginPresenter(with: loginViewController, loginService: Repository.remote)
+        loginViewController.configure(with: presenter)
+        return loginViewController
+    }
 }
