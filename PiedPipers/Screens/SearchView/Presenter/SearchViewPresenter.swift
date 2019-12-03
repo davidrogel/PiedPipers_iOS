@@ -10,12 +10,24 @@ import UIKit
 
 struct SearchProfilePresentable
 {
+    typealias Photo = String
+    
+    let cuid: String
     let profileName: String
+//    let bandName: String
+    let image: Photo
+    let instruments: [String]
 }
 
 struct SearchLocalPresentable
 {
+    typealias Photo = String
+    
+    let cuid: String
     let localName: String
+    let price: String
+    let description: String
+    let image: Photo
 }
 
 protocol SearchViewDelegate: class
@@ -32,16 +44,11 @@ final class SearchViewPresenter
     private unowned let searchViewDelegate: SearchViewDelegate
     private let repo:RepositoryFactory = Repository.fake
     
-//    private let currentUserCUID:String = {
-//        return ""
-//    }()
-    
     let currentUserCUID:String = "ck2g2765h0000q64g4y8tfk0a"
     
     init(searchViewDelegate viewDelegate: SearchViewDelegate)
     {
         searchViewDelegate = viewDelegate
-        
     }
     
     public func requestProfiles(cuid: String, parameters: SearchProfileParameters, limit: Int, offset: Int)
@@ -72,7 +79,7 @@ final class SearchViewPresenter
                 self?.showErrorNotFound(withMsg: "Error 404!")
                 return
             }
-            
+            // TODO: mostrar un mensaje si el contenido es 0
             self?.showLocals(localList: locals)
             
         }) {
@@ -90,7 +97,7 @@ final class SearchViewPresenter
     private func showProfiles(profileList profiles: ProfileList)
     {
         let presentables:[SearchProfilePresentable] = profiles.items.map { (profile) -> SearchProfilePresentable in
-            SearchProfilePresentable(profileName: profile.name!)
+            SearchProfilePresentable(cuid: profile.cuid, profileName: profile.name!, image: profile.photo!, instruments: profile.instruments!)
         }
         
         searchViewDelegate.hideLoadingStatus()
@@ -100,7 +107,7 @@ final class SearchViewPresenter
     private func showLocals(localList locals: LocalList)
     {
         let presentables:[SearchLocalPresentable] = locals.items.map { (local) -> SearchLocalPresentable in
-            SearchLocalPresentable(localName: local.name)
+            SearchLocalPresentable(cuid: local.cuid, localName: local.name, price: local.price.toCurrency(), description: local.description, image: local.photos.first!)
         }
         
         searchViewDelegate.hideLoadingStatus()

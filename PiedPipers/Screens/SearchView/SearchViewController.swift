@@ -76,7 +76,7 @@ class SearchViewController: UIViewController
         collectionView.dataSource = self
         collectionView.delegate = self
         
-        collectionView.register(CustomCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView.register(ProfileCustomCell.self, forCellWithReuseIdentifier: cellId)
         
         collectionView.backgroundColor = .white
         
@@ -116,64 +116,38 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
-        return cell
+        switch displayState
+        {
+        case .LOCALS:
+            // TODO: Hacer la vista de los locales
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ProfileCustomCell
+            
+            let local = locals[indexPath.item]
+            
+            cell.setInstruments(instruments: ["batería", "guitarra", "otros"])
+            
+            return cell
+        case .PROFILES:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ProfileCustomCell
+            
+            let profile = profiles[indexPath.item]
+            
+            cell.setInstruments(instruments: profile.instruments)
+            cell.setName(name: profile.profileName)
+//            cell.setBand(name: profile.bandName)
+            cell.setPortrait(withImage: UIImage(named: profile.image)!)
+            
+            return cell
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
     {
         return CGSize(width: view.frame.width, height: 300)
     }
-}
-
-class CustomCell: UICollectionViewCell
-{
-    let portrait:UIImageView = {
-        let iv = UIImageView(image: #imageLiteral(resourceName: "kojima"))
-        iv.contentMode = .scaleAspectFill
-        iv.clipsToBounds = true
-        iv.layer.cornerRadius = 24
-        return iv
-    }()
     
-    let dataView:UIView = {
-        let v = UIView()
-        v.backgroundColor = .systemBlue
-        v.layer.cornerRadius = 24
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }()
-    
-    override init(frame: CGRect)
-    {
-        super.init(frame: frame)
-        
-        addSubview(portrait)
-        addSubview(dataView)
-        
-        portrait.translatesAutoresizingMaskIntoConstraints = false
-
-        portrait.topAnchor.constraint(equalTo: self.topAnchor, constant: 8).isActive = true
-//        portrait.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -60).isActive = true
-        portrait.bottomAnchor.constraint(equalTo: dataView.centerYAnchor).isActive = true
-        portrait.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
-        portrait.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16).isActive = true
-        
-        
-        dataView.heightAnchor.constraint(equalToConstant: 85).isActive = true
-        dataView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        dataView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
-        dataView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16).isActive = true
-    }
-    
-    required init?(coder: NSCoder)
-    {
-        super.init(coder: coder)
-    }
-    
-    public func setPortrait(withImage image: UIImage)
-    {
-        portrait.image = image
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("selected")
     }
 }
 
@@ -195,6 +169,7 @@ extension SearchViewController: SearchViewDelegate
         if profiles.isEmpty
         {
             nothingHereView.isHidden = false
+            nothingHereView.label.text = "Nothing found"
             return
         }
         
@@ -208,7 +183,7 @@ extension SearchViewController: SearchViewDelegate
         if locals.isEmpty
         {
             nothingHereView.isHidden = false
-            nothingHereView.label.text = "Nothing was found"
+            nothingHereView.label.text = "Nothing found"
             return
         }
         errorView.isHidden = true
@@ -233,6 +208,8 @@ extension SearchViewController: TopViewDelegate
      
     func segmentedViewSegmentedIndexChanged(valueChanged value: Int)
     {
+        errorView.isHidden = true
+        nothingHereView.isHidden = true
         self.displayState = (value == 0) ? .PROFILES : .LOCALS
     }
     

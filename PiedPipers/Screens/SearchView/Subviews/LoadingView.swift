@@ -14,6 +14,7 @@ class LoadingView: UIView
     {
         let ai = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
 //        ai.isHidden = true
+        ai.translatesAutoresizingMaskIntoConstraints = false
         return ai
     }()
     
@@ -26,8 +27,6 @@ class LoadingView: UIView
     
     override func layoutSubviews()
     {
-        loading.translatesAutoresizingMaskIntoConstraints = false
-        
         loading.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         loading.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
     }
