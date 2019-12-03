@@ -60,6 +60,11 @@ extension APIErrorResponse
     {
         return APIErrorResponse(-3, "Unknown error", url)
     }
+    
+    static func noInstruments(_ url: String) -> APIErrorResponse
+    {
+        return APIErrorResponse(-4, "No existen instrumentos en el servidor", url)
+    }
 }
 
 extension APIErrorResponse: Equatable

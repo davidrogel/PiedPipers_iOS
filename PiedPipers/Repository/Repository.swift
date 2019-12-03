@@ -201,7 +201,6 @@ final class RemoteRepository: RepositoryFactory
                 success(data)
             case .failure(let err):
                 failure(err)
-                assertionFailure("Se han cometido errores")
             }
         }
     }
@@ -217,7 +216,6 @@ final class RemoteRepository: RepositoryFactory
                 success(data)
             case .failure(let err):
                 failure(err)
-                assertionFailure("Se han cometido errores")
             }
         }
     }
@@ -233,19 +231,20 @@ final class RemoteRepository: RepositoryFactory
                 success(data)
             case .failure(let err):
                 failure(err)
-                assertionFailure("Se han cometido errores")
             }
         }
     }
     
-    func getAvaliableInstruments(currentUserCUID cuid: String, success: @escaping ([String]?) -> Void, failure: @escaping (Error?) -> Void) {
+    func getAvaliableInstruments(currentUserCUID cuid: String, success: @escaping ([String]?) -> Void, failure: @escaping (Error?) -> Void)
+    {
         let getInstrumentsRequest = GetInstrumentsRequest(currentUserCuid: cuid)
         
         getInstrumentsRequest.makeRequest { (result) in
+            
             switch result
             {
             case .success(let data):
-                success(data.first?.value)
+                success(data.items)
             case .failure(let err):
                 failure(err)
             }
