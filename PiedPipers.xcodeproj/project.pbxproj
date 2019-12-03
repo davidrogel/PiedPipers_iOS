@@ -51,6 +51,7 @@
 		6348F6B82392F2D6005AA01B /* SF-Compact-Rounded-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6348F6AF2392F2D6005AA01B /* SF-Compact-Rounded-Thin.otf */; };
 		6348F6BB2392F331005AA01B /* Assembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6348F6BA2392F331005AA01B /* Assembly.swift */; };
 		6348F6BD2392F454005AA01B /* UIButton+ShadowsAndCornerRadius.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6348F6BC2392F454005AA01B /* UIButton+ShadowsAndCornerRadius.swift */; };
+		639650C12396E5EE0063C5DB /* AvailableInstruments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639650C02396E5EE0063C5DB /* AvailableInstruments.swift */; };
 		63E265AE236B6400007FEA74 /* ApiSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E265AB236B6400007FEA74 /* ApiSession.swift */; };
 		63E265AF236B6400007FEA74 /* ApiRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E265AC236B6400007FEA74 /* ApiRequest.swift */; };
 		63E265B0236B6400007FEA74 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E265AD236B6400007FEA74 /* APIError.swift */; };
@@ -124,6 +125,7 @@
 		6348F6AF2392F2D6005AA01B /* SF-Compact-Rounded-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Compact-Rounded-Thin.otf"; sourceTree = "<group>"; };
 		6348F6BA2392F331005AA01B /* Assembly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assembly.swift; sourceTree = "<group>"; };
 		6348F6BC2392F454005AA01B /* UIButton+ShadowsAndCornerRadius.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+ShadowsAndCornerRadius.swift"; sourceTree = "<group>"; };
+		639650C02396E5EE0063C5DB /* AvailableInstruments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailableInstruments.swift; sourceTree = "<group>"; };
 		63E265AB236B6400007FEA74 /* ApiSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiSession.swift; sourceTree = "<group>"; };
 		63E265AC236B6400007FEA74 /* ApiRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiRequest.swift; sourceTree = "<group>"; };
 		63E265AD236B6400007FEA74 /* APIError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
@@ -439,6 +441,7 @@
 				63378A102381C1E7000C7751 /* Location.swift */,
 				63378A122381C236000C7751 /* Contact.swift */,
 				634126F023835DF300B7B45F /* Video.swift */,
+				639650C02396E5EE0063C5DB /* AvailableInstruments.swift */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -678,6 +681,7 @@
 				6348F6BD2392F454005AA01B /* UIButton+ShadowsAndCornerRadius.swift in Sources */,
 				63378A132381C236000C7751 /* Contact.swift in Sources */,
 				6348F6492389AC15005AA01B /* SearchViewController.swift in Sources */,
+				639650C12396E5EE0063C5DB /* AvailableInstruments.swift in Sources */,
 				63F4E7FF2368E04700C52D47 /* ViewController.swift in Sources */,
 				6348F6A42392F24E005AA01B /* HomeViewController.swift in Sources */,
 				63E265AF236B6400007FEA74 /* ApiRequest.swift in Sources */,
