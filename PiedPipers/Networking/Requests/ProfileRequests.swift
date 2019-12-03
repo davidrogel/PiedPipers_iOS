@@ -70,7 +70,7 @@ struct UpdateProfileRequest: APIRequest
 
 struct GetInstrumentsRequest: APIRequest
 {
-    typealias Response = [String:[String]]
+    typealias Response = AvailableInstruments
     
     var method: Methods { return .GET }
     

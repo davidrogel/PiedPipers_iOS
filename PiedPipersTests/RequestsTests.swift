@@ -158,6 +158,23 @@ class RequestsTests: XCTestCase
         }
     """
     
+    let instruments = """
+        {
+            "total": 8,
+            "offset": 0,
+            "items": [
+                "guitarra",
+                "bateria",
+                "bajo",
+                "contrabajo",
+                "violín",
+                "pandero",
+                "castañuelas",
+                "zambomba"
+            ]
+        }
+    """
+    
     var user: User?
     
     override func setUp() {
@@ -410,6 +427,37 @@ class RequestsTests: XCTestCase
             let encoder = JSONEncoder()
             let profile = try encoder.encode(profileToEncode)
             XCTAssertNotNil(profile)
+        }
+        catch
+        {
+            XCTFail()
+        }
+    }
+    
+    // MARK: - ENCODE DECODE INSTRUMENTS
+    
+    func testDecodeInstruments()
+    {
+        do
+        {
+            let jsonData = instruments.data(using: .utf8)
+            let decoder = JSONDecoder()
+            let instruments = try decoder.decode(AvailableInstruments.self, from: jsonData!)
+            XCTAssertNotNil(instruments)
+        }
+        catch
+        {
+            XCTFail()
+        }
+    }
+    
+    func testEncodeInstruments()
+    {
+        do
+        {
+            let encoder = JSONEncoder()
+            let _instruments = try encoder.encode(instruments)
+            XCTAssertNotNil(_instruments)
         }
         catch
         {
