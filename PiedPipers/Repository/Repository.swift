@@ -49,7 +49,11 @@ protocol RepositoryFactory: class
 final class FakeRepository: RepositoryFactory
 {
     // Falta añadir videos a los FAKE perfiles
-    private let userProfile = Profile(cuid: "", name: "name", location: Location(lat: 20.0, long: 20.0), contact: Contact(type: .email, data: "Correo.a.encodear@correo.com"), instruments: ["bateria", "guitarra", "voz"], videos: nil, description: "una descripción rexulona", photo: "una foto")
+    private let userProfile = Profile(cuid: "", name: "Hideo Kojima", location: Location(lat: 20.0, long: 20.0), contact: Contact(type: .email, data: "Correo.a.encodear@correo.com"), instruments: ["guitarra", "voz", "productor"], videos: nil, description: "una descripción rexulona", photo: "kojima", friendlyLocation: "U.C.A.")
+    
+    private let userProfile2 = Profile(cuid: "", name: "Mads Mikkelsen", location: Location(lat: 20.0, long: 20.0), contact: Contact(type: .email, data: "Correo.a.encodear@correo.com"), instruments: ["bajo"], videos: nil, description: "una descripción rexulona", photo: "mads", friendlyLocation: "U.C.A.")
+    
+    private let userProfile3 = Profile(cuid: "", name: "Norman Reedus", location: Location(lat: 20.0, long: 20.0), contact: Contact(type: .email, data: "Correo.a.encodear@correo.com"), instruments: ["batería"], videos: nil, description: "una descripción rexulona", photo: "norman", friendlyLocation: "U.C.A.")
 
     private let otherProfile = Profile(cuid: "", name: "name", location: Location(lat: 20.0, long: 20.0), contact: Contact(type: .email, data: "Correo.a.encodear@correo.com"), instruments: ["bateria", "guitarra", "voz"], videos: nil, description: "una descripción rexulona", photo: "una foto")
     
@@ -72,14 +76,14 @@ final class FakeRepository: RepositoryFactory
     
     func searchProfiles(currentUserCUID cuid: String, withParameters parameters: SearchProfileParameters, limit: Int, offset: Int, success: @escaping (ProfileList?) -> Void, failure: @escaping (Error?) -> Void)
     {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            success(ProfileList(total: 3, offset: 3, items: [self.userProfile, self.userProfile, self.userProfile]))
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            success(ProfileList(total: 3, offset: 3, items: [self.userProfile, self.userProfile2, self.userProfile3]))
         }
     }
     
     func searchLocals(currentUserCUID cuid: String, withParameters parameters: SearchLocalParameters, limit: Int, offset: Int, success: @escaping (LocalList?) -> Void, failure: @escaping (Error?) -> Void)
     {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
 //            success(LocalList(total: 3, offset: 3, items: [self.local, self.local, self.local]))
             success(LocalList(total: 0, offset: 0, items: []))
         }

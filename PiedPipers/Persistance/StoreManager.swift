@@ -45,4 +45,10 @@ final class StoreManager
     {
         return keychain.getData(key)
     }
+    
+    /// True if the item was successfully deleted.
+    public func deleteData(withKey key:String) -> Bool
+    {
+        return keychain.delete(key)
+    }
 }
