@@ -49,5 +49,18 @@ class InstrumentCollectionViewCell: UICollectionViewCell {
         instrumentLabel.backgroundColor = UIColor(ciColor: .gray)
         removeButton.image = UIImage(systemName: "checkmark.circle.fill")
     }
+    
+    func showAddCell() {
+        instrumentLabel.layer.borderColor = UIColor.systemGray2.cgColor
+        instrumentLabel.layer.borderWidth = 1.0
+        instrumentLabel.backgroundColor = UIColor(ciColor: .white)
+        instrumentLabel.textColor = UIColor.systemGray2
+    }
+    
+    func showCell() {
+        instrumentLabel.layer.borderWidth = 0
+        instrumentLabel.backgroundColor = UIColor.systemIndigo
+        instrumentLabel.textColor = UIColor.systemBackground
+    }
 
 }

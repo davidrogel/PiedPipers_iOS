@@ -73,7 +73,7 @@ extension LoginPresenter: LoginPreseterProtocol {
             })
         } else {
             loginService.createUser(withEmail: emailUnwrapped, withPassword: passUnwrapped, success: { [weak self] (user) in
-                guard let registerUser = user else {
+                guard let _ = user else {
                     fatalError()
                 }
                 self?.ui?.setLoginView()

@@ -105,11 +105,7 @@ extension ProfilePresenter: ProfilePresenterProtocol {
                 
                 return
             }
-            if modelUnwrapped.name == nil {
-                self?.ui?.setEditProfileView()
-            } else {
-                self?.ui?.setCurrentUserProfileViewWith(model: modelUnwrapped)
-            }
+            self?.ui?.setCurrentUserProfileViewWith(model: modelUnwrapped)
             
         }, failure: { (error) in
             //TODO: En caso de que falle, mostrar vista de perfil no encontrado
@@ -120,6 +116,16 @@ extension ProfilePresenter: ProfilePresenterProtocol {
         ui?.setEditProfileView()
     }
     
-    
+    func getAvailableInstruments() {
+        let cuid = StoreManager.shared.getLoggedUser()
+        profileService.getAvaliableInstruments(currentUserCUID: cuid, success: { [weak self] (instruments) in
+            guard let unwrappedInstruments = instruments else {
+                fatalError()
+            }
+            self?.ui?.setAvailableInstruments(with: unwrappedInstruments)
+        }, failure: { [weak self] (error) in
+            self?.ui?.setAvailableInstruments(with: ["Guitarra", "Bateria", "Contrabajo", "Trompeta"])
+        })
+    }
     
 }

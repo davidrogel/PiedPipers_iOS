@@ -11,7 +11,8 @@ import UIKit
 class ProfileViewController: UIViewController {
     
     // MARK: Properties
-    var instruments: [String] = []
+    var userInstruments: [String] = []
+    var availableInstruments: [String] = []
     let collectionViewLayout = UICollectionViewFlowLayout()
     
     
@@ -65,8 +66,8 @@ class ProfileViewController: UIViewController {
         CollectionViewSetUpUI(withItemHeight: 34)
         instrumentCollection.reloadData()
         
-        instrumentCollection.delegate = self as UICollectionViewDelegate
-        instrumentCollection.dataSource = self as UICollectionViewDataSource
+        instrumentCollection.delegate = self
+        instrumentCollection.dataSource = self
         
         presenter.loadCurrentUserProfile()
     }
@@ -88,11 +89,13 @@ class ProfileViewController: UIViewController {
             contactText.keyboardType = .emailAddress
             contactText.textContentType = .emailAddress
         }
+        contactText.text = ""
     }
     
     @IBAction func closeCancelButtonTapped(_ sender: Any) {
         if presenter.isEditing {
-            presenter.isEditing.toggle()
+            //TODO: Si le damos a cancel y seguimos sin meter datos, mandarlo al tab Home
+            presenter.isEditing = false
             presenter.loadCurrentUserProfile()
         } else {
             StoreManager.shared.removeStoreCuid()
@@ -148,6 +151,13 @@ class ProfileViewController: UIViewController {
         }
         return height
     }
+    
+    fileprivate func calculateInstrumentsViewHeight() {
+        let items: Double = Double(userInstruments.count)
+        let rows = CGFloat((items / 3.0).rounded(.up))
+        instrumentsViewHeight.constant = calculateInstrumentCollectionHeight(withRows: rows)
+        instrumentCollection.reloadData()
+    }
 
 }
 
@@ -190,11 +200,8 @@ extension ProfileViewController: ProfileViewProtocol {
         
         instrumentView.isHidden = false
         
-        instruments = model.instruments ?? []
-        let items: Double = Double(instruments.count)
-        let rows = CGFloat((items / 3.0).rounded(.up))
-        instrumentsViewHeight.constant = calculateInstrumentCollectionHeight(withRows: rows)
-        instrumentCollection.reloadData()
+        userInstruments = model.instruments ?? []
+        calculateInstrumentsViewHeight()
         videoView.isHidden = false
         
         if (model.aboutMe == nil || model.aboutMe == "") {
@@ -204,6 +211,7 @@ extension ProfileViewController: ProfileViewProtocol {
             aboutMeText.isEditable = false
             aboutMeText.text = model.aboutMe
         }
+        aboutMeText.layer.borderWidth = 0
         
         acceptView.isHidden = true
         closeCancelView.isHidden = false
@@ -218,6 +226,7 @@ extension ProfileViewController: ProfileViewProtocol {
     func setEditProfileView() {
         //TODO
         presenter.isEditing = true
+        presenter.getAvailableInstruments()
         
         nameLabel.borderStyle = .roundedRect
         nameLabel.isEnabled = true
@@ -228,18 +237,25 @@ extension ProfileViewController: ProfileViewProtocol {
         avatarImage.image = UIImage(named: "addImage")
         followView.isHidden = true
         contactView.isHidden = false
-        instruments.append("Add")
+        userInstruments.append("Add")
         instrumentCollection.reloadData()
         videoView.isHidden = false
         aboutMeView.isHidden = false
         aboutMeText.isEditable = true
+        aboutMeText.layer.borderWidth = 1
+        aboutMeText.layer.borderColor = UIColor.systemGray5.cgColor
         acceptView.isHidden = false
         closeCancelButton.setTitle("Cancel", for: .normal)
+        contactButton.isHidden = true
         
     }
     
     func setOtherUserProfileWith(model: ProfilePresentable) {
         //TODO
+    }
+    
+    func setAvailableInstruments(with instruments: [String]) {
+        availableInstruments = instruments
     }
     
     
@@ -250,7 +266,14 @@ extension ProfileViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if (presenter.isEditing) {
             let cell = collectionView.cellForItem(at: indexPath) as! InstrumentCollectionViewCell
-            cell.selectedToRemove()
+            if userInstruments[indexPath[1]] == "Add" {
+                let instrumentsPickerView = InstrumentsPickerViewController(with: availableInstruments)
+                instrumentsPickerView.delegate = self
+                self.present(instrumentsPickerView, animated: true)
+            } else {
+                cell.selectedToRemove()
+            }
+            
         }
     }
 }
@@ -258,7 +281,7 @@ extension ProfileViewController: UICollectionViewDelegate {
 extension ProfileViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return instruments.count
+        return userInstruments.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -266,15 +289,31 @@ extension ProfileViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: InstrumentCollectionViewCell.reusableId, for: indexPath) as? InstrumentCollectionViewCell else {
             fatalError()
         }
-        let instrument = instruments[indexPath.item]
+        let instrument = userInstruments[indexPath.item]
+        
         cell.name = instrument
-        if (presenter.isEditing) {
-            cell.showRemoveButton()
+        if instrument == "Add" {
+            cell.showAddCell()
         } else {
-            cell.hideRemoveButton()
+            if (presenter.isEditing) {
+                cell.showRemoveButton()
+            } else {
+                cell.hideRemoveButton()
+            }
+            cell.showCell()
         }
         
         return cell
+    }
+}
+
+extension ProfileViewController: InstrumentsPickerViewDelegate {
+    func addSelectedInstrument(withName instrument: String) {
+        let count = userInstruments.count
+        userInstruments.remove(at: count - 1)
+        userInstruments.append(instrument)
+        userInstruments.append("Add")
+        calculateInstrumentsViewHeight()
     }
     
     
