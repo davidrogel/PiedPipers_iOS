@@ -12,6 +12,7 @@ class ProfileViewController: UIViewController {
     
     // MARK: Properties
     var userInstruments: [String] = []
+    var selectedInstruments: [Bool] = []
     var availableInstruments: [String] = []
     let collectionViewLayout = UICollectionViewFlowLayout()
     
@@ -161,6 +162,7 @@ class ProfileViewController: UIViewController {
 
 }
 
+// MARK: Extension
 extension ProfileViewController: ProfileViewProtocol {
     
     func setCurrentUserProfileViewWith(model: ProfilePresentable) {
@@ -201,6 +203,9 @@ extension ProfileViewController: ProfileViewProtocol {
         instrumentView.isHidden = false
         
         userInstruments = model.instruments ?? []
+        userInstruments.forEach { _ in
+            selectedInstruments.append(false)
+        }
         calculateInstrumentsViewHeight()
         videoView.isHidden = false
         
@@ -271,7 +276,13 @@ extension ProfileViewController: UICollectionViewDelegate {
                 instrumentsPickerView.delegate = self
                 self.present(instrumentsPickerView, animated: true)
             } else {
-                cell.selectedToRemove()
+                if selectedInstruments[indexPath[1]] {
+                    cell.deselectCell()
+                    selectedInstruments[indexPath[1]] = false
+                } else {
+                    cell.selectedToRemove()
+                    selectedInstruments[indexPath[1]] = true
+                }
             }
             
         }
@@ -297,10 +308,14 @@ extension ProfileViewController: UICollectionViewDataSource {
         } else {
             if (presenter.isEditing) {
                 cell.showRemoveButton()
+                if selectedInstruments[indexPath.item] {
+                    cell.selectedToRemove()
+                } else {
+                    cell.deselectCell()
+                }
             } else {
                 cell.hideRemoveButton()
             }
-            cell.showCell()
         }
         
         return cell
@@ -312,9 +327,8 @@ extension ProfileViewController: InstrumentsPickerViewDelegate {
         let count = userInstruments.count
         userInstruments.remove(at: count - 1)
         userInstruments.append(instrument)
+        selectedInstruments.append(false)
         userInstruments.append("Add")
         calculateInstrumentsViewHeight()
     }
-    
-    
 }

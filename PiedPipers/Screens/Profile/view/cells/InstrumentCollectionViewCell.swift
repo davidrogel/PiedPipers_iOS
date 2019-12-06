@@ -46,7 +46,9 @@ class InstrumentCollectionViewCell: UICollectionViewCell {
     }
     
     func selectedToRemove() {
-        instrumentLabel.backgroundColor = UIColor(ciColor: .gray)
+        instrumentLabel.layer.borderWidth = 0
+        instrumentLabel.backgroundColor = UIColor.systemGray4
+        instrumentLabel.textColor = UIColor.systemBackground
         removeButton.image = UIImage(systemName: "checkmark.circle.fill")
     }
     
@@ -57,10 +59,11 @@ class InstrumentCollectionViewCell: UICollectionViewCell {
         instrumentLabel.textColor = UIColor.systemGray2
     }
     
-    func showCell() {
+    func deselectCell() {
         instrumentLabel.layer.borderWidth = 0
         instrumentLabel.backgroundColor = UIColor.systemIndigo
         instrumentLabel.textColor = UIColor.systemBackground
+        removeButton.image = UIImage(systemName: "multiply.circle.fill")
     }
 
 }
