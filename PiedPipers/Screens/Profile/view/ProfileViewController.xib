@@ -211,7 +211,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="w4E-zY-Cpl" userLabel="InstrumentCollection">
+                                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" restorationIdentifier="instruments" scrollEnabled="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="w4E-zY-Cpl" userLabel="InstrumentCollection">
                                                     <rect key="frame" x="20" y="34" width="374" height="36"/>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Mz9-T0-xFq">
@@ -242,8 +242,8 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="aAB-82-6ga" userLabel="VideoCollection">
-                                                    <rect key="frame" x="0.0" y="34" width="414" height="200"/>
+                                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" restorationIdentifier="videos" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="aAB-82-6ga" userLabel="VideoCollection">
+                                                    <rect key="frame" x="20" y="34" width="374" height="180.5"/>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="aAB-82-6ga" secondAttribute="height" multiplier="207:100" id="WTM-xU-hoF"/>
@@ -260,9 +260,9 @@
                                             <constraints>
                                                 <constraint firstItem="JLB-ST-gyF" firstAttribute="leading" secondItem="kRK-1Z-Icy" secondAttribute="leading" constant="35" id="IXf-hR-R4n"/>
                                                 <constraint firstItem="aAB-82-6ga" firstAttribute="top" secondItem="JLB-ST-gyF" secondAttribute="bottom" constant="5" id="Kek-Nj-BmV"/>
-                                                <constraint firstAttribute="trailing" secondItem="aAB-82-6ga" secondAttribute="trailing" id="PD7-Hh-FXf"/>
+                                                <constraint firstAttribute="trailing" secondItem="aAB-82-6ga" secondAttribute="trailing" constant="20" id="PD7-Hh-FXf"/>
                                                 <constraint firstItem="JLB-ST-gyF" firstAttribute="top" secondItem="kRK-1Z-Icy" secondAttribute="top" constant="5" id="oQy-3c-XuK"/>
-                                                <constraint firstItem="aAB-82-6ga" firstAttribute="leading" secondItem="kRK-1Z-Icy" secondAttribute="leading" id="qKl-ki-42U"/>
+                                                <constraint firstItem="aAB-82-6ga" firstAttribute="leading" secondItem="kRK-1Z-Icy" secondAttribute="leading" constant="20" id="qKl-ki-42U"/>
                                                 <constraint firstAttribute="height" constant="240" id="s1H-nt-QlP"/>
                                             </constraints>
                                         </view>

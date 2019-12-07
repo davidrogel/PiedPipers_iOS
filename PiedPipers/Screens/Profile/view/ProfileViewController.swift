@@ -12,9 +12,10 @@ class ProfileViewController: UIViewController {
     
     // MARK: Properties
     var userInstruments: [String] = []
+    var userVideos: [VideoPresentable] = []
     var selectedInstruments: [Bool] = []
+    var selectedVideos: [Bool] = []
     var availableInstruments: [String] = []
-    let collectionViewLayout = UICollectionViewFlowLayout()
     
     
     // MARK: Presenter elements
@@ -45,7 +46,12 @@ class ProfileViewController: UIViewController {
         }
     }
     @IBOutlet weak var videoView: UIView!
-    @IBOutlet weak var videoCollection: UICollectionView!
+    @IBOutlet weak var videoCollection: UICollectionView! {
+        didSet {
+            let nib = UINib(nibName: VideoCollectionViewCell.nibName, bundle: nil)
+            videoCollection.register(nib, forCellWithReuseIdentifier: VideoCollectionViewCell.reusableId)
+        }
+    }
     @IBOutlet weak var aboutMeView: UIView!
     @IBOutlet weak var aboutMeText: UITextView!
     @IBOutlet weak var acceptView: UIView!
@@ -64,11 +70,16 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         configureButtons()
         configureImage()
-        CollectionViewSetUpUI(withItemHeight: 34)
+        instrumentsCollectionSetUpUI(withItemHeight: 34)
         instrumentCollection.reloadData()
+        videosCollectionSetUpUI(height: 180, width: 319)
+        videoCollection.reloadData()
         
         instrumentCollection.delegate = self
         instrumentCollection.dataSource = self
+        
+        videoCollection.delegate = self
+        videoCollection.dataSource = self
         
         presenter.loadCurrentUserProfile()
     }
@@ -109,8 +120,16 @@ class ProfileViewController: UIViewController {
     }
     
     // MARK: Functions
-    func CollectionViewSetUpUI(withItemHeight itemHeight: CGFloat) {
+    func videosCollectionSetUpUI(height: CGFloat, width: CGFloat) {
+        let collectionViewLayout = UICollectionViewFlowLayout()
+        collectionViewLayout.itemSize = CGSize(width: width, height: height)
+        collectionViewLayout.scrollDirection = .horizontal
+        videoCollection.collectionViewLayout = collectionViewLayout
+    }
+    
+    func instrumentsCollectionSetUpUI(withItemHeight itemHeight: CGFloat) {
         let width = calculateCollectionItemWidth(columnCount: 3, itemSpacing: 10)
+        let collectionViewLayout = UICollectionViewFlowLayout()
         collectionViewLayout.itemSize = CGSize(width: width, height: itemHeight)
         instrumentCollection.collectionViewLayout = collectionViewLayout
         
@@ -145,7 +164,7 @@ class ProfileViewController: UIViewController {
     }
     
     fileprivate func calculateInstrumentCollectionHeight(withRows rows: CGFloat) -> CGFloat {
-        var height = instrumentsViewHeight.constant
+        var height = CGFloat(75)//instrumentsViewHeight.constant
         if (rows > 1) {
             let additionalHeight: CGFloat = 45
             height += (additionalHeight * (rows - 1))
@@ -208,6 +227,11 @@ extension ProfileViewController: ProfileViewProtocol {
         }
         calculateInstrumentsViewHeight()
         videoView.isHidden = false
+        userVideos = model.videos ?? []
+        userVideos.forEach { _ in
+            selectedVideos.append(false)
+        }
+        videoCollection.reloadData()
         
         if (model.aboutMe == nil || model.aboutMe == "") {
             aboutMeView.isHidden = true
@@ -245,6 +269,8 @@ extension ProfileViewController: ProfileViewProtocol {
         userInstruments.append("Add")
         instrumentCollection.reloadData()
         videoView.isHidden = false
+        userVideos.insert(VideoPresentable(videoURL: "Add", thumbnail: "Add"), at: 0)
+        videoCollection.reloadData()
         aboutMeView.isHidden = false
         aboutMeText.isEditable = true
         aboutMeText.layer.borderWidth = 1
@@ -270,21 +296,35 @@ extension ProfileViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if (presenter.isEditing) {
-            let cell = collectionView.cellForItem(at: indexPath) as! InstrumentCollectionViewCell
-            if userInstruments[indexPath[1]] == "Add" {
-                let instrumentsPickerView = InstrumentsPickerViewController(with: availableInstruments)
-                instrumentsPickerView.delegate = self
-                self.present(instrumentsPickerView, animated: true)
-            } else {
-                if selectedInstruments[indexPath[1]] {
-                    cell.deselectCell()
-                    selectedInstruments[indexPath[1]] = false
+            if collectionView == self.instrumentCollection {
+                let cell = collectionView.cellForItem(at: indexPath) as! InstrumentCollectionViewCell
+                if userInstruments[indexPath.item] == "Add" {
+                    let instrumentsPickerView = InstrumentsPickerViewController(with: availableInstruments)
+                    instrumentsPickerView.delegate = self
+                    self.present(instrumentsPickerView, animated: true)
                 } else {
-                    cell.selectedToRemove()
-                    selectedInstruments[indexPath[1]] = true
+                    if selectedInstruments[indexPath.item] {
+                        cell.deselectCell()
+                        selectedInstruments[indexPath.item] = false
+                    } else {
+                        cell.selectedToRemove()
+                        selectedInstruments[indexPath.item] = true
+                    }
+                }
+            } else {
+                let cell = collectionView.cellForItem(at: indexPath) as! VideoCollectionViewCell
+                if userVideos[indexPath.item].thumbnail == "Add" {
+                    
+                } else {
+                    if selectedVideos[indexPath.item - 1] {
+                        cell.deselectCell()
+                        selectedVideos[indexPath.item - 1] = false
+                    } else {
+                        cell.selectedToRemove()
+                        selectedVideos[indexPath.item - 1] = true
+                    }
                 }
             }
-            
         }
     }
 }
@@ -292,33 +332,59 @@ extension ProfileViewController: UICollectionViewDelegate {
 extension ProfileViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return userInstruments.count
+        if collectionView == self.instrumentCollection {
+            return userInstruments.count
+        } else {
+            return userVideos.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: InstrumentCollectionViewCell.reusableId, for: indexPath) as? InstrumentCollectionViewCell else {
-            fatalError()
-        }
-        let instrument = userInstruments[indexPath.item]
-        
-        cell.name = instrument
-        if instrument == "Add" {
-            cell.showAddCell()
-        } else {
-            if (presenter.isEditing) {
-                cell.showRemoveButton()
-                if selectedInstruments[indexPath.item] {
-                    cell.selectedToRemove()
+        if collectionView == self.instrumentCollection {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: InstrumentCollectionViewCell.reusableId, for: indexPath) as? InstrumentCollectionViewCell else {
+                fatalError()
+            }
+            let instrument = userInstruments[indexPath.item]
+            
+            cell.name = instrument
+            if instrument == "Add" {
+                cell.showAddCell()
+            } else {
+                if (presenter.isEditing) {
+                    cell.showRemoveButton()
+                    if selectedInstruments[indexPath.item] {
+                        cell.selectedToRemove()
+                    } else {
+                        cell.deselectCell()
+                    }
                 } else {
+                    cell.hideRemoveButton()
                     cell.deselectCell()
                 }
-            } else {
-                cell.hideRemoveButton()
             }
+            
+            return cell
+        } else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: VideoCollectionViewCell.reusableId, for: indexPath) as? VideoCollectionViewCell else {
+                fatalError()
+            }
+            let video = userVideos[indexPath.item]
+            
+            if video.thumbnail == "Add" {
+                cell.showAddCell()
+            } else {
+                cell.image = video.thumbnail
+                if (presenter.isEditing) {
+                    cell.showRemoveButton()
+                } else {
+                    cell.hideRemoveButton()
+                    cell.deselectCell()
+                }
+            }
+            
+            return cell
         }
-        
-        return cell
     }
 }
 

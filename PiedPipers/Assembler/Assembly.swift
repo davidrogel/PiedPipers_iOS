@@ -28,7 +28,7 @@ final class Assembler {
     
     static func provideCurrentUserProfile() -> UIViewController {
         let currentUserViewController = ProfileViewController()
-        let presenter = ProfilePresenter(with: currentUserViewController, profileService: Repository.remote)
+        let presenter = ProfilePresenter(with: currentUserViewController, profileService: Repository.fake)
         currentUserViewController.configure(with: presenter)
 
         return currentUserViewController

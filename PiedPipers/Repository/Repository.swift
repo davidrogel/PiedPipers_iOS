@@ -48,10 +48,22 @@ protocol RepositoryFactory: class
 
 final class FakeRepository: RepositoryFactory
 {
+    
+    private let video1: Video = Video(id: "x52u8R2VNoE", video: "https://www.youtube.com/watch?v=x52u8R2VNoE", embedVideo: "https://www.youtube.com/embed/x52u8R2VNoE?ecver=1&amp;iv_load_policy=1&amp;yt:stretch=16:9&amp;autohide=1&amp;color=red&amp;", thumbnail: "https://img.youtube.com/vi/x52u8R2VNoE/hqdefault.jpg")
+    
+    private let video2 = Video(id: "VZzSBv6tXMw", video: "https://www.youtube.com/watch?v=VZzSBv6tXMw", embedVideo: "https://www.youtube.com/embed/VZzSBv6tXMw?ecver=1&amp;iv_load_policy=1&amp;yt:stretch=16:9&amp;autohide=1&amp;color=red&amp;", thumbnail: "https://img.youtube.com/vi/VZzSBv6tXMw/hqdefault.jpg")
     // Falta añadir videos a los FAKE perfiles
-    private let userProfile = Profile(cuid: "", name: "name", location: Location(lat: 20.0, long: 20.0), contact: Contact(type: .email, data: "Correo.a.encodear@correo.com"), instruments: ["bateria", "guitarra", "voz", "Bandurria", "Contrabajo", "Bajo", "Flauta", "Xilofono", "Trompeta", "Triangulo", "Trombon"], videos: nil, description: "una descripción rexulona", photo: "una foto")
-
-    private let otherProfile = Profile(cuid: "", name: "name", location: Location(lat: 20.0, long: 20.0), contact: Contact(type: .email, data: "Correo.a.encodear@correo.com"), instruments: ["bateria", "guitarra", "voz"], videos: nil, description: "una descripción rexulona", photo: "una foto")
+    var userProfile: Profile {
+        let user = Profile(cuid: "", name: "name", location: Location(lat: 20.0, long: 20.0), contact: Contact(type: .email, data: "Correo.a.encodear@correo.com"), instruments: ["bateria", "guitarra", "voz", "Bandurria", "Contrabajo", "Bajo", "Flauta", "Xilofono", "Trompeta", "Triangulo", "Trombon"], videos: [video1, video2], description: "una descripción rexulona", photo: "una foto")
+        
+        return user
+    }
+    
+    var otherProfile: Profile {
+        let user = Profile(cuid: "", name: "name", location: Location(lat: 20.0, long: 20.0), contact: Contact(type: .email, data: "Correo.a.encodear@correo.com"), instruments: ["bateria", "guitarra", "voz"], videos: nil, description: "una descripción rexulona", photo: "una foto")
+        
+        return user
+    }
     
     private let local = Local(cuid: "", name: "un local", dateAdded: "", location: Location(lat: 10.0, long: 10.0), price: 40.0, contact: Contact(type: .email, data: "arroba@correo.ru"), photos: ["una foto", "dos fotos", "tres... fotos?"], description: "una descripción de un local molón")
 
