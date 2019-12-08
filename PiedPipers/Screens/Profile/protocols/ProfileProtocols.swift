@@ -13,6 +13,7 @@ protocol ProfileViewProtocol: AnyObject {
     func setCurrentUserProfileViewWith(model: ProfilePresentable)
     func setOtherUserProfileWith(model: ProfilePresentable)
     func setAvailableInstruments(with instruments: [String])
+    func showUpdateAlert(successfully: Bool) 
     
 }
 
@@ -21,4 +22,5 @@ protocol ProfilePresenterProtocol: AnyObject {
     func loadCurrentUserProfile()
     func prepareEditView()
     func getAvailableInstruments()
+    func updateProfile(with profilePresentable: ProfilePresentable)
 }

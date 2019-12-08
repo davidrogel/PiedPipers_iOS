@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class ProfileViewController: UIViewController {
     
@@ -80,6 +81,7 @@ class ProfileViewController: UIViewController {
         
         videoCollection.delegate = self
         videoCollection.dataSource = self
+        contactText.autocapitalizationType = .none
         
         presenter.loadCurrentUserProfile()
     }
@@ -94,9 +96,11 @@ class ProfileViewController: UIViewController {
         case 0:
             contactText.keyboardType = .emailAddress
             contactText.textContentType = .emailAddress
+            contactText.placeholder = "user@domain.com"
         case 1:
             contactText.keyboardType = .phonePad
             contactText.textContentType = .telephoneNumber
+            contactText.placeholder = "+34 672938094"
         default:
             contactText.keyboardType = .emailAddress
             contactText.textContentType = .emailAddress
@@ -116,10 +120,84 @@ class ProfileViewController: UIViewController {
     }
     
     @IBAction func acceptButtonTapped(_ sender: Any) {
+        let name = nameLabel.text
+        if name == "" {
+            self.present(createAlert(withTitle: "Name cannot be empty", message: "Insert your name in the name field."), animated: true)
+            return
+        }
+        let instrument = selectedInstruments.first { $0 == false}
+        if instrument == nil {
+            self.present(createAlert(withTitle: "Instrument cannot be empty", message: "Select at least one instrument."), animated: true)
+            return
+        }
+        
+        if contactText.text == "" {
+            self.present(createAlert(withTitle: "Contact cannot be empty", message: "Insert your contact data."), animated: true)
+            return
+        }
+        guard let contactData = contactText.text else {
+            return
+        }
+        let typeContact: TypePresentable
+        if contactType.selectedSegmentIndex == 0 {
+            typeContact = TypePresentable.email
+            if !contactData.isValidEmail() {
+                self.present(createAlert(withTitle: "The inserted text isn't an email", message: "Insert a valid email."), animated: true)
+                return
+            }
+        } else {
+            typeContact = TypePresentable.phone
+            if !contactData.isValidPhone() {
+                self.present(createAlert(withTitle: "The inserted text isn't a phone", message: "Insert a valid phone."), animated: true)
+                return
+            }
+        }
+        
+        var updateInstruments: [String] = []
+        for n in 0...selectedInstruments.count - 1 {
+            if selectedInstruments[n] == false {
+                updateInstruments.append(userInstruments[n])
+            }
+        }
+        
+        var updateVideos: [VideoPresentable] = []
+        for n in 0...selectedVideos.count - 1 {
+            if selectedVideos[n] == false {
+                updateVideos.append(userVideos[n+1])
+            }
+        }
+        
+        let contact = ContactPresentable(type: typeContact, data: contactData)
+        
+        //TODO: Tengo que comprobar que haya avatar
+        let avatar = "https://http2.mlstatic.com/ironman-armadura-infinity-war-plantillas-parmar-patron-D_NQ_NP_822038-MLA27087697817_032018-F.jpg"
+        
+        let city: String?
+        if friendlyLocationLabel.text == "" {
+            city = nil
+        } else {
+            city = friendlyLocationLabel.text
+        }
+        
+        let aboutMe: String?
+        if aboutMeText.text == "" {
+            aboutMe = nil
+        } else {
+            aboutMe = aboutMeText.text
+        }
+        
+        let profile = ProfilePresentable(name: name, city: city, avatar: avatar, location: nil, contact: contact, instruments: updateInstruments, videos: updateVideos, aboutMe: aboutMe)
+        presenter.updateProfile(with: profile)
         
     }
     
     // MARK: Functions
+    func createAlert(withTitle title: String?, message: String?) -> UIAlertController {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Accept", style: .default, handler: nil))
+        return alert
+    }
+    
     func videosCollectionSetUpUI(height: CGFloat, width: CGFloat) {
         let collectionViewLayout = UICollectionViewFlowLayout()
         collectionViewLayout.itemSize = CGSize(width: width, height: height)
@@ -147,10 +225,13 @@ class ProfileViewController: UIViewController {
     }
     
     private func configureImage() {
-        avatarView.layer.shadowColor = UIColor.clear.cgColor
-        avatarView.layer.shadowOffset = CGSize(width: 0, height: 4.0)
-        avatarView.layer.shadowOpacity = 1
-        avatarView.layer.shadowRadius = 4.0
+        avatarView.layer.shadowColor = UIColor.black.cgColor
+        avatarView.layer.shadowOffset = .zero//CGSize(width: 0, height: 2.0)
+        avatarView.layer.shadowOpacity = 0.8
+        avatarView.layer.shadowRadius = 10
+        avatarView.layer.cornerRadius = 20
+        avatarView.layer.rasterizationScale = UIScreen.main.scale
+        avatarView.layer.borderWidth = 0
         
         avatarImage.layer.cornerRadius = 20
         avatarImage.layer.masksToBounds = true
@@ -204,7 +285,14 @@ extension ProfileViewController: ProfileViewProtocol {
         editButton.setImage(UIImage(named: "editButton"), for: .normal)
         
         avatarView.isHidden = false
-        avatarImage.image = UIImage(named: "LogoSobreNegro") //TODO: Esto hay que quitarlo
+        avatarImage.image = UIImage(named: "LogoSobreNegro")
+//        guard let image = model.avatar else { //TODO: Esto hay que quitarlo
+//            fatalError() //Ahora mismo da error, hasta implementar el nuevo flujo
+//        }
+//        guard let url = URL(string: image) else {
+//            fatalError()
+//        }
+//        avatarImage.kf.setImage(with: url)
         
         followView.isHidden = true
         contactView.isHidden = true
@@ -232,6 +320,9 @@ extension ProfileViewController: ProfileViewProtocol {
             selectedVideos.append(false)
         }
         videoCollection.reloadData()
+        if userVideos.isEmpty {
+            videoView.isHidden = true
+        }
         
         if (model.aboutMe == nil || model.aboutMe == "") {
             aboutMeView.isHidden = true
@@ -269,7 +360,7 @@ extension ProfileViewController: ProfileViewProtocol {
         userInstruments.append("Add")
         instrumentCollection.reloadData()
         videoView.isHidden = false
-        userVideos.insert(VideoPresentable(videoURL: "Add", thumbnail: "Add"), at: 0)
+        userVideos.insert(VideoPresentable(id: "Add", videoURL: "Add", thumbnail: "Add"), at: 0)
         videoCollection.reloadData()
         aboutMeView.isHidden = false
         aboutMeText.isEditable = true
@@ -287,6 +378,14 @@ extension ProfileViewController: ProfileViewProtocol {
     
     func setAvailableInstruments(with instruments: [String]) {
         availableInstruments = instruments
+    }
+    
+    func showUpdateAlert(successfully: Bool) {
+        if successfully {
+            self.present(createAlert(withTitle: "Success updating.", message: "Your profile has updated successfully."), animated: true)
+        } else {
+            self.present(createAlert(withTitle: "Error updating.", message: "There was an error updating the profile."), animated: true)
+        }
     }
     
     
@@ -314,7 +413,32 @@ extension ProfileViewController: UICollectionViewDelegate {
             } else {
                 let cell = collectionView.cellForItem(at: indexPath) as! VideoCollectionViewCell
                 if userVideos[indexPath.item].thumbnail == "Add" {
-                    
+                    let alert = UIAlertController(title: "Insert a valid YouTube URL", message: nil, preferredStyle: .alert)
+                    alert.addTextField { (textField) in
+                        textField.placeholder = "https://www.youtube.com/watch?v=dzWBgb9cr1s"
+                    }
+                    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                    alert.addAction(UIAlertAction(title: "Accept", style: .default, handler: { [weak alert, weak self] (_) in
+                        guard let text = alert?.textFields![0].text else {
+                            fatalError()
+                        }
+                        // Puedo llamar a una función que reciba el texto
+                        guard let url = URL(string: text) else {
+                            let invalidUrl = UIAlertController(title: "Invalid URL", message: "The inserted text is not a valid URL.", preferredStyle: .alert)
+                            invalidUrl.addAction(UIAlertAction(title: "Accept", style: .default, handler: nil))
+                            self?.present(invalidUrl, animated: true)
+                            return
+                        }
+                        guard var videoId = url.query else {
+                            fatalError()
+                        }
+                        videoId.removeFirst(2)
+                        let thumbnail = "https://img.youtube.com/vi/" + videoId + "/hqdefault.jpg"
+                        self?.userVideos.append(VideoPresentable(id: videoId, videoURL: text, thumbnail: thumbnail))
+                        self?.selectedVideos.append(false)
+                        self?.videoCollection.reloadData()
+                    }))
+                    self.present(alert, animated: true)
                 } else {
                     if selectedVideos[indexPath.item - 1] {
                         cell.deselectCell()

@@ -54,7 +54,7 @@ final class FakeRepository: RepositoryFactory
     private let video2 = Video(id: "VZzSBv6tXMw", video: "https://www.youtube.com/watch?v=VZzSBv6tXMw", embedVideo: "https://www.youtube.com/embed/VZzSBv6tXMw?ecver=1&amp;iv_load_policy=1&amp;yt:stretch=16:9&amp;autohide=1&amp;color=red&amp;", thumbnail: "https://img.youtube.com/vi/VZzSBv6tXMw/hqdefault.jpg")
     // Falta añadir videos a los FAKE perfiles
     var userProfile: Profile {
-        let user = Profile(cuid: "", name: "name", location: Location(lat: 20.0, long: 20.0), contact: Contact(type: .email, data: "Correo.a.encodear@correo.com"), instruments: ["bateria", "guitarra", "voz", "Bandurria", "Contrabajo", "Bajo", "Flauta", "Xilofono", "Trompeta", "Triangulo", "Trombon"], videos: [video1, video2], description: "una descripción rexulona", photo: "una foto")
+        let user = Profile(cuid: "", name: "name", location: Location(lat: 20.0, long: 20.0), contact: Contact(type: .email, data: "correo.a.encodear@correo.com"), instruments: ["bateria", "guitarra", "voz", "Bandurria", "Contrabajo", "Bajo", "Flauta", "Xilofono", "Trompeta", "Triangulo", "Trombon"], videos: [video1, video2], description: "", photo: "una foto")
         
         return user
     }
