@@ -25,7 +25,8 @@ class SearchViewController: UIViewController
     
     // MARK: - Parameters
     
-    private let cellId = "cellId"
+    private let cellProfileId = "cellProfileId"
+    private let cellLocalId = "cellLocalId"
     
     enum DisplayState { case LOCALS, PROFILES }
     private var displayState: DisplayState = .LOCALS
@@ -39,6 +40,8 @@ class SearchViewController: UIViewController
     // MARK: Presentable Zone
     
     private var presenter: SearchViewPresenter!
+    
+    let cuid = "ck2g3ps39000c93pcfox7e8jn"
     
     var profiles: [SearchProfilePresentable] = []
     {
@@ -76,7 +79,8 @@ class SearchViewController: UIViewController
         collectionView.dataSource = self
         collectionView.delegate = self
         
-        collectionView.register(ProfileCustomCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView.register(ProfileCustomCell.self, forCellWithReuseIdentifier: cellProfileId)
+        collectionView.register(LocalCustomCell.self, forCellWithReuseIdentifier: cellLocalId)
         
         collectionView.backgroundColor = .white
         
@@ -119,23 +123,34 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
         switch displayState
         {
         case .LOCALS:
-            // TODO: Hacer la vista de los locales
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ProfileCustomCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellLocalId, for: indexPath) as! LocalCustomCell
             
             let local = locals[indexPath.item]
             
-            cell.setInstruments(instruments: ["batería", "guitarra", "otros"])
+            cell.setName(name: local.localName)
+            
+            let image:UIImage? = UIImage(named: local.image)
+            if let img = image {
+                cell.setPortrait(withImage: img)
+            }
+            
+            cell.setPrice(price: local.price)
+            cell.setDescription(text: local.description)
             
             return cell
         case .PROFILES:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ProfileCustomCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellProfileId, for: indexPath) as! ProfileCustomCell
             
             let profile = profiles[indexPath.item]
             
             cell.setInstruments(instruments: profile.instruments)
             cell.setName(name: profile.profileName)
-//            cell.setBand(name: profile.bandName)
-            cell.setPortrait(withImage: UIImage(named: profile.image)!)
+            cell.setFriendlyLocation(name: profile.friendlyLocation)
+            
+            let image:UIImage? = UIImage(named: profile.image)
+            if let img = image {
+                cell.setPortrait(withImage: img)
+            }
             
             return cell
         }
@@ -201,11 +216,6 @@ extension SearchViewController: SearchViewDelegate
 /// Delegate implemented to work with TopView
 extension SearchViewController: TopViewDelegate
 {
-    func profileFiltesParametersChanged(params: SearchProfileParameters)
-    {
-        
-    }
-     
     func segmentedViewSegmentedIndexChanged(valueChanged value: Int)
     {
         errorView.isHidden = true
@@ -219,13 +229,18 @@ extension SearchViewController: TopViewDelegate
         switch displayState
         {
         case .LOCALS:
-            presenter.requestLocals(cuid: "", parameters: SearchLocalParameters(), limit: 0, offset: 0)
+            presenter.requestLocals(cuid: self.cuid, parameters: SearchLocalParameters(name: value), limit: 10, offset: 0)
         case .PROFILES:
-            presenter.requestProfiles(cuid: "", parameters: SearchProfileParameters(), limit: 0, offset: 0)
+            presenter.requestProfiles(cuid: self.cuid, parameters: SearchProfileParameters(name: value), limit: 10, offset: 0)
         }
     }
     
     func localFiltersParametersChanged(params: SearchLocalParameters)
+    {
+        
+    }
+    
+    func profileFiltesParametersChanged(params: SearchProfileParameters)
     {
         
     }

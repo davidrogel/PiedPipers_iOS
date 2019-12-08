@@ -57,7 +57,7 @@ final class FakeRepository: RepositoryFactory
 
     private let otherProfile = Profile(cuid: "", name: "name", location: Location(lat: 20.0, long: 20.0), contact: Contact(type: .email, data: "Correo.a.encodear@correo.com"), instruments: ["bateria", "guitarra", "voz"], videos: nil, description: "una descripción rexulona", photo: "una foto")
     
-    private let local = Local(cuid: "", name: "un local", dateAdded: "", location: Location(lat: 10.0, long: 10.0), price: 40.0, contact: Contact(type: .email, data: "arroba@correo.ru"), photos: ["una foto", "dos fotos", "tres... fotos?"], description: "una descripción de un local molón")
+    private let local = Local(cuid: "", name: "un local", dateAdded: "", location: Location(lat: 10.0, long: 10.0), price: 29.99, contact: Contact(type: .email, data: "arroba@correo.ru"), photos: ["kojima", "dos fotos", "tres... fotos?"], description: "una descripción de un local molón con una descripción tope larga que lo flipas chorbo")
 
     func getProfile(currenUserCUID cuid: String, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
     {
@@ -84,8 +84,8 @@ final class FakeRepository: RepositoryFactory
     func searchLocals(currentUserCUID cuid: String, withParameters parameters: SearchLocalParameters, limit: Int, offset: Int, success: @escaping (LocalList?) -> Void, failure: @escaping (Error?) -> Void)
     {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-//            success(LocalList(total: 3, offset: 3, items: [self.local, self.local, self.local]))
-            success(LocalList(total: 0, offset: 0, items: []))
+            success(LocalList(total: 3, offset: 3, items: [self.local, self.local, self.local]))
+//            success(LocalList(total: 0, offset: 0, items: []))
         }
     }
     
@@ -247,7 +247,7 @@ final class RemoteRepository: RepositoryFactory
     
     func searchProfiles(currentUserCUID cuid: String, withParameters parameters: SearchProfileParameters, limit: Int, offset: Int, success: @escaping (ProfileList?) -> Void, failure: @escaping (Error?) -> Void)
     {
-        let getProfilesBySearchingRequest = GetProfileBySearchingRequest(cuid: cuid,profileParameters: parameters, limit: 10, offset: 10)
+        let getProfilesBySearchingRequest = GetProfileBySearchingRequest(cuid: cuid,profileParameters: parameters, limit: limit, offset: offset)
         
         getProfilesBySearchingRequest.makeRequest { (result) in
             switch result
