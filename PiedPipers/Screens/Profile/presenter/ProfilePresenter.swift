@@ -110,7 +110,7 @@ class ProfilePresenter {
             avatarProfile = nil
         }
         
-        if let location = profilePresentable.location {
+         if let location = profilePresentable.location {
             locationProfile = Location(lat: location.lat, long: location.long)
         } else {
             locationProfile = nil

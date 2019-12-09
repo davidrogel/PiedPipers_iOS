@@ -31,6 +31,7 @@
                 <outlet property="instrumentHorizontalSpacing" destination="cRV-jB-t4g" id="fM3-3X-Zkd"/>
                 <outlet property="instrumentView" destination="whl-iB-Ad5" id="Vvp-yh-3nf"/>
                 <outlet property="instrumentsViewHeight" destination="Noi-f2-8qB" id="iNf-7T-p6k"/>
+                <outlet property="loadingView" destination="ijk-fK-Fx6" id="blg-0b-245"/>
                 <outlet property="nameLabel" destination="OYF-0M-beN" id="4a4-f4-Z02"/>
                 <outlet property="videoCollection" destination="aAB-82-6ga" id="LrS-Hn-ZZf"/>
                 <outlet property="videoView" destination="kRK-1Z-Icy" id="JMb-sY-BJj"/>
@@ -379,17 +380,39 @@
                 </scrollView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="usa-jj-O2n">
                     <rect key="frame" x="340" y="1428" width="64" height="66"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="64" id="CTA-Vx-Bbx"/>
+                        <constraint firstAttribute="height" constant="66" id="KIV-dY-dWs"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
                     <state key="normal" image="phoneConnect"/>
                 </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ijk-fK-Fx6" userLabel="loadView">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="1514"/>
+                    <subviews>
+                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="np1-Vp-MUJ">
+                            <rect key="frame" x="188.5" y="738.5" width="37" height="37"/>
+                        </activityIndicatorView>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <constraints>
+                        <constraint firstItem="np1-Vp-MUJ" firstAttribute="centerX" secondItem="ijk-fK-Fx6" secondAttribute="centerX" id="ATs-oL-G6H"/>
+                        <constraint firstItem="np1-Vp-MUJ" firstAttribute="centerY" secondItem="ijk-fK-Fx6" secondAttribute="centerY" id="ffU-VD-onf"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="ijk-fK-Fx6" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="2Sd-Zd-fod"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="ijk-fK-Fx6" secondAttribute="bottom" id="39B-MZ-qpy"/>
                 <constraint firstItem="6gv-bc-qpx" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="3Vt-Ea-sMX"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="6gv-bc-qpx" secondAttribute="bottom" id="9F2-Jc-WDa"/>
                 <constraint firstItem="6gv-bc-qpx" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="P5U-vi-PME"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="usa-jj-O2n" secondAttribute="trailing" constant="10" id="UYq-k4-ERo"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="6gv-bc-qpx" secondAttribute="trailing" id="ehF-d2-7c7"/>
+                <constraint firstItem="ijk-fK-Fx6" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="iFG-TY-7ZJ"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="usa-jj-O2n" secondAttribute="bottom" constant="20" id="t39-KN-23A"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="ijk-fK-Fx6" secondAttribute="trailing" id="wQi-Mp-wMy"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>

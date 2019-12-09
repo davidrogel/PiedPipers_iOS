@@ -53,6 +53,7 @@ class InstrumentCollectionViewCell: UICollectionViewCell {
     }
     
     func showAddCell() {
+        removeButton.isHidden = true
         instrumentLabel.layer.borderColor = UIColor.systemGray2.cgColor
         instrumentLabel.layer.borderWidth = 1.0
         instrumentLabel.backgroundColor = UIColor(ciColor: .white)

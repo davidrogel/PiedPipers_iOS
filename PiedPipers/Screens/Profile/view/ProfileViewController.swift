@@ -18,6 +18,16 @@ class ProfileViewController: UIViewController {
     var selectedVideos: [Bool] = []
     var availableInstruments: [String] = []
     
+    var loading: Bool! {
+        didSet {
+            if loading {
+                loadingView.isHidden = false
+            } else {
+                loadingView.isHidden = true
+            }
+        }
+    }
+    
     
     // MARK: Presenter elements
     public private(set) var presenter: ProfilePresenterProtocol!
@@ -60,6 +70,8 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var closeCancelView: UIView!
     @IBOutlet weak var closeCancelButton: UIButton!
     @IBOutlet weak var contactButton: UIButton!
+    @IBOutlet weak var loadingView: UIView!
+    
     
     @IBOutlet weak var aboutMeHeight: NSLayoutConstraint!
     @IBOutlet weak var instrumentHorizontalSpacing: NSLayoutConstraint!
@@ -84,6 +96,7 @@ class ProfileViewController: UIViewController {
         contactText.autocapitalizationType = .none
         
         presenter.loadCurrentUserProfile()
+        loading = true
     }
     
     // MARK: Actions
@@ -113,6 +126,7 @@ class ProfileViewController: UIViewController {
             //TODO: Si le damos a cancel y seguimos sin meter datos, mandarlo al tab Home
             presenter.isEditing = false
             presenter.loadCurrentUserProfile()
+            loading = true
         } else {
             StoreManager.shared.removeStoreCuid()
             tabBarController?.selectedIndex = 0
@@ -161,11 +175,14 @@ class ProfileViewController: UIViewController {
         }
         
         var updateVideos: [VideoPresentable] = []
-        for n in 0...selectedVideos.count - 1 {
-            if selectedVideos[n] == false {
-                updateVideos.append(userVideos[n+1])
+        if selectedVideos.count > 0 {
+            for n in 0...selectedVideos.count - 1 {
+                if selectedVideos[n] == false {
+                    updateVideos.append(userVideos[n+1])
+                }
             }
         }
+        
         
         let contact = ContactPresentable(type: typeContact, data: contactData)
         
@@ -187,6 +204,7 @@ class ProfileViewController: UIViewController {
         }
         
         let profile = ProfilePresentable(name: name, city: city, avatar: avatar, location: nil, contact: contact, instruments: updateInstruments, videos: updateVideos, aboutMe: aboutMe)
+        loading = true
         presenter.updateProfile(with: profile)
         
     }
@@ -267,6 +285,8 @@ extension ProfileViewController: ProfileViewProtocol {
     
     func setCurrentUserProfileViewWith(model: ProfilePresentable) {
         
+        presenter.isEditing = false
+        
         nameLabel.isHidden = false
         nameLabel.borderStyle = .none
         nameLabel.isEnabled = false
@@ -308,13 +328,13 @@ extension ProfileViewController: ProfileViewProtocol {
         contactText.text = model.contact?.data
         
         instrumentView.isHidden = false
-        
+        selectedInstruments = []
         userInstruments = model.instruments ?? []
         userInstruments.forEach { _ in
             selectedInstruments.append(false)
         }
         calculateInstrumentsViewHeight()
-        videoView.isHidden = false
+        selectedVideos = []
         userVideos = model.videos ?? []
         userVideos.forEach { _ in
             selectedVideos.append(false)
@@ -322,6 +342,8 @@ extension ProfileViewController: ProfileViewProtocol {
         videoCollection.reloadData()
         if userVideos.isEmpty {
             videoView.isHidden = true
+        } else {
+            videoView.isHidden = false
         }
         
         if (model.aboutMe == nil || model.aboutMe == "") {
@@ -341,6 +363,7 @@ extension ProfileViewController: ProfileViewProtocol {
         let height = calculeAboutMeHeight(textView: aboutMeText)
         aboutMeHeight.constant = height
 
+        loading = false
     }
     
     func setEditProfileView() {
@@ -358,7 +381,8 @@ extension ProfileViewController: ProfileViewProtocol {
         followView.isHidden = true
         contactView.isHidden = false
         userInstruments.append("Add")
-        instrumentCollection.reloadData()
+        calculateInstrumentsViewHeight()
+        //instrumentCollection.reloadData()
         videoView.isHidden = false
         userVideos.insert(VideoPresentable(id: "Add", videoURL: "Add", thumbnail: "Add"), at: 0)
         videoCollection.reloadData()
@@ -369,11 +393,76 @@ extension ProfileViewController: ProfileViewProtocol {
         acceptView.isHidden = false
         closeCancelButton.setTitle("Cancel", for: .normal)
         contactButton.isHidden = true
-        
     }
     
     func setOtherUserProfileWith(model: ProfilePresentable) {
-        //TODO
+        nameLabel.isHidden = false
+        nameLabel.borderStyle = .none
+        nameLabel.isEnabled = false
+        nameLabel.text = model.name
+        
+        if (model.city == nil || model.city == "") {
+            friendlyLocationView.isHidden = true
+        } else {
+            friendlyLocationView.isHidden = false
+            friendlyLocationLabel.borderStyle = .none
+            friendlyLocationLabel.isEnabled = false
+            friendlyLocationLabel.text = model.city
+        }
+        
+        editButton.isHidden = false
+        editButton.setImage(UIImage(named: "exitButton"), for: .normal)
+        
+        avatarView.isHidden = false
+        avatarImage.image = UIImage(named: "LogoSobreNegro") //TODO: Cambiar por la carga del String de imagen
+        //        guard let image = model.avatar else { //TODO: Esto hay que quitarlo
+        //            fatalError() //Ahora mismo da error, hasta implementar el nuevo flujo
+        //        }
+        //        guard let url = URL(string: image) else {
+        //            fatalError()
+        //        }
+        //        avatarImage.kf.setImage(with: url)
+        
+        followView.isHidden = false
+        contactView.isHidden = true
+        
+        instrumentView.isHidden = false
+        userInstruments = model.instruments ?? []
+        calculateInstrumentsViewHeight()
+        userVideos = model.videos ?? []
+        videoCollection.reloadData()
+        
+        if userVideos.isEmpty {
+            videoView.isHidden = true
+        } else {
+            videoView.isHidden = false
+        }
+        
+        if (model.aboutMe == nil || model.aboutMe == "") {
+            aboutMeView.isHidden = true
+        } else {
+            aboutMeView.isHidden = false
+            aboutMeText.isEditable = false
+            aboutMeText.text = model.aboutMe
+        }
+        aboutMeText.layer.borderWidth = 0
+        let height = calculeAboutMeHeight(textView: aboutMeText)
+        aboutMeHeight.constant = height
+        
+        acceptView.isHidden = true
+        closeCancelView.isHidden = true
+        
+        guard let type = model.contact?.type else {
+            return
+        }
+        if type == .email {
+            contactButton.setImage(UIImage(named: "mailConnect"), for: .normal)
+        } else {
+            contactButton.setImage(UIImage(named: "phoneConnect"), for: .normal)
+        }
+        contactText.text = model.contact?.data
+        
+        contactButton.isHidden = false
     }
     
     func setAvailableInstruments(with instruments: [String]) {
@@ -383,6 +472,7 @@ extension ProfileViewController: ProfileViewProtocol {
     func showUpdateAlert(successfully: Bool) {
         if successfully {
             self.present(createAlert(withTitle: "Success updating.", message: "Your profile has updated successfully."), animated: true)
+            self.presenter.loadCurrentUserProfile()
         } else {
             self.present(createAlert(withTitle: "Error updating.", message: "There was an error updating the profile."), animated: true)
         }
