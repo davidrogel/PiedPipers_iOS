@@ -122,9 +122,7 @@ extension Profile
         
         if let videos = videos
         {
-            body["videos"] = videos.map({ (video) -> [String:Any] in
-                video.toBody()
-            })
+            body["videos"] = videos.map({ $0.id })
         }
         
         if let description = description
