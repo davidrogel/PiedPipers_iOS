@@ -698,6 +698,7 @@
 				63E265B2236B64DD007FEA74 /* APIErrorCodes.swift in Sources */,
 				63378A0F2381C103000C7751 /* Local.swift in Sources */,
 				63E265AE236B6400007FEA74 /* ApiSession.swift in Sources */,
+				63F57C332373609A00C59F9E /* ProfilePresentable.swift in Sources */,
 				63335AD3236CBF4200F8CC8F /* Profile.swift in Sources */,
 				6348F6A22392F24E005AA01B /* ProfileProtocols.swift in Sources */,
 				6348F6BD2392F454005AA01B /* UIButton+ShadowsAndCornerRadius.swift in Sources */,

@@ -310,7 +310,7 @@ class RequestsTests: XCTestCase
     {
         let e = expectation(description: "UpdateUserProfile")
         
-        let updateUserProfileRequest = UpdateProfileRequest(currentUserCuid: cuid, profile: Profile(cuid: cuid, name: "Not tiene gracia", location: Location(lat: 20.19, long: 20.20), description: "Chistes para todos!!!"))
+        let updateUserProfileRequest = UpdateProfileRequest(currentUserCuid: cuid, profile: Profile(cuid: cuid, name: "Not tiene gracia",location: Location(lat: 20.19, long: 20.20), videos: [Video(id: "idLocoDeYoutube"), Video(id: "idLocoDeYoutube123")], description: "Chistes para todos!!!"))
         
         updateUserProfileRequest.makeRequest { (result) in
             switch result
