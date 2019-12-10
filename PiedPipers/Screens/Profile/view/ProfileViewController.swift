@@ -312,27 +312,34 @@ extension ProfileViewController: ProfileViewProtocol {
         editButton.setImage(UIImage(named: "editButton"), for: .normal)
         
         avatarView.isHidden = false
-        avatarImage.image = UIImage(named: "LogoSobreNegro")
-//        guard let image = model.avatar else { //TODO: Esto hay que quitarlo
-//            fatalError() //Ahora mismo da error, hasta implementar el nuevo flujo
-//        }
-//        guard let url = URL(string: image) else {
-//            fatalError()
-//        }
-//        avatarImage.kf.setImage(with: url)
+        
+        //TODO: Esto hay que quitarlo
+        if model.avatar == nil {
+            avatarImage.image = UIImage(named: "LogoSobreNegro")
+        } else {
+            guard let image = model.avatar else {
+                fatalError() //Ahora mismo da error, hasta implementar el nuevo flujo (obligar a tener imagen)
+            }
+            guard let url = String.createUrl(fromImgPath: image) else {
+                fatalError()
+            }
+            avatarImage.kf.setImage(with: url)
+        }
+        
         
         followView.isHidden = true
         contactView.isHidden = true
-        
-//        guard let type = model.contact?.type else {
-//            return
-//        }
-//        if type == .email {
-//            contactType.selectedSegmentIndex = 0
-//        } else {
-//            contactType.selectedSegmentIndex = 1
-//        }
-//        contactText.text = model.contact?.data
+        if model.contact != nil {
+            guard let type = model.contact?.type else {
+                return
+            }
+            if type == .email {
+                contactType.selectedSegmentIndex = 0
+            } else {
+                contactType.selectedSegmentIndex = 1
+            }
+            contactText.text = model.contact?.data
+        }
         
         instrumentView.isHidden = false
         selectedInstruments = []
