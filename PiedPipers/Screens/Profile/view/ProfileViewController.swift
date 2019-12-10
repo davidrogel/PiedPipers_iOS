@@ -94,7 +94,11 @@ class ProfileViewController: UIViewController {
         videoCollection.delegate = self
         videoCollection.dataSource = self
         contactText.autocapitalizationType = .none
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        //TODO: Esto llamaría al back cada vez que accedamos al perfil (GUARDAR EL PERFIL EN USER DEFAULT)
         presenter.loadCurrentUserProfile()
         loading = true
     }
@@ -129,6 +133,7 @@ class ProfileViewController: UIViewController {
             loading = true
         } else {
             StoreManager.shared.removeStoreCuid()
+            self.dismiss(animated: true, completion: nil)
             tabBarController?.selectedIndex = 0
         }
     }
@@ -282,6 +287,8 @@ class ProfileViewController: UIViewController {
 
 // MARK: Extension
 extension ProfileViewController: ProfileViewProtocol {
+
+    
     
     func setCurrentUserProfileViewWith(model: ProfilePresentable) {
         
@@ -317,15 +324,15 @@ extension ProfileViewController: ProfileViewProtocol {
         followView.isHidden = true
         contactView.isHidden = true
         
-        guard let type = model.contact?.type else {
-            return
-        }
-        if type == .email {
-            contactType.selectedSegmentIndex = 0
-        } else {
-            contactType.selectedSegmentIndex = 1
-        }
-        contactText.text = model.contact?.data
+//        guard let type = model.contact?.type else {
+//            return
+//        }
+//        if type == .email {
+//            contactType.selectedSegmentIndex = 0
+//        } else {
+//            contactType.selectedSegmentIndex = 1
+//        }
+//        contactText.text = model.contact?.data
         
         instrumentView.isHidden = false
         selectedInstruments = []
@@ -591,6 +598,11 @@ extension ProfileViewController: UICollectionViewDataSource {
                 cell.image = video.thumbnail
                 if (presenter.isEditing) {
                     cell.showRemoveButton()
+                    if selectedVideos[indexPath.item - 1] {
+                        cell.selectedToRemove()
+                    } else {
+                        cell.deselectCell()
+                    }
                 } else {
                     cell.hideRemoveButton()
                     cell.deselectCell()
