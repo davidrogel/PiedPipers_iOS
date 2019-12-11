@@ -77,7 +77,7 @@ final class FakeRepository: RepositoryFactory
     func searchProfiles(currentUserCUID cuid: String, withParameters parameters: SearchProfileParameters, limit: Int, offset: Int, success: @escaping (ProfileList?) -> Void, failure: @escaping (Error?) -> Void)
     {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            success(ProfileList(total: 3, offset: 3, items: [self.userProfile, self.userProfile2, self.userProfile3]))
+            success(ProfileList(total: 3, offset: 3, items: [self.userProfile, self.userProfile2, self.userProfile3,self.userProfile, self.userProfile2, self.userProfile3,self.userProfile, self.userProfile2, self.userProfile3]))
         }
     }
     
