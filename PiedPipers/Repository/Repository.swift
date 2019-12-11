@@ -53,19 +53,21 @@ final class FakeRepository: RepositoryFactory
     
     private let video2 = Video(id: "VZzSBv6tXMw", video: "https://www.youtube.com/watch?v=VZzSBv6tXMw", embedVideo: "https://www.youtube.com/embed/VZzSBv6tXMw?ecver=1&amp;iv_load_policy=1&amp;yt:stretch=16:9&amp;autohide=1&amp;color=red&amp;", thumbnail: "https://img.youtube.com/vi/VZzSBv6tXMw/hqdefault.jpg")
     // Falta añadir videos a los FAKE perfiles
-    var userProfile: Profile {
+    private var userProfile_jon:Profile {
         let user = Profile(cuid: "", name: "name", location: Location(lat: 20.0, long: 20.0), contact: Contact(type: .email, data: "correo.a.encodear@correo.com"), instruments: ["bateria", "guitarra", "voz", "Bandurria", "Contrabajo", "Bajo", "Flauta", "Xilofono", "Trompeta", "Triangulo", "Trombon"], videos: [video1, video2], description: "", photo: "una foto")
         
         return user
     }
     
-    var otherProfile: Profile {
-        let user = Profile(cuid: "", name: "name", location: Location(lat: 20.0, long: 20.0), contact: Contact(type: .email, data: "Correo.a.encodear@correo.com"), instruments: ["bateria", "guitarra", "voz"], videos: nil, description: "una descripción rexulona", photo: "una foto")
-        
-        return user
-    }
+    private let userProfile = Profile(cuid: "", name: "Hideo Kojima", location: Location(lat: 20.0, long: 20.0), contact: Contact(type: .email, data: "Correo.a.encodear@correo.com"), instruments: ["guitarra", "voz", "productor"], videos: nil, description: "una descripción rexulona", photo: "kojima", friendlyLocation: "U.C.A.")
     
-    private let local = Local(cuid: "", name: "un local", dateAdded: "", location: Location(lat: 10.0, long: 10.0), price: 40.0, contact: Contact(type: .email, data: "arroba@correo.ru"), photos: ["una foto", "dos fotos", "tres... fotos?"], description: "una descripción de un local molón")
+    private let userProfile2 = Profile(cuid: "", name: "Mads Mikkelsen", location: Location(lat: 20.0, long: 20.0), contact: Contact(type: .email, data: "Correo.a.encodear@correo.com"), instruments: ["bajo"], videos: nil, description: "una descripción rexulona", photo: "mads", friendlyLocation: "U.C.A.")
+    
+    private let userProfile3 = Profile(cuid: "", name: "Norman Reedus", location: Location(lat: 20.0, long: 20.0), contact: Contact(type: .email, data: "Correo.a.encodear@correo.com"), instruments: ["batería"], videos: nil, description: "una descripción rexulona", photo: "norman", friendlyLocation: "U.C.A.")
+
+    private let otherProfile = Profile(cuid: "", name: "name", location: Location(lat: 20.0, long: 20.0), contact: Contact(type: .email, data: "Correo.a.encodear@correo.com"), instruments: ["bateria", "guitarra", "voz"], videos: nil, description: "una descripción rexulona", photo: "una foto")
+    
+    private let local = Local(cuid: "", name: "un local", dateAdded: "", location: Location(lat: 10.0, long: 10.0), price: 29.99, contact: Contact(type: .email, data: "arroba@correo.ru"), photos: ["kojima", "dos fotos", "tres... fotos?"], description: "una descripción de un local molón con una descripción tope larga que lo flipas chorbo")
 
     func getProfile(currenUserCUID cuid: String, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
     {
@@ -84,16 +86,16 @@ final class FakeRepository: RepositoryFactory
     
     func searchProfiles(currentUserCUID cuid: String, withParameters parameters: SearchProfileParameters, limit: Int, offset: Int, success: @escaping (ProfileList?) -> Void, failure: @escaping (Error?) -> Void)
     {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            success(ProfileList(total: 3, offset: 3, items: [self.userProfile, self.userProfile, self.userProfile]))
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            success(ProfileList(total: 3, offset: 3, items: [self.userProfile, self.userProfile2, self.userProfile3,self.userProfile, self.userProfile2, self.userProfile3,self.userProfile, self.userProfile2, self.userProfile3]))
         }
     }
     
     func searchLocals(currentUserCUID cuid: String, withParameters parameters: SearchLocalParameters, limit: Int, offset: Int, success: @escaping (LocalList?) -> Void, failure: @escaping (Error?) -> Void)
     {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-//            success(LocalList(total: 3, offset: 3, items: [self.local, self.local, self.local]))
-            success(LocalList(total: 0, offset: 0, items: []))
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            success(LocalList(total: 3, offset: 3, items: [self.local, self.local, self.local]))
+//            success(LocalList(total: 0, offset: 0, items: []))
         }
     }
     
@@ -255,7 +257,7 @@ final class RemoteRepository: RepositoryFactory
     
     func searchProfiles(currentUserCUID cuid: String, withParameters parameters: SearchProfileParameters, limit: Int, offset: Int, success: @escaping (ProfileList?) -> Void, failure: @escaping (Error?) -> Void)
     {
-        let getProfilesBySearchingRequest = GetProfileBySearchingRequest(cuid: cuid,profileParameters: parameters, limit: 10, offset: 10)
+        let getProfilesBySearchingRequest = GetProfileBySearchingRequest(cuid: cuid,profileParameters: parameters, limit: limit, offset: offset)
         
         getProfilesBySearchingRequest.makeRequest { (result) in
             switch result

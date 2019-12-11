@@ -13,23 +13,10 @@ class FilterButton : UIButton
     override init(frame: CGRect)
     {
         super.init(frame: frame)
-        
-//        let btn = UIButton(type: UIButton.ButtonType.roundedRect)
-//        btn.buttonType = UIButton.ButtonType.roundedRect
-//        btn.setTitle("Filters", for: .normal)
-//        self.addTarget(self, action: #selector(filtersButtonPressed), for: .touchUpInside)
-//        btn.layer.cornerRadius = btn.frame.height * 0.5
-//        btn.setImage(#imageLiteral(resourceName: "Search.png"), for: UIControl.State.normal)
-        
         self.backgroundColor = .white
         
         addShadows()
         addShape()
-        addImage()
-
-//        btn.sendSubviewToBack(imageView)
-//        btn.sendSubviewToBack(shapes)
-//        btn.sendSubviewToBack(shadows)
     }
     
     required init?(coder: NSCoder)
@@ -79,9 +66,9 @@ class FilterButton : UIButton
         shapes.layer.cornerRadius = self.frame.height * 0.5
     }
     
-    private func addImage()
+    public func addImage(image: UIImage)
     {
-        let imageView = UIImageView(image: #imageLiteral(resourceName: "FilterButton"))
+        let imageView = UIImageView(image: image)
 //        imageView.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
 //        imageView.clipsToBounds = true
         imageView.center = self.center

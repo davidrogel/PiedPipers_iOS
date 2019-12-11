@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class SearchViewController: UIViewController
 {
@@ -25,7 +26,8 @@ class SearchViewController: UIViewController
     
     // MARK: - Parameters
     
-    private let cellId = "cellId"
+    private let cellProfileId = "cellProfileId"
+    private let cellLocalId = "cellLocalId"
     
     enum DisplayState { case LOCALS, PROFILES }
     private var displayState: DisplayState = .LOCALS
@@ -39,6 +41,8 @@ class SearchViewController: UIViewController
     // MARK: Presentable Zone
     
     private var presenter: SearchViewPresenter!
+    
+    let cuid = "ck2g3ps39000c93pcfox7e8jn"
     
     var profiles: [SearchProfilePresentable] = []
     {
@@ -76,7 +80,8 @@ class SearchViewController: UIViewController
         collectionView.dataSource = self
         collectionView.delegate = self
         
-        collectionView.register(CustomCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView.register(ProfileCustomCell.self, forCellWithReuseIdentifier: cellProfileId)
+        collectionView.register(LocalCustomCell.self, forCellWithReuseIdentifier: cellLocalId)
         
         collectionView.backgroundColor = .white
         
@@ -116,64 +121,69 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
-        return cell
+        switch displayState
+        {
+        case .LOCALS:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellLocalId, for: indexPath) as! LocalCustomCell
+            
+            let local = locals[indexPath.item]
+            
+            cell.setName(name: local.localName)
+            
+//            if let urlToImage = URL(string: local.image)
+//            {
+//                let img:UIImage = UIImage.load(fromUrl: urlToImage)
+//            }
+//            let image:UIImage? = UIImage(named: local.image)
+//            if let img = image {
+//                cell.setPortrait(withImage: img)
+//            }
+            UIImage.load(withImgPath: local.image) { (img) in
+                cell.setPortrait(withImage: img)
+            }
+            
+            
+            
+//            cell.setPortrait(withImage: UIImage(data: local.image)!)
+            
+//            UIImage.load(withImgPath: local.image) { cell.setPortrait(withImage: $0) }
+            
+            cell.setPrice(price: local.price)
+            cell.setDescription(text: local.description)
+            
+            return cell
+        case .PROFILES:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellProfileId, for: indexPath) as! ProfileCustomCell
+            
+            let profile = profiles[indexPath.item]
+            
+            cell.setInstruments(instruments: profile.instruments)
+            cell.setName(name: profile.profileName)
+            cell.setFriendlyLocation(name: profile.friendlyLocation)
+//            UIImage.load(withImgPath: profile.image) { (img) in
+//                cell.setPortrait(withImage: img)
+//            }
+            cell.setPortrait(withImgPath: profile.image)
+//            let image:UIImage? = UIImage(named: profile.image)
+//            if let img = image {
+//                cell.setPortrait(withImage: img)
+//            }
+//            cell.setPortrait(withImage: UIImage(data: profile.image)!)
+//            UIImage.load(withImgPath: profile.image) { cell.setPortrait(withImage: $0) }
+//            cell.setPortrait(withImage: UIImage.load(withImgPath: profile.image))
+            
+            return cell
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
     {
         return CGSize(width: view.frame.width, height: 300)
     }
-}
-
-class CustomCell: UICollectionViewCell
-{
-    let portrait:UIImageView = {
-        let iv = UIImageView(image: #imageLiteral(resourceName: "kojima"))
-        iv.contentMode = .scaleAspectFill
-        iv.clipsToBounds = true
-        iv.layer.cornerRadius = 24
-        return iv
-    }()
     
-    let dataView:UIView = {
-        let v = UIView()
-        v.backgroundColor = .systemBlue
-        v.layer.cornerRadius = 24
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }()
-    
-    override init(frame: CGRect)
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
-        super.init(frame: frame)
-        
-        addSubview(portrait)
-        addSubview(dataView)
-        
-        portrait.translatesAutoresizingMaskIntoConstraints = false
-
-        portrait.topAnchor.constraint(equalTo: self.topAnchor, constant: 8).isActive = true
-//        portrait.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -60).isActive = true
-        portrait.bottomAnchor.constraint(equalTo: dataView.centerYAnchor).isActive = true
-        portrait.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
-        portrait.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16).isActive = true
-        
-        
-        dataView.heightAnchor.constraint(equalToConstant: 85).isActive = true
-        dataView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        dataView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
-        dataView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16).isActive = true
-    }
-    
-    required init?(coder: NSCoder)
-    {
-        super.init(coder: coder)
-    }
-    
-    public func setPortrait(withImage image: UIImage)
-    {
-        portrait.image = image
+        print("selected")
     }
 }
 
@@ -195,6 +205,7 @@ extension SearchViewController: SearchViewDelegate
         if profiles.isEmpty
         {
             nothingHereView.isHidden = false
+            nothingHereView.label.text = "Nothing found"
             return
         }
         
@@ -208,7 +219,7 @@ extension SearchViewController: SearchViewDelegate
         if locals.isEmpty
         {
             nothingHereView.isHidden = false
-            nothingHereView.label.text = "Nothing was found"
+            nothingHereView.label.text = "Nothing found"
             return
         }
         errorView.isHidden = true
@@ -226,13 +237,10 @@ extension SearchViewController: SearchViewDelegate
 /// Delegate implemented to work with TopView
 extension SearchViewController: TopViewDelegate
 {
-    func profileFiltesParametersChanged(params: SearchProfileParameters)
-    {
-        
-    }
-     
     func segmentedViewSegmentedIndexChanged(valueChanged value: Int)
     {
+        errorView.isHidden = true
+        nothingHereView.isHidden = true
         self.displayState = (value == 0) ? .PROFILES : .LOCALS
     }
     
@@ -242,15 +250,49 @@ extension SearchViewController: TopViewDelegate
         switch displayState
         {
         case .LOCALS:
-            presenter.requestLocals(cuid: "", parameters: SearchLocalParameters(), limit: 0, offset: 0)
+            presenter.requestLocals(cuid: self.cuid, parameters: SearchLocalParameters(name: value), limit: 10, offset: 0)
         case .PROFILES:
-            presenter.requestProfiles(cuid: "", parameters: SearchProfileParameters(), limit: 0, offset: 0)
+            presenter.requestProfiles(cuid: self.cuid, parameters: SearchProfileParameters(name: value), limit: 10, offset: 0)
         }
     }
     
-    func localFiltersParametersChanged(params: SearchLocalParameters)
+    func openFiltersViewController()
+    {
+        switch displayState
+        {
+        case .LOCALS:
+            presentLocalFilters()
+        case .PROFILES:
+            presentProfileFilters()
+        }
+    }
+    
+    private func presentProfileFilters()
+    {
+        let vc = ProfileFiltersViewController()
+        vc.delegate = self
+        vc.modalPresentationStyle = .fullScreen
+
+        present(vc, animated: true, completion: nil)
+    }
+    
+    private func presentLocalFilters()
     {
         
+    }
+}
+
+extension SearchViewController: ProfileFiltersProtocol
+{
+    func applyProfileFilters(filters: SearchProfileParameters)
+    {
+        switch displayState
+        {
+        case .LOCALS:
+            print("locals filters applied")
+        case .PROFILES:
+            print("profiles filters applied")
+        }
     }
 }
 

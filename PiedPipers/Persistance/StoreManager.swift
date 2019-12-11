@@ -62,4 +62,10 @@ final class StoreManager
     func removeStoreCuid() {
         userDefaults.removeObject(forKey: "currentCuid")
     }
+    
+    /// True if the item was successfully deleted.
+    public func deleteData(withKey key:String) -> Bool
+    {
+        return keychain.delete(key)
+    }
 }
