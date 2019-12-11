@@ -6,7 +6,7 @@
 //  Copyright © 2019 david rogel pernas. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 struct SearchProfilePresentable
 {
@@ -32,7 +32,7 @@ struct SearchLocalPresentable
 
 extension SearchProfilePresentable
 {
-    static func make(cuid: String, name: String?, friendlyLocation: String?, photo: Photo?, instruments: [String]?) -> SearchProfilePresentable
+    static func make(cuid: String, name: String?, friendlyLocation: String?, photo: String?, instruments: [String]?) -> SearchProfilePresentable
     {
         return SearchProfilePresentable(cuid: cuid, profileName: name ?? "Name", friendlyLocation: friendlyLocation ?? "Somewhere", image: photo ?? "placeholder", instruments: instruments ?? [])
     }
