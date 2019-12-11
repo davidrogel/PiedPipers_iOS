@@ -55,7 +55,11 @@ final class StoreManager
         return currentUserCuid
     }
     
-    func setLoggedUser(user: String) {
-        userDefaults.set(user, forKey: "currentCuid")
+    func setLoggedUser(userCuid: String) {
+        userDefaults.set(userCuid, forKey: "currentCuid")
+    }
+    
+    func removeStoreCuid() {
+        userDefaults.removeObject(forKey: "currentCuid")
     }
 }

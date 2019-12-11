@@ -1,20 +1,26 @@
 PODS:
   - Alamofire (5.0.0-rc.3)
   - KeychainSwift (17.0.0)
+  - Kingfisher (5.11.0):
+    - Kingfisher/Core (= 5.11.0)
+  - Kingfisher/Core (5.11.0)
 
 DEPENDENCIES:
   - Alamofire (~> 5.0.0-rc.3)
   - KeychainSwift (~> 17.0)
+  - Kingfisher (~> 5.0)
 
 SPEC REPOS:
   trunk:
     - Alamofire
     - KeychainSwift
+    - Kingfisher
 
 SPEC CHECKSUMS:
   Alamofire: ca8c0de6906873be89d6deec5c8de279e00bf872
   KeychainSwift: 9f43f562dffc88af6efadb57d74b14c598eb337f
+  Kingfisher: 4569606189149e19c7d9439f47e885d0679b7a90
 
-PODFILE CHECKSUM: b0928298051dc3975bffb526f1ac60ee5e193663
+PODFILE CHECKSUM: 3260e62c013e9dfd896ee15efda566a3b587b7a2
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.8.3

@@ -62,23 +62,23 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 extension SceneDelegate: UITabBarControllerDelegate {
 
-//    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-//        switch viewController.nibName {
-//        case "HomeViewController":
-//            return true
-//        case "ProfileViewController":
-//            let userCuid = StoreManager.shared.getLoggedUser()
-//            if userCuid == "" {
-//                let loginViewController = LoginViewController()
-//                loginViewController.modalPresentationStyle = .fullScreen
-//                tabBarController.present(loginViewController, animated: true, completion: nil)
-//                return false
-//            } else {
-//                return true
-//            }
-//
-//        default:
-//            return true
-//        }
-//    }
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        switch viewController.nibName {
+        case "HomeViewController":
+            return true
+        case "ProfileViewController":
+            let userCuid = StoreManager.shared.getLoggedUser()
+            if userCuid == "" {
+                let loginViewController = Assembler.provideLoginScreen()
+                loginViewController.modalPresentationStyle = .fullScreen
+                tabBarController.present(loginViewController, animated: true, completion: nil)
+                return false
+            } else {
+                return true
+            }
+
+        default:
+            return true
+        }
+    }
 }

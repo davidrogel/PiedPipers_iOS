@@ -13,6 +13,7 @@
                 <outlet property="emailBox" destination="7pe-hX-kE3" id="S2B-CG-8vZ"/>
                 <outlet property="logInButton" destination="fMz-tN-HxE" id="Nxd-Wh-5eD"/>
                 <outlet property="passwordBox" destination="eUc-tL-siR" id="ctx-uP-S7V"/>
+                <outlet property="signUpView" destination="fNx-sl-doO" id="L5k-uT-CAT"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -28,7 +29,7 @@
                         <constraint firstAttribute="height" constant="50" id="ZHd-gR-NDl"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                    <textInputTraits key="textInputTraits" textContentType="email"/>
+                    <textInputTraits key="textInputTraits" keyboardType="emailAddress" textContentType="email"/>
                 </textField>
                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Your password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="eUc-tL-siR" userLabel="passwordBox">
                     <rect key="frame" x="16" y="341" width="382" height="50"/>
@@ -37,7 +38,7 @@
                         <constraint firstAttribute="height" constant="50" id="fAY-mQ-DJ7"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                    <textInputTraits key="textInputTraits" textContentType="password"/>
+                    <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
                 </textField>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fMz-tN-HxE" userLabel="logInButton">
                     <rect key="frame" x="16" y="730" width="382" height="50"/>
@@ -49,6 +50,9 @@
                     <state key="normal" title="Log In">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
+                    <connections>
+                        <action selector="loginRegisterButtonTapped:" destination="-1" eventType="touchUpInside" id="Cl3-LH-ySO"/>
+                    </connections>
                 </button>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo dark" translatesAutoresizingMaskIntoConstraints="NO" id="aJ5-bQ-3iR">
                     <rect key="frame" x="127" y="124" width="160" height="64"/>
@@ -73,6 +77,9 @@
                             <state key="normal" title="Register here!">
                                 <color key="titleColor" red="0.9346256852" green="0.4633996487" blue="0.45096361639999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             </state>
+                            <connections>
+                                <action selector="registerButtonTapped:" destination="-1" eventType="touchUpInside" id="5Wd-Jt-fi8"/>
+                            </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Don't have an account." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hAE-tg-6uf">
                             <rect key="frame" x="8" y="6" width="157" height="18"/>
@@ -103,7 +110,7 @@
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                     <connections>
-                        <action selector="closeView:" destination="-1" eventType="touchUpInside" id="wiO-Dd-36c"/>
+                        <action selector="closeCurrentView:" destination="-1" eventType="touchUpInside" id="Stk-C4-M8X"/>
                     </connections>
                 </button>
             </subviews>

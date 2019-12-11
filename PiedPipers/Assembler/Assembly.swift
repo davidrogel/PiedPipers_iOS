@@ -28,9 +28,16 @@ final class Assembler {
     
     static func provideCurrentUserProfile() -> UIViewController {
         let currentUserViewController = ProfileViewController()
-        let presenter = ProfilePresenter(with: currentUserViewController, profileService: Repository.fake)
+        let presenter = ProfilePresenter(with: currentUserViewController, profileService: Repository.remote)
         currentUserViewController.configure(with: presenter)
 
         return currentUserViewController
+    }
+    
+    static func provideLoginScreen() -> UIViewController {
+        let loginViewController = LoginViewController()
+        let presenter = LoginPresenter(with: loginViewController, loginService: Repository.remote)
+        loginViewController.configure(with: presenter)
+        return loginViewController
     }
 }

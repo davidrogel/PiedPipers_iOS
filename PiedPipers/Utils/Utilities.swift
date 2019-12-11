@@ -72,3 +72,11 @@ extension UIStackView
         views.forEach{ self.addArrangedSubview($0) }
     }
 }
+
+extension String
+{
+    public static func createUrl(fromImgPath imgPath: String) -> URL?
+    {
+        return URL(string: urlToServer + "/" + imgPath)
+    }
+}

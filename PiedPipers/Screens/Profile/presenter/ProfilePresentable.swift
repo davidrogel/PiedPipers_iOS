@@ -20,7 +20,14 @@ struct ContactPresentable {
     let data: String
 }
 
+struct LocationPresentable: Codable
+{
+    let lat: Double
+    let long: Double
+}
+
 struct VideoPresentable {
+    let id: String?
     let videoURL: String?
     let thumbnail: String?
 }
@@ -30,17 +37,19 @@ struct ProfilePresentable
     let name: String?
     let city: String?
     let avatar: String?
+    let location: LocationPresentable?
     let contact: ContactPresentable?
     let instruments: [String]?
     let videos: [VideoPresentable]?
     let aboutMe: String?
     
-    init(name: String? = nil, city: String? = nil, avatar: String? = nil,
+    init(name: String? = nil, city: String? = nil, avatar: String? = nil, location: LocationPresentable?,
          contact: ContactPresentable? = nil, instruments: [String]? = nil, videos: [VideoPresentable]? = nil, aboutMe: String? = nil)
     {
         self.name = name
         self.city = city
         self.avatar = avatar
+        self.location = location
         self.contact = contact
         self.instruments = instruments
         self.videos = videos

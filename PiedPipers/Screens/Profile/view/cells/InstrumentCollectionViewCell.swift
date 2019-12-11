@@ -40,12 +40,31 @@ class InstrumentCollectionViewCell: UICollectionViewCell {
     }
     
     func hideRemoveButton() {
+        instrumentLabel.backgroundColor = UIColor.systemIndigo
         removeButton.isHidden = true
+        removeButton.image = UIImage(systemName: "multiply.circle.fill")
     }
     
     func selectedToRemove() {
-        instrumentLabel.backgroundColor = UIColor(ciColor: .gray)
-        //removeButton.image = UIImage(named: .)
+        instrumentLabel.layer.borderWidth = 0
+        instrumentLabel.backgroundColor = UIColor.systemGray4
+        instrumentLabel.textColor = UIColor.systemBackground
+        removeButton.image = UIImage(systemName: "checkmark.circle.fill")
+    }
+    
+    func showAddCell() {
+        removeButton.isHidden = true
+        instrumentLabel.layer.borderColor = UIColor.systemGray2.cgColor
+        instrumentLabel.layer.borderWidth = 1.0
+        instrumentLabel.backgroundColor = UIColor(ciColor: .white)
+        instrumentLabel.textColor = UIColor.systemGray2
+    }
+    
+    func deselectCell() {
+        instrumentLabel.layer.borderWidth = 0
+        instrumentLabel.backgroundColor = UIColor.systemIndigo
+        instrumentLabel.textColor = UIColor.systemBackground
+        removeButton.image = UIImage(systemName: "multiply.circle.fill")
     }
 
 }

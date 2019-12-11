@@ -25,6 +25,7 @@ class ProfilePresenter {
         var namePresentable: String?
         var cityPresentable: String?
         var avatarPresentable: String?
+        var locationPresentable: LocationPresentable?
         var contactPresentable: ContactPresentable?
         var instrumentPresentable: [String]?
         var videoPresentable: [VideoPresentable]?
@@ -48,6 +49,12 @@ class ProfilePresenter {
             avatarPresentable = nil
         }
         
+        if let location = profile.location {
+            locationPresentable = LocationPresentable(lat: location.lat, long: location.long)
+        } else {
+            locationPresentable = nil
+        }
+        
         if let contact = profile.contact {
             contactPresentable = ContactPresentable(type: contact.type, data: contact.data)
         } else {
@@ -62,7 +69,7 @@ class ProfilePresenter {
         
         if let videos = profile.videos {
             videoPresentable = videos.map { (video) -> VideoPresentable in
-                VideoPresentable(videoURL: video.video, thumbnail: video.thumbnail)
+                VideoPresentable(id: video.id, videoURL: video.video, thumbnail: video.thumbnail)
             }
         } else {
             videoPresentable = nil
@@ -74,9 +81,66 @@ class ProfilePresenter {
             aboutMePresentable = nil
         }
         
-        let profilePresentable = ProfilePresentable(name: namePresentable, city: cityPresentable, avatar: avatarPresentable, contact: contactPresentable, instruments: instrumentPresentable, videos: videoPresentable, aboutMe: aboutMePresentable)
+        let profilePresentable = ProfilePresentable(name: namePresentable, city: cityPresentable, avatar: avatarPresentable, location: locationPresentable, contact: contactPresentable, instruments: instrumentPresentable, videos: videoPresentable, aboutMe: aboutMePresentable)
         
         return profilePresentable
+    }
+    
+    private func convert2Profile(withCuid cuid: String, profilePresentable: ProfilePresentable) -> Profile {
+        var nameProfile: String?
+        var cityProfile: String?
+        var avatarProfile: String?
+        var locationProfile: Location?
+        var contactProfile: Contact?
+        var instrumentProfile: [String]?
+        var videoProfile: [Video]?
+        var aboutMeProfile: String?
+        
+        nameProfile = profilePresentable.name
+        
+        if let city = profilePresentable.city {
+            cityProfile = city
+        } else {
+            cityProfile = nil
+        }
+        
+        if let avatar = profilePresentable.avatar {
+            avatarProfile = avatar
+        } else {
+            avatarProfile = nil
+        }
+        
+         if let location = profilePresentable.location {
+            locationProfile = Location(lat: location.lat, long: location.long)
+        } else {
+            locationProfile = nil
+        }
+        
+        if let contact = profilePresentable.contact {
+            contactProfile = Contact(type: contact.type, data: contact.data)
+        } else {
+            contactProfile = nil
+        }
+        
+        instrumentProfile = profilePresentable.instruments
+        
+        if let videos = profilePresentable.videos {
+            videoProfile = videos.map { (video) -> Video in
+                Video(id: video.id!, video: video.videoURL, embedVideo: nil, thumbnail: video.thumbnail)
+            }
+        } else {
+            videoProfile = nil
+        }
+        
+        if let aboutMe = profilePresentable.aboutMe {
+            aboutMeProfile = aboutMe
+        } else {
+            aboutMeProfile = nil
+        }
+        
+        let profile = Profile(cuid: cuid, name: nameProfile, location: locationProfile, contact: contactProfile, instruments: instrumentProfile, videos: videoProfile, description: aboutMeProfile, photo: avatarProfile, friendlyLocation: cityProfile)
+        
+        return profile
     }
     
 }
@@ -105,11 +169,7 @@ extension ProfilePresenter: ProfilePresenterProtocol {
                 
                 return
             }
-            if modelUnwrapped.name == nil {
-                self?.ui?.setEditProfileView()
-            } else {
-                self?.ui?.setCurrentUserProfileViewWith(model: modelUnwrapped)
-            }
+            self?.ui?.setCurrentUserProfileViewWith(model: modelUnwrapped)
             
         }, failure: { (error) in
             //TODO: En caso de que falle, mostrar vista de perfil no encontrado
@@ -120,6 +180,26 @@ extension ProfilePresenter: ProfilePresenterProtocol {
         ui?.setEditProfileView()
     }
     
+    func getAvailableInstruments() {
+        let cuid = StoreManager.shared.getLoggedUser()
+        profileService.getAvaliableInstruments(currentUserCUID: cuid, success: { [weak self] (instruments) in
+            guard let unwrappedInstruments = instruments else {
+                fatalError()
+            }
+            self?.ui?.setAvailableInstruments(with: unwrappedInstruments)
+        }, failure: { [weak self] (error) in
+            self?.ui?.setAvailableInstruments(with: ["Guitarra", "Bateria", "Contrabajo", "Trompeta"])
+        })
+    }
     
+    func updateProfile(with profilePresentable: ProfilePresentable) {
+        let cuid = StoreManager.shared.getLoggedUser()
+        let profile = convert2Profile(withCuid: cuid, profilePresentable: profilePresentable)
+        profileService.updateProfile(currentUserCUID: cuid, newProfile: profile, success: { [weak self] (updatedProfile) in
+            self?.ui?.showUpdateAlert(successfully: true)
+        }, failure: { [weak self] (error) in
+            self?.ui?.showUpdateAlert(successfully: false)
+        })
+    }
     
 }
