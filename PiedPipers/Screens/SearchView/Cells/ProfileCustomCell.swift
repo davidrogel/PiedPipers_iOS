@@ -25,6 +25,13 @@ class ProfileCustomCell: BasePiperCustomCell
     
     // MARK: - Setters
     
+    public func setPortrait(withImgPath imgPath: String)
+    {
+        UIImage.load(withImgPath: imgPath) { [weak self] (img) in
+            self?.portrait.image = img
+        }
+    }
+    
     public func setPortrait(withImage image: UIImage)
     {
         portrait.image = image
