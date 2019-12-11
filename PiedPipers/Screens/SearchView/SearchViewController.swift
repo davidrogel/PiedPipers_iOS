@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class SearchViewController: UIViewController
 {
@@ -129,10 +130,23 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
             
             cell.setName(name: local.localName)
             
-            let image:UIImage? = UIImage(named: local.image)
-            if let img = image {
+//            if let urlToImage = URL(string: local.image)
+//            {
+//                let img:UIImage = UIImage.load(fromUrl: urlToImage)
+//            }
+//            let image:UIImage? = UIImage(named: local.image)
+//            if let img = image {
+//                cell.setPortrait(withImage: img)
+//            }
+            UIImage.load(withImgPath: local.image) { (img) in
                 cell.setPortrait(withImage: img)
             }
+            
+            
+            
+//            cell.setPortrait(withImage: UIImage(data: local.image)!)
+            
+//            UIImage.load(withImgPath: local.image) { cell.setPortrait(withImage: $0) }
             
             cell.setPrice(price: local.price)
             cell.setDescription(text: local.description)
@@ -146,11 +160,17 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
             cell.setInstruments(instruments: profile.instruments)
             cell.setName(name: profile.profileName)
             cell.setFriendlyLocation(name: profile.friendlyLocation)
-            
-            let image:UIImage? = UIImage(named: profile.image)
-            if let img = image {
-                cell.setPortrait(withImage: img)
-            }
+//            UIImage.load(withImgPath: profile.image) { (img) in
+//                cell.setPortrait(withImage: img)
+//            }
+            cell.setPortrait(withImgPath: profile.image)
+//            let image:UIImage? = UIImage(named: profile.image)
+//            if let img = image {
+//                cell.setPortrait(withImage: img)
+//            }
+//            cell.setPortrait(withImage: UIImage(data: profile.image)!)
+//            UIImage.load(withImgPath: profile.image) { cell.setPortrait(withImage: $0) }
+//            cell.setPortrait(withImage: UIImage.load(withImgPath: profile.image))
             
             return cell
         }
@@ -161,7 +181,8 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
         return CGSize(width: view.frame.width, height: 300)
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
+    {
         print("selected")
     }
 }
@@ -235,14 +256,43 @@ extension SearchViewController: TopViewDelegate
         }
     }
     
-    func localFiltersParametersChanged(params: SearchLocalParameters)
+    func openFiltersViewController()
+    {
+        switch displayState
+        {
+        case .LOCALS:
+            presentLocalFilters()
+        case .PROFILES:
+            presentProfileFilters()
+        }
+    }
+    
+    private func presentProfileFilters()
+    {
+        let vc = ProfileFiltersViewController()
+        vc.delegate = self
+        vc.modalPresentationStyle = .fullScreen
+
+        present(vc, animated: true, completion: nil)
+    }
+    
+    private func presentLocalFilters()
     {
         
     }
-    
-    func profileFiltesParametersChanged(params: SearchProfileParameters)
+}
+
+extension SearchViewController: ProfileFiltersProtocol
+{
+    func applyProfileFilters(filters: SearchProfileParameters)
     {
-        
+        switch displayState
+        {
+        case .LOCALS:
+            print("locals filters applied")
+        case .PROFILES:
+            print("profiles filters applied")
+        }
     }
 }
 
