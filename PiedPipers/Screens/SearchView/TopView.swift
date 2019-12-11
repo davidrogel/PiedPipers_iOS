@@ -12,8 +12,7 @@ protocol TopViewDelegate: class
 {
     func segmentedViewSegmentedIndexChanged(valueChanged value: Int)
     func searchBarSearchButtonPressed(valueToSearch value: String)
-    func profileFiltesParametersChanged(params: SearchProfileParameters)
-    func localFiltersParametersChanged(params: SearchLocalParameters)
+    func openFiltersViewController()
 }
 
 class TopView: UIView
@@ -29,6 +28,7 @@ class TopView: UIView
 
     private let filtersBtn:UIButton = {
         let fb = FilterButton(frame: CGRect(x: 0, y: 0, width: 60, height: 60)) // frame: CGRect(x: 0, y: 0, width: 60, height: 60)
+        fb.addImage(image: #imageLiteral(resourceName: "FilterButton"))
         fb.addTarget(self, action: #selector(filtersButtonPressed), for: .touchUpInside)
         return fb
     }()
@@ -104,12 +104,12 @@ class TopView: UIView
         searchBar.topAnchor.constraint(equalTo: self.topAnchor, constant: 16).isActive = true
         searchBar.leadingAnchor.constraint(equalTo: filtersBtn.trailingAnchor, constant: 16).isActive = true
         searchBar.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16).isActive = true
-        
-        segmentedView.translatesAutoresizingMaskIntoConstraints = false
     }
     
     private func configureSegmentedViewConstraints()
     {
+        segmentedView.translatesAutoresizingMaskIntoConstraints = false
+        
         segmentedView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 16).isActive = true
         segmentedView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16).isActive = true
         segmentedView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
@@ -127,9 +127,9 @@ class TopView: UIView
     
     @objc private func filtersButtonPressed()
     {
-        // determinar que filtros hay que aplicar... locales? perfiles?
         // abrir sección
         print("filters button tapped")
+        delegate?.openFiltersViewController()
     }
 }
 
