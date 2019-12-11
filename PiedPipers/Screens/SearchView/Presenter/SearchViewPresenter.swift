@@ -20,7 +20,7 @@ protocol SearchViewDelegate: class
 final class SearchViewPresenter
 {
     private unowned let searchViewDelegate: SearchViewDelegate
-    private let repo:RepositoryFactory = Repository.remote
+    private let repo:RepositoryFactory = Repository.fake
     
     let currentUserCUID:String = "ck2g2765h0000q64g4y8tfk0a"
     
@@ -85,7 +85,7 @@ final class SearchViewPresenter
     private func showLocals(localList locals: LocalList)
     {
         let presentables:[SearchLocalPresentable] = locals.items.map { (local) -> SearchLocalPresentable in
-            SearchLocalPresentable(cuid: local.cuid, localName: local.name, price: local.price.toCurrency(), description: local.description, image: local.photos.first ?? "placeholder")
+            SearchLocalPresentable(cuid: local.cuid, localName: local.name, price: local.price.toCurrency(), description: local.description, image: local.photos.first!)
         }
         
         searchViewDelegate.hideLoadingStatus()
