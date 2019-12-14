@@ -477,6 +477,8 @@ extension ProfileViewController: ProfileViewProtocol {
         contactText.text = model.contact?.data
         
         contactButton.isHidden = false
+        
+        loading = false
     }
     
     func setAvailableInstruments(with instruments: [String]) {

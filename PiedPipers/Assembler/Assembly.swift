@@ -14,14 +14,17 @@ final class Assembler {
         let tabBarController = UITabBarController()
         let profileViewController = provideCurrentUserProfile()
         let homeViewController = HomeViewController()
+        let notificationsController = provideNotificationsScreen()
         
-        let homeTabBarItem: UITabBarItem = UITabBarItem(title: "", image: UIImage(named: "Home"), selectedImage: UIImage(named: "HomeSelected"))
-        let profileTabBarItem = UITabBarItem(title: "", image: UIImage(named: "Profile"), selectedImage: UIImage(named: "ProfileSelected"))
+        let homeTabBarItem: UITabBarItem = UITabBarItem(title: "", image: UIImage(named: "Home"), tag: 0)
+        let profileTabBarItem = UITabBarItem(title: "", image: UIImage(named: "Profile"), tag: 3)
+        let notificationsTabBarItem = UITabBarItem(title: "", image: UIImage(named: "Notifications"), tag: 2)
         
         profileViewController.tabBarItem = profileTabBarItem
         homeViewController.tabBarItem = homeTabBarItem
+        notificationsController.tabBarItem = notificationsTabBarItem
         
-        tabBarController.viewControllers = [homeViewController, profileViewController]
+        tabBarController.viewControllers = [homeViewController, notificationsController, profileViewController]
         
         return tabBarController
     }
@@ -39,5 +42,12 @@ final class Assembler {
         let presenter = LoginPresenter(with: loginViewController, loginService: Repository.remote)
         loginViewController.configure(with: presenter)
         return loginViewController
+    }
+    
+    static func provideNotificationsScreen() -> UIViewController {
+        let notificationsViewController = NotificationsViewController()
+        let presenter = NotificationsPresenter(with: notificationsViewController, notificationsService: Repository.fake)
+        notificationsViewController.configure(with: presenter)
+        return notificationsViewController
     }
 }

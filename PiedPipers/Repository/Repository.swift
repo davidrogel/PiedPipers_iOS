@@ -44,6 +44,10 @@ protocol RepositoryFactory: class
     func searchProfiles(currentUserCUID cuid: String, withParameters parameters: SearchProfileParameters, limit: Int, offset: Int, success: @escaping (ProfileList?) -> Void, failure: @escaping (Error?) -> Void)
     
     func searchLocals(currentUserCUID cuid: String, withParameters parameters: SearchLocalParameters, limit: Int, offset: Int, success: @escaping (LocalList?) -> Void, failure: @escaping (Error?) -> Void)
+    
+    // NOTIFICATIONS REQUESTS
+    
+    func getNotifications(currentUserCUID cuid: String, success: @escaping ([NotificationCellPresentable]?) -> Void, failure: @escaping (Error?) -> Void)
 }
 
 final class FakeRepository: RepositoryFactory
@@ -68,6 +72,16 @@ final class FakeRepository: RepositoryFactory
     private let otherProfile = Profile(cuid: "", name: "name", location: Location(lat: 20.0, long: 20.0), contact: Contact(type: .email, data: "Correo.a.encodear@correo.com"), instruments: ["bateria", "guitarra", "voz"], videos: nil, description: "una descripción rexulona", photo: "una foto")
     
     private let local = Local(cuid: "", name: "un local", dateAdded: "", location: Location(lat: 10.0, long: 10.0), price: 29.99, contact: Contact(type: .email, data: "arroba@correo.ru"), photos: ["kojima", "dos fotos", "tres... fotos?"], description: "una descripción de un local molón con una descripción tope larga que lo flipas chorbo")
+    
+    private var notifications: [NotificationCellPresentable] {
+        let noti1 = NotificationCellPresentable(image: "kojima", userCuid: "jlkdsahfo", userName: "Kojima", notificationAccepted: false)
+        let noti2 = NotificationCellPresentable(image: "norman", userCuid: "jlkdsahfo", userName: "Norman", notificationAccepted: false)
+        let noti3 = NotificationCellPresentable(image: "jongonzalez", userCuid: "jlkdsahfo", userName: "Jon", notificationAccepted: true)
+        let noti4 = NotificationCellPresentable(image: "mads", userCuid: "jlkdsahfo", userName: "Mads", notificationAccepted: false)
+        
+        
+        return [noti1, noti2, noti3, noti4]
+    }
 
     func getProfile(currenUserCUID cuid: String, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
     {
@@ -82,6 +96,10 @@ final class FakeRepository: RepositoryFactory
     func updateProfile(currentUserCUID cuid: String, newProfile profile: Profile, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
     {
         success(userProfile)
+    }
+    // NOTIFICATIONS
+    func getNotifications(currentUserCUID cuid: String, success: @escaping ([NotificationCellPresentable]?) -> Void, failure: @escaping (Error?) -> Void) {
+        success(notifications)
     }
     
     func searchProfiles(currentUserCUID cuid: String, withParameters parameters: SearchProfileParameters, limit: Int, offset: Int, success: @escaping (ProfileList?) -> Void, failure: @escaping (Error?) -> Void)
@@ -128,6 +146,7 @@ final class FakeRepository: RepositoryFactory
 
 final class RemoteRepository: RepositoryFactory
 {
+    
     // USER
     
     func createUser(withEmail email: String, withPassword pass: String, success: @escaping (User?) -> Void, failure: @escaping (Error?) -> Void)
@@ -283,6 +302,13 @@ final class RemoteRepository: RepositoryFactory
                 failure(err)
             }
         }
+    }
+    
+    // NOTIFICATIONS
+    
+    
+    func getNotifications(currentUserCUID cuid: String, success: @escaping ([NotificationCellPresentable]?) -> Void, failure: @escaping (Error?) -> Void) {
+        //TODO
     }
     
 }
