@@ -52,8 +52,9 @@ class ImagePickerManager: NSObject, UIImagePickerControllerDelegate, UINavigatio
             picker.sourceType = .camera
             self.viewController!.present(picker, animated: true, completion: nil)
         } else {
-            let alertWarning = UIAlertView(title:"Warning", message: "You don't have camera", delegate:nil, cancelButtonTitle:"OK", otherButtonTitles:"")
-            alertWarning.show()
+            let alertWarning = UIAlertController(title: "Warning", message: "You don't have camera.", preferredStyle: .alert)
+            alertWarning.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+            self.viewController!.present(alertWarning, animated: true)
         }
     }
     func openGallery(){
