@@ -73,6 +73,7 @@
 		AC9193552393FEF9000CA28E /* LoginPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9193542393FEF9000CA28E /* LoginPresenter.swift */; };
 		AC91935823940065000CA28E /* LoginProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC91935723940065000CA28E /* LoginProtocols.swift */; };
 		AC91935A23943286000CA28E /* String+IsValidEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC91935923943286000CA28E /* String+IsValidEmail.swift */; };
+		ACB3B51123A54DAD0037D9C7 /* ImagePickerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB3B51023A54DAD0037D9C7 /* ImagePickerManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -156,6 +157,7 @@
 		AC9193542393FEF9000CA28E /* LoginPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPresenter.swift; sourceTree = "<group>"; };
 		AC91935723940065000CA28E /* LoginProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginProtocols.swift; sourceTree = "<group>"; };
 		AC91935923943286000CA28E /* String+IsValidEmail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+IsValidEmail.swift"; sourceTree = "<group>"; };
+		ACB3B51023A54DAD0037D9C7 /* ImagePickerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerManager.swift; sourceTree = "<group>"; };
 		AFF1BC005050C460CD36563D /* Pods_PiedPipers.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PiedPipers.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7F5047FA0520D4CC98BBA3D /* Pods-PiedPipers.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PiedPipers.debug.xcconfig"; path = "Target Support Files/Pods-PiedPipers/Pods-PiedPipers.debug.xcconfig"; sourceTree = "<group>"; };
 		BB656504F0920BB5058C1E37 /* Pods-PiedPipersTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PiedPipersTests.release.xcconfig"; path = "Target Support Files/Pods-PiedPipersTests/Pods-PiedPipersTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -283,6 +285,7 @@
 		6348F68A2392F24D005AA01B /* view */ = {
 			isa = PBXGroup;
 			children = (
+				ACB3B50F23A54D8A0037D9C7 /* imagePicker */,
 				AC88CF31239842530082F64D /* instrumentsPicker */,
 				6348F68B2392F24D005AA01B /* cells */,
 				6348F6902392F24E005AA01B /* ProfileViewController.xib */,
@@ -510,6 +513,14 @@
 			path = protocols;
 			sourceTree = "<group>";
 		};
+		ACB3B50F23A54D8A0037D9C7 /* imagePicker */ = {
+			isa = PBXGroup;
+			children = (
+				ACB3B51023A54DAD0037D9C7 /* ImagePickerManager.swift */,
+			);
+			path = imagePicker;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -698,7 +709,6 @@
 				63E265B2236B64DD007FEA74 /* APIErrorCodes.swift in Sources */,
 				63378A0F2381C103000C7751 /* Local.swift in Sources */,
 				63E265AE236B6400007FEA74 /* ApiSession.swift in Sources */,
-				63F57C332373609A00C59F9E /* ProfilePresentable.swift in Sources */,
 				63335AD3236CBF4200F8CC8F /* Profile.swift in Sources */,
 				6348F6A22392F24E005AA01B /* ProfileProtocols.swift in Sources */,
 				6348F6BD2392F454005AA01B /* UIButton+ShadowsAndCornerRadius.swift in Sources */,
@@ -735,6 +745,7 @@
 				63E265B7236B73C0007FEA74 /* User.swift in Sources */,
 				63378A0D2381BF94000C7751 /* Lists.swift in Sources */,
 				63E265B0236B6400007FEA74 /* APIError.swift in Sources */,
+				ACB3B51123A54DAD0037D9C7 /* ImagePickerManager.swift in Sources */,
 				6348F6A12392F24E005AA01B /* ProfileViewController.swift in Sources */,
 				6348F6562391AB7D005AA01B /* LoadingView.swift in Sources */,
 				6348F64E238C889D005AA01B /* FilterButton.swift in Sources */,
@@ -900,13 +911,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = MNDVT4LYM2;
+				DEVELOPMENT_TEAM = 5GJ4N5ZR45;
 				INFOPLIST_FILE = PiedPipers/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.greyfull.PiedPipers;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ironmacdev.PiedPipers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -919,13 +930,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = MNDVT4LYM2;
+				DEVELOPMENT_TEAM = 5GJ4N5ZR45;
 				INFOPLIST_FILE = PiedPipers/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.greyfull.PiedPipers;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ironmacdev.PiedPipers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

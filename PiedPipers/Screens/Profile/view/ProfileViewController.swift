@@ -17,6 +17,7 @@ class ProfileViewController: UIViewController {
     var selectedInstruments: [Bool] = []
     var selectedVideos: [Bool] = []
     var availableInstruments: [String] = []
+    var reloadFromCamera: Bool = false
     
     var loading: Bool! {
         didSet {
@@ -44,6 +45,7 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var avatarImage: UIImageView!
     @IBOutlet weak var avatarView: UIView!
+    @IBOutlet weak var addPhotoButton: UIButton!
     @IBOutlet weak var followView: UIView!
     @IBOutlet weak var followButton: UIButton!
     @IBOutlet weak var contactView: UIView!
@@ -87,6 +89,7 @@ class ProfileViewController: UIViewController {
         instrumentCollection.reloadData()
         videosCollectionSetUpUI(height: 180, width: 319)
         videoCollection.reloadData()
+        addPhotoButton.layer.cornerRadius = 20
         
         instrumentCollection.delegate = self
         instrumentCollection.dataSource = self
@@ -99,8 +102,13 @@ class ProfileViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         //TODO: Esto llamaría al back cada vez que accedamos al perfil (GUARDAR EL PERFIL EN USER DEFAULT)
-        presenter.loadCurrentUserProfile()
-        loading = true
+        if presenter.isEditing {
+            presenter.prepareEditView()
+        } else {
+            presenter.loadCurrentUserProfile()
+            loading = true
+        }
+        
     }
     
     // MARK: Actions
@@ -214,6 +222,13 @@ class ProfileViewController: UIViewController {
         
     }
     
+    @IBAction func addPhotoTapped(_ sender: Any) {
+        
+        ImagePickerManager().pickImage(self) { (image) in
+            self.avatarImage.image = image
+        }
+    }
+    
     // MARK: Functions
     func createAlert(withTitle title: String?, message: String?) -> UIAlertController {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -312,6 +327,8 @@ extension ProfileViewController: ProfileViewProtocol {
         editButton.setImage(UIImage(named: "editButton"), for: .normal)
         
         avatarView.isHidden = false
+        addPhotoButton.isHidden = true
+        avatarImage.alpha = 1
         
         //TODO: Esto hay que quitarlo
         if model.avatar == nil {
@@ -391,14 +408,18 @@ extension ProfileViewController: ProfileViewProtocol {
         friendlyLocationLabel.borderStyle = .roundedRect
         friendlyLocationLabel.isEnabled = true
         editButton.isHidden = true
-        avatarImage.image = UIImage(named: "addImage")
+        addPhotoButton.isHidden = false
+        avatarImage.alpha = 0.5
         followView.isHidden = true
         contactView.isHidden = false
-        userInstruments.append("Add")
+        if selectedInstruments.count != userInstruments.count - 1 {
+            userInstruments.append("Add")
+        }
         calculateInstrumentsViewHeight()
-        //instrumentCollection.reloadData()
         videoView.isHidden = false
-        userVideos.insert(VideoPresentable(id: "Add", videoURL: "Add", thumbnail: "Add"), at: 0)
+        if selectedVideos.count != userVideos.count - 1 {
+            userVideos.insert(VideoPresentable(id: "Add", videoURL: "Add", thumbnail: "Add"), at: 0)
+        }
         videoCollection.reloadData()
         aboutMeView.isHidden = false
         aboutMeText.isEditable = true
@@ -428,6 +449,8 @@ extension ProfileViewController: ProfileViewProtocol {
         editButton.setImage(UIImage(named: "exitButton"), for: .normal)
         
         avatarView.isHidden = false
+        addPhotoButton.isHidden = true
+        avatarImage.alpha = 1
         avatarImage.image = UIImage(named: "LogoSobreNegro") //TODO: Cambiar por la carga del String de imagen
         //        guard let image = model.avatar else { //TODO: Esto hay que quitarlo
         //            fatalError() //Ahora mismo da error, hasta implementar el nuevo flujo
@@ -477,6 +500,7 @@ extension ProfileViewController: ProfileViewProtocol {
         contactText.text = model.contact?.data
         
         contactButton.isHidden = false
+        loading = false
     }
     
     func setAvailableInstruments(with instruments: [String]) {

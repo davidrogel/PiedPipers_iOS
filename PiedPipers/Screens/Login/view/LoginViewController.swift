@@ -40,6 +40,8 @@ class LoginViewController: UIViewController {
             $0?.leftViewMode = UITextField.ViewMode.always
             $0?.borderStyle = .none
         }
+        emailBox.delegate = self
+        passwordBox.delegate = self
     }
     
     // MARK: Actions
@@ -103,5 +105,12 @@ extension LoginViewController: LoginViewProtocol {
         let alert = UIAlertController(title: "Error creating user.", message: "Sorry, we had trouble creating your user, try again.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Accept", style: .default, handler: nil))
         self.present(alert, animated: true)
+    }
+}
+
+extension LoginViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }

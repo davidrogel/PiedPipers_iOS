@@ -58,6 +58,7 @@ class VideoCollectionViewCell: UICollectionViewCell {
     func showAddCell() {
         videoImage.image = UIImage(named: "videoPlaceholder")
         videoImage.layer.borderWidth = 0
+        removeButton.isHidden = true
     }
     
     func deselectCell() {
