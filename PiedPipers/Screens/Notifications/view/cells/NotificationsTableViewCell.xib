@@ -39,7 +39,7 @@
                                 </state>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="wants to join your band!" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LyC-NW-U1i" userLabel="notificationLabel">
-                                <rect key="frame" x="58" y="7" width="154.5" height="36"/>
+                                <rect key="frame" x="58" y="16" width="164" height="18"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -51,10 +51,11 @@
                             <constraint firstItem="LyC-NW-U1i" firstAttribute="leading" secondItem="dbI-cV-hMc" secondAttribute="trailing" constant="8" id="1FL-Jv-wCv"/>
                             <constraint firstItem="LyC-NW-U1i" firstAttribute="centerY" secondItem="AE3-cr-zaE" secondAttribute="centerY" id="5rc-OD-Jha"/>
                             <constraint firstItem="dbI-cV-hMc" firstAttribute="leading" secondItem="AE3-cr-zaE" secondAttribute="leading" id="8nc-Ko-TFl"/>
-                            <constraint firstItem="dbI-cV-hMc" firstAttribute="top" secondItem="AE3-cr-zaE" secondAttribute="top" id="BDL-dQ-DdS"/>
-                            <constraint firstItem="9lH-9d-H48" firstAttribute="leading" secondItem="LyC-NW-U1i" secondAttribute="trailing" constant="17.5" id="Igd-2g-qN8"/>
+                            <constraint firstItem="dbI-cV-hMc" firstAttribute="leading" secondItem="AE3-cr-zaE" secondAttribute="leading" id="9TI-tz-LF1"/>
+                            <constraint firstItem="9lH-9d-H48" firstAttribute="leading" secondItem="LyC-NW-U1i" secondAttribute="trailing" constant="8" id="Igd-2g-qN8"/>
+                            <constraint firstAttribute="bottom" secondItem="dbI-cV-hMc" secondAttribute="bottom" id="JU5-4Y-ecJ"/>
                             <constraint firstItem="9lH-9d-H48" firstAttribute="centerY" secondItem="AE3-cr-zaE" secondAttribute="centerY" id="PIt-AW-Vq7"/>
-                            <constraint firstAttribute="bottom" secondItem="dbI-cV-hMc" secondAttribute="bottom" id="jfe-Xi-WnX"/>
+                            <constraint firstItem="dbI-cV-hMc" firstAttribute="top" secondItem="AE3-cr-zaE" secondAttribute="top" id="U0Y-eH-DAN"/>
                             <constraint firstAttribute="trailing" secondItem="9lH-9d-H48" secondAttribute="trailing" id="sz2-zq-WVZ"/>
                         </constraints>
                     </view>

@@ -40,11 +40,11 @@ class NotificationsTableViewCell: UITableViewCell {
         avatarImage.layer.masksToBounds = true
     }
 
-//    override func setSelected(_ selected: Bool, animated: Bool) {
-//        super.setSelected(selected, animated: animated)
-//
-//        // Configure the view for the selected state
-//    }
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+
+        contentView.backgroundColor = .systemBackground
+    }
     
     // MARK: Functions
     func putAttributedTextin(label: UILabel, withuser name: String) {
