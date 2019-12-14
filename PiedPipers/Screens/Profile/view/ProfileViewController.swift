@@ -577,6 +577,17 @@ extension ProfileViewController: UICollectionViewDelegate {
                     }
                 }
             }
+        } else {
+            if collectionView == self.videoCollection {
+                let video = userVideos[indexPath.item]
+                guard let videoURL = video.videoURL else {
+                    fatalError()
+                }
+                guard let url = URL(string: videoURL) else {
+                    fatalError()
+                }
+                UIApplication.shared.open(url)
+            }
         }
     }
 }
