@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 // Darle una vuelta (O₂)
 fileprivate enum Fmt
@@ -62,5 +63,18 @@ extension AnyHashable
     public static func == (lhs: AnyHashable, rhs: String) -> Bool
     {
         return lhs.description == rhs
+    }
+}
+
+extension UIImage
+{
+    public func resize(size: CGSize) -> UIImage?
+    {
+        UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
+        self.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage
     }
 }
