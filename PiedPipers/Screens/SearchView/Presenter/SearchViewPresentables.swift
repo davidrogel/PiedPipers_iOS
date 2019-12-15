@@ -37,3 +37,12 @@ extension SearchProfilePresentable
         return SearchProfilePresentable(cuid: cuid, profileName: name ?? "Name", friendlyLocation: friendlyLocation ?? "Somewhere", image: photo ?? "placeholder", instruments: instruments ?? [])
     }
 }
+
+extension SearchLocalPresentable
+{
+    static func make(cuid: String, name: String, price: Double, description: String, photos: [String]) -> SearchLocalPresentable
+    {
+        
+        return SearchLocalPresentable(cuid: cuid, localName: name, price: price.toCurrency(), description: description, image: photos.first ?? "placeholder")
+    }
+}
