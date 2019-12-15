@@ -6,4 +6,34 @@
 //  Copyright © 2019 david rogel pernas. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+protocol FiltersViewDelegate: class
+{
+    func set(instruments: [String])
+}
+
+final class FiltersViewPresenter
+{
+    private unowned let filtersViewDelegate: FiltersViewDelegate
+    private let repo:RepositoryFactory = Repository.remote
+    
+    init(filtersViewDelegate viewDelegate: FiltersViewDelegate)
+    {
+        filtersViewDelegate = viewDelegate
+    }
+    
+    public func requestInstruments(cuid: String)
+    {
+        repo.getAvaliableInstruments(currentUserCUID: cuid, success: { [weak self] (instruments) in
+            self?.sendInstruments(instruments: instruments ?? [])
+        }) { (error) in
+            
+        }
+    }
+    
+    private func sendInstruments(instruments: [String])
+    {
+        filtersViewDelegate.set(instruments: instruments)
+    }
+}
