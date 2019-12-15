@@ -6,6 +6,7 @@
 //  Copyright © 2019 david rogel pernas. All rights reserved.
 //
 
+import Foundation
 import UIKit
 
 // Darle una vuelta (O₂)
@@ -78,5 +79,18 @@ extension String
     public static func createUrl(fromImgPath imgPath: String) -> URL?
     {
         return URL(string: urlToServer + "/" + imgPath)
+    }
+}
+
+extension UIImage
+{
+    public func resize(size: CGSize) -> UIImage?
+    {
+        UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
+        self.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage
     }
 }

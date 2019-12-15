@@ -30,6 +30,8 @@ protocol APIRequest
     var body: Any { get }
     var headers: [String: String] { get }
     var parameters: [String: String] { get }
+    // Información pesada a enviar
+    var data: [String: Data] { get }
 }
 
 extension APIRequest
@@ -37,10 +39,17 @@ extension APIRequest
     var body: Any { return [:] }
     var headers: [String: String] { return [:] }
     var parameters: [String: String] { return [:] }
+    // Información pesada a enviar
+    var data: [String: Data] { return [:] }
 }
 
 extension APIRequest
 {
+    func makeUpload(_ completion: APIRequestCompletion?)
+    {
+        APISession.upload(self, completion)
+    }
+    
     func makeRequest(_ completion: APIRequestCompletion?)
     {
         APISession.request(self, completion)
@@ -72,8 +81,8 @@ extension APIRequest
         
         var request = URLRequest(url: finalUrl)
         request.httpMethod = method.rawValue
-        
-        if method != Methods.GET
+
+        if method != Methods.GET && JSONSerialization.isValidJSONObject(body)
         {
             request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: [])
         }

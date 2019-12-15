@@ -102,10 +102,10 @@ struct UpdateProfileAvatarRequest: APIRequest
         return ["Authorization":authToken, "Content-Type":"application/json"]
     }
     
-    var body: Any {
-        return ["photo":data]
+    var data: [String: Data] {
+        return ["photo":imgData]
     }
     
     let currentUserCuid: String
-    let data: Data
+    let imgData: Data
 }
