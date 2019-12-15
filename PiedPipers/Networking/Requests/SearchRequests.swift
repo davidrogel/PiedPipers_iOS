@@ -25,7 +25,7 @@ struct SearchProfileParameters: Codable
     var friendlyLocation: String?
     var lat: Double?
     var long: Double?
-//    
+//
 //    init(name: String? = nil, instruments: [String]? = nil,
 //         friendlyLocation: String? = nil,
 //         lat: Double? = nil, long: Double? = nil)

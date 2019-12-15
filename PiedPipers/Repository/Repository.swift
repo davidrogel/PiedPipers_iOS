@@ -34,6 +34,8 @@ protocol RepositoryFactory: class
     func getProfile(currentUserCUID cuid: String, userPickedCUID otherCuid: String, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
     /// Actualizar tú perfil
     func updateProfile(currentUserCUID cuid: String, newProfile profile: Profile, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
+    /// Actualizar el avatar del usuario
+    func updateAvatar(currentUserCUID cuid: String, image data: Data, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
     /// Obtener los instrumentos que se pueden usar
     func getAvaliableInstruments(currentUserCUID cuid: String, success: @escaping ([String]?) -> Void, failure: @escaping (Error?) -> Void)
     
@@ -82,6 +84,11 @@ final class FakeRepository: RepositoryFactory
     func updateProfile(currentUserCUID cuid: String, newProfile profile: Profile, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
     {
         success(userProfile)
+    }
+    
+    func updateAvatar(currentUserCUID cuid: String, image data: Data, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        
     }
     
     func searchProfiles(currentUserCUID cuid: String, withParameters parameters: SearchProfileParameters, limit: Int, offset: Int, success: @escaping (ProfileList?) -> Void, failure: @escaping (Error?) -> Void)
@@ -227,6 +234,21 @@ final class RemoteRepository: RepositoryFactory
         let updateCurrentUserProfile = UpdateProfileRequest(currentUserCuid: cuid, profile: profile)
 
         updateCurrentUserProfile.makeRequest { (result) in
+            switch result
+            {
+            case .success(let data):
+                success(data)
+            case .failure(let err):
+                failure(err)
+            }
+        }
+    }
+    
+    func updateAvatar(currentUserCUID cuid: String, image data: Data, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        let updateCurrentUserAvatar = UpdateProfileAvatarRequest(currentUserCuid: cuid, imgData: data)
+        
+        updateCurrentUserAvatar.makeUpload { (result) in
             switch result
             {
             case .success(let data):
