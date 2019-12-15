@@ -48,6 +48,7 @@ class LocalViewController: UIViewController {
         imageCollection.delegate = self
         imageCollection.dataSource = self
         imagesCollectionSetUpUI(height: 312, width: 312)
+        mapView.delegate = self
         presenter.getLocal(with: localCuid)
     }
     
@@ -77,19 +78,52 @@ class LocalViewController: UIViewController {
         mapView.isScrollEnabled = false
     }
     
+    func lookUpLocation(with location: CLLocation, completionHandler: @escaping (CLPlacemark?)
+                       -> Void ) {
+           let geocoder = CLGeocoder()
+           
+           // Look up the location and pass it to the completion handler
+           geocoder.reverseGeocodeLocation(location,
+                                           completionHandler: { (placemarks, error) in
+                                               if error == nil {
+                                                   let firstLocation = placemarks?[0]
+                                                   completionHandler(firstLocation)
+                                               }
+                                               else {
+                                                   // An error occurred during geocoding.
+                                                   completionHandler(nil)
+                                               }
+           })
+       }
+    
 }
 
 extension LocalViewController: LocalViewProtocol {
     
     func loadLocalData(with local: LocalPresentable) {
-        nameLabel.text = local.name
-        locationPriceLabel.text = "\(local.price) €/h"
-        setUpMapViewWith(lat: local.location.lat, long: local.location.long, pointName: local.name)
-        descriptionText.text = local.description
-        let height = descriptionText.calculeDescriptionViewHeight(leading: 20, trailing: 20)
-        aboutViewHeight.constant = height
-        images = local.photos
-        imageCollection.reloadData()
+        let location = CLLocation(latitude: local.location.lat, longitude: local.location.long)
+        lookUpLocation(with: location, completionHandler: { [weak self] (placemark) in
+            self?.nameLabel.text = local.name
+            guard let friendlyLocation = placemark?.locality else {
+                fatalError()
+            }
+            self?.locationPriceLabel.text = "\(friendlyLocation) - \(local.price) €/h"
+            self?.setUpMapViewWith(lat: local.location.lat, long: local.location.long, pointName: local.name)
+            self?.descriptionText.text = local.description
+            guard let height = self?.descriptionText.calculeDescriptionViewHeight(leading: 20, trailing: 20) else {
+                fatalError()
+            }
+            self?.aboutViewHeight.constant = height
+            self?.images = local.photos
+            self?.imageCollection.reloadData()
+        })
+        
+    }
+}
+
+extension LocalViewController: MKMapViewDelegate {
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        //TODO: Si me da tiempo
     }
 }
 
