@@ -6,4 +6,14 @@
 //  Copyright © 2019 david rogel pernas. All rights reserved.
 //
 
-import Foundation
+import Kingfisher
+
+enum Loader
+{
+    static func loadImg(onImageView imgView: UIImageView, from url: URL?, placeholder: UIImage)
+    {
+        imgView.kf.setImage(with: url, placeholder: placeholder)
+    }
+}
+
+let placeholder = UIImage(named: "placeholder")

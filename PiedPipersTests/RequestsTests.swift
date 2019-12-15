@@ -376,22 +376,24 @@ class RequestsTests: XCTestCase
     func testSearchProfiles()
     {
         let e = expectation(description: "SearchProfiles")
-               
-           let getProfilesBySearchingRequest = GetProfileBySearchingRequest(cuid: cuid, limit: 10, offset: 10)
-           
-           getProfilesBySearchingRequest.makeRequest { (result) in
-               switch result
-               {
-               case .success(let data):
-                   print("Profiles?:", data)
-               case .failure(let err):
-                   print("Error:", CodeError(rawValue: err.statusCode).debugDescription)
-                   XCTFail()
-               }
-               e.fulfill()
+
+        let parameters: SearchProfileParameters = SearchProfileParameters(name: "Gabi"/*, instruments: ["zambomba"]*/, friendlyLocation: "Kabul")
+        
+        let getProfilesBySearchingRequest = GetProfileBySearchingRequest(cuid: cuid, profileParameters: parameters, limit: 10, offset: 0)
+
+        getProfilesBySearchingRequest.makeRequest { (result) in
+           switch result
+           {
+           case .success(let data):
+               print("Profiles?:", data)
+           case .failure(let err):
+               print("Error:", CodeError(rawValue: err.statusCode).debugDescription)
+               XCTFail()
            }
-           
-           waitForExpectations(timeout: timeout, handler: nil)
+           e.fulfill()
+        }
+
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     // MARK: - DECODE ENCODE PROFILE
