@@ -119,9 +119,7 @@ class TopView: UIView
     
     @objc private func handleValueChange()
     {
-    #if DEBUG
         if delegate == nil { print("no hay delegado ") }
-    #endif
         delegate?.segmentedViewSegmentedIndexChanged(valueChanged: segmentedView.selectedSegmentIndex)
     }
     
@@ -141,9 +139,8 @@ extension TopView: UITextFieldDelegate
         guard let someText = textField.text else { return false }
         print("el usuario se ha puesto a buscar la siguiente información:", someText)
         
-        #if DEBUG
-            if delegate == nil { print("no hay delegado ") }
-        #endif
+        if delegate == nil { print("no hay delegado") }
+        
         delegate?.searchBarSearchButtonPressed(valueToSearch: someText)
         
         textField.resignFirstResponder()

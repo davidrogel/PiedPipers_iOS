@@ -38,10 +38,16 @@ class SearchViewController: UIViewController
         }
     }
     
+    // MARK: - Filters
+    
+    private var profileFilters:SearchProfileParameters = SearchProfileParameters()
+    private var localFilters:SearchLocalParameters = SearchLocalParameters()
+    
     // MARK: Presentable Zone
     
     private var presenter: SearchViewPresenter!
     
+    // TODO: Quitar esto de aqui y coger el que debería estar cacheado
     let cuid = "ck2g3ps39000c93pcfox7e8jn"
     
     var profiles: [SearchProfilePresentable] = []
@@ -128,28 +134,7 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
             
             let local = locals[indexPath.item]
             
-            cell.setName(name: local.localName)
-            
-//            if let urlToImage = URL(string: local.image)
-//            {
-//                let img:UIImage = UIImage.load(fromUrl: urlToImage)
-//            }
-//            let image:UIImage? = UIImage(named: local.image)
-//            if let img = image {
-//                cell.setPortrait(withImage: img)
-//            }
-            UIImage.load(withImgPath: local.image) { (img) in
-                cell.setPortrait(withImage: img)
-            }
-            
-            
-            
-//            cell.setPortrait(withImage: UIImage(data: local.image)!)
-            
-//            UIImage.load(withImgPath: local.image) { cell.setPortrait(withImage: $0) }
-            
-            cell.setPrice(price: local.price)
-            cell.setDescription(text: local.description)
+            cell.fill(withLocalPresentable: local)
             
             return cell
         case .PROFILES:
@@ -157,20 +142,7 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
             
             let profile = profiles[indexPath.item]
             
-            cell.setInstruments(instruments: profile.instruments)
-            cell.setName(name: profile.profileName)
-            cell.setFriendlyLocation(name: profile.friendlyLocation)
-//            UIImage.load(withImgPath: profile.image) { (img) in
-//                cell.setPortrait(withImage: img)
-//            }
-            cell.setPortrait(withImgPath: profile.image)
-//            let image:UIImage? = UIImage(named: profile.image)
-//            if let img = image {
-//                cell.setPortrait(withImage: img)
-//            }
-//            cell.setPortrait(withImage: UIImage(data: profile.image)!)
-//            UIImage.load(withImgPath: profile.image) { cell.setPortrait(withImage: $0) }
-//            cell.setPortrait(withImage: UIImage.load(withImgPath: profile.image))
+            cell.fill(withProfilePresentable: profile)
             
             return cell
         }
@@ -237,25 +209,28 @@ extension SearchViewController: SearchViewDelegate
 /// Delegate implemented to work with TopView
 extension SearchViewController: TopViewDelegate
 {
+    // MARK: Swap views
     func segmentedViewSegmentedIndexChanged(valueChanged value: Int)
     {
         errorView.isHidden = true
         nothingHereView.isHidden = true
         self.displayState = (value == 0) ? .PROFILES : .LOCALS
     }
-    
+    // MARK: Searching after Search Button tap
     func searchBarSearchButtonPressed(valueToSearch value: String)
     {
         print("texto a buscar: \(value)")
         switch displayState
         {
         case .LOCALS:
-            presenter.requestLocals(cuid: self.cuid, parameters: SearchLocalParameters(name: value), limit: 10, offset: 0)
+            localFilters.name = value
+            presenter.requestLocals(cuid: self.cuid, parameters: localFilters, limit: 10, offset: 0)
         case .PROFILES:
-            presenter.requestProfiles(cuid: self.cuid, parameters: SearchProfileParameters(name: value), limit: 10, offset: 0)
+            profileFilters.name = value
+            presenter.requestProfiles(cuid: self.cuid, parameters: profileFilters, limit: 10, offset: 0)
         }
     }
-    
+    // MARK: Filters Presentation
     func openFiltersViewController()
     {
         switch displayState
@@ -272,7 +247,8 @@ extension SearchViewController: TopViewDelegate
         let vc = ProfileFiltersViewController()
         vc.delegate = self
         vc.modalPresentationStyle = .fullScreen
-
+        // aplicamos los filtros que ya existen
+        vc.setFilters(filters: profileFilters)
         present(vc, animated: true, completion: nil)
     }
     
@@ -282,20 +258,37 @@ extension SearchViewController: TopViewDelegate
     }
 }
 
+// MARK: - Apply filters
 extension SearchViewController: ProfileFiltersProtocol
 {
     func applyProfileFilters(filters: SearchProfileParameters)
     {
-        switch displayState
+        if let friendlyLocation = filters.friendlyLocation
         {
-        case .LOCALS:
-            print("locals filters applied")
-        case .PROFILES:
-            print("profiles filters applied")
+            profileFilters.friendlyLocation = friendlyLocation
         }
+        
+        if let instruments = filters.instruments
+        {
+            profileFilters.instruments = instruments
+        }
+        
+        if let lat = filters.lat, let long = filters.long
+        {
+            profileFilters.lat = lat
+            profileFilters.long = long
+        }
+        
+        presenter.requestProfiles(cuid: cuid, parameters: profileFilters, limit: 10, offset: 0)
     }
 }
 
+extension SearchViewController /* : LocalFiltersProtocol */
+{
+    
+}
+
+// MARK: - Constraints
 extension SearchViewController
 {
     private func configureLoadingConstraints()
