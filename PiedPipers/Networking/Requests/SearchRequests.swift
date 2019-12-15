@@ -8,13 +8,34 @@
 
 import Foundation
 
+/**
+    Parametros que se envían en la request de Perfiles
+
+    - name:String?
+    - instruments:[String]?
+    - friendlyLocation:String?
+    - lat:Double?
+    - long:Double?
+ 
+*/
 struct SearchProfileParameters: Codable
 {
-    let name: String?
-    let instruments: [String]?
-    let friendlyLocation: String?
-    let lat: Double?
-    let long: Double?
+    var name: String?
+    var instruments: [String]?
+    var friendlyLocation: String?
+    var lat: Double?
+    var long: Double?
+//
+//    init(name: String? = nil, instruments: [String]? = nil,
+//         friendlyLocation: String? = nil,
+//         lat: Double? = nil, long: Double? = nil)
+//    {
+//        self.name = name
+//        self.instruments = instruments
+//        self.friendlyLocation = friendlyLocation
+//        self.lat = lat
+//        self.long = long
+//    }
 }
 
 // TODO - Lipiar comentarios y llevarse de aqui las estructs de los parámetros
@@ -104,12 +125,29 @@ extension GetProfileBySearchingRequest
     }
 }
 
+/**
+    Parametros que se envían en la request de Locales
+
+    - name:String?
+    - price:Double?
+    - lat:Double?
+    - long:Double?
+ */
 struct SearchLocalParameters: Codable
 {
-    let name: String?
-    let price: Double?
-    let lat: Double?
-    let long: Double?
+    var name: String?
+    var price: Double?
+    var lat: Double?
+    var long: Double?
+    
+//    init(name: String? = nil, price: Double? = nil,
+//         lat: Double? = nil, long: Double? = nil)
+//    {
+//        self.name = name
+//        self.price = price
+//        self.lat = lat
+//        self.long = long
+//    }
 }
 
 struct GetLocalBySearchingRequest: APIRequest
