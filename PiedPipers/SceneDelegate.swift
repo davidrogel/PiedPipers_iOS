@@ -24,9 +24,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let tabBarController = Assembler.provideInitialTabBarController()
         tabBarController.delegate = self
+        let localView = Assembler.provideLocalDetailView(withCuid: "jsdlauosfjaoh")
         
         window?.makeKeyAndVisible()
-        window?.rootViewController = tabBarController
+        window?.rootViewController = localView//tabBarController
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

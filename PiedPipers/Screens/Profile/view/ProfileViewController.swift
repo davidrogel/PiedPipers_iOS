@@ -260,13 +260,6 @@ class ProfileViewController: UIViewController {
         avatarImage.layer.masksToBounds = true
     }
     
-    fileprivate func calculeAboutMeHeight(textView: UITextView) -> CGFloat{
-        let width = UIScreen.main.bounds.width - 40
-        let newSize = textView.sizeThatFits(CGSize(width: width,
-                                                   height: CGFloat.greatestFiniteMagnitude))
-        return newSize.height + 50
-    }
-    
     fileprivate func calculateInstrumentCollectionHeight(withRows rows: CGFloat) -> CGFloat {
         var height = CGFloat(75)//instrumentsViewHeight.constant
         if (rows > 1) {
@@ -374,7 +367,7 @@ extension ProfileViewController: ProfileViewProtocol {
         closeCancelButton.setTitle("Close session", for: .normal)
         contactButton.isHidden = true
         
-        let height = calculeAboutMeHeight(textView: aboutMeText)
+        let height = aboutMeText.calculeDescriptionViewHeight(leading: 20, trailing: 20)
         aboutMeHeight.constant = height
 
         loading = false
@@ -460,7 +453,7 @@ extension ProfileViewController: ProfileViewProtocol {
             aboutMeText.text = model.aboutMe
         }
         aboutMeText.layer.borderWidth = 0
-        let height = calculeAboutMeHeight(textView: aboutMeText)
+        let height = aboutMeText.calculeDescriptionViewHeight(leading: 20, trailing: 20)
         aboutMeHeight.constant = height
         
         acceptView.isHidden = true

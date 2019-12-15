@@ -9,6 +9,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LocalViewController" customModule="PiedPipers" customModuleProvider="target">
             <connections>
+                <outlet property="aboutViewHeight" destination="gAf-o4-thv" id="2ns-Un-zQY"/>
+                <outlet property="callButton" destination="HVu-fk-nWR" id="qMS-c1-sdb"/>
                 <outlet property="descriptionText" destination="PVr-UU-ePx" id="ipQ-dU-Mcs"/>
                 <outlet property="imageCollection" destination="YlR-hl-rQP" id="klJ-Vf-CTo"/>
                 <outlet property="locationPriceLabel" destination="Ajv-Ag-8NS" id="cVO-3j-Oki"/>
@@ -26,7 +28,7 @@
                     <rect key="frame" x="0.0" y="44" width="414" height="872"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dyY-RI-EzY" userLabel="contentView">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="883"/>
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="873"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7jY-Oi-Fp2" userLabel="infoView">
                                     <rect key="frame" x="20" y="25" width="374" height="328"/>
@@ -80,6 +82,7 @@
                                     <constraints>
                                         <constraint firstAttribute="height" constant="50" id="Uhl-2P-E33"/>
                                     </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                     <state key="normal" title="Call">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </state>
@@ -93,7 +96,7 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="PVr-UU-ePx">
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="PVr-UU-ePx" userLabel="descriptionText">
                                             <rect key="frame" x="0.0" y="37" width="374" height="35"/>
                                             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                             <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
@@ -114,10 +117,10 @@
                                     </constraints>
                                 </view>
                                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="YlR-hl-rQP" userLabel="imageCollectionView">
-                                    <rect key="frame" x="20" y="555" width="374" height="312"/>
+                                    <rect key="frame" x="20" y="543" width="374" height="314"/>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="312" id="LlD-3J-woA"/>
+                                        <constraint firstAttribute="height" constant="314" id="LlD-3J-woA"/>
                                     </constraints>
                                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="R0Q-Rz-inp">
                                         <size key="itemSize" width="50" height="50"/>
@@ -140,7 +143,7 @@
                                 <constraint firstItem="CkC-qb-NhT" firstAttribute="leading" secondItem="dyY-RI-EzY" secondAttribute="leading" constant="20" id="hSF-8G-boF"/>
                                 <constraint firstItem="YlR-hl-rQP" firstAttribute="leading" secondItem="dyY-RI-EzY" secondAttribute="leading" constant="20" id="htu-7m-xyd"/>
                                 <constraint firstItem="HVu-fk-nWR" firstAttribute="top" secondItem="7jY-Oi-Fp2" secondAttribute="bottom" constant="24" id="maM-Jk-xoB"/>
-                                <constraint firstItem="YlR-hl-rQP" firstAttribute="top" secondItem="CkC-qb-NhT" secondAttribute="bottom" constant="24" id="ohs-Yr-Ut6"/>
+                                <constraint firstItem="YlR-hl-rQP" firstAttribute="top" secondItem="CkC-qb-NhT" secondAttribute="bottom" constant="12" id="ohs-Yr-Ut6"/>
                                 <constraint firstAttribute="bottom" secondItem="YlR-hl-rQP" secondAttribute="bottom" constant="16" id="tdg-2A-yVZ"/>
                             </constraints>
                         </view>

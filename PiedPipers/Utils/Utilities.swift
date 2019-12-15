@@ -118,3 +118,12 @@ extension String
         return URL(string: urlToServer + "/" + imgPath)
     }
 }
+
+extension UITextView {
+    func calculeDescriptionViewHeight(leading: CGFloat, trailing: CGFloat) -> CGFloat{
+        let width = UIScreen.main.bounds.width - leading - trailing
+        let newSize = self.sizeThatFits(CGSize(width: width,
+                                                   height: CGFloat.greatestFiniteMagnitude))
+        return newSize.height + 50
+    }
+}

@@ -83,6 +83,8 @@
 		ACB3B51B23A660DC0037D9C7 /* LocalProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB3B51A23A660DC0037D9C7 /* LocalProtocols.swift */; };
 		ACB3B51D23A660EE0037D9C7 /* LocalPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB3B51C23A660EE0037D9C7 /* LocalPresenter.swift */; };
 		ACB3B51F23A670600037D9C7 /* LocalPresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB3B51E23A670600037D9C7 /* LocalPresentable.swift */; };
+		ACB3B52723A6870A0037D9C7 /* ImagesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB3B52523A6870A0037D9C7 /* ImagesCollectionViewCell.swift */; };
+		ACB3B52823A6870A0037D9C7 /* ImagesCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACB3B52623A6870A0037D9C7 /* ImagesCollectionViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -176,6 +178,8 @@
 		ACB3B51A23A660DC0037D9C7 /* LocalProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalProtocols.swift; sourceTree = "<group>"; };
 		ACB3B51C23A660EE0037D9C7 /* LocalPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalPresenter.swift; sourceTree = "<group>"; };
 		ACB3B51E23A670600037D9C7 /* LocalPresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalPresentable.swift; sourceTree = "<group>"; };
+		ACB3B52523A6870A0037D9C7 /* ImagesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesCollectionViewCell.swift; sourceTree = "<group>"; };
+		ACB3B52623A6870A0037D9C7 /* ImagesCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImagesCollectionViewCell.xib; sourceTree = "<group>"; };
 		AFF1BC005050C460CD36563D /* Pods_PiedPipers.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PiedPipers.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7F5047FA0520D4CC98BBA3D /* Pods-PiedPipers.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PiedPipers.debug.xcconfig"; path = "Target Support Files/Pods-PiedPipers/Pods-PiedPipers.debug.xcconfig"; sourceTree = "<group>"; };
 		BB656504F0920BB5058C1E37 /* Pods-PiedPipersTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PiedPipersTests.release.xcconfig"; path = "Target Support Files/Pods-PiedPipersTests/Pods-PiedPipersTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -573,6 +577,7 @@
 		ACB3B51323A641FE0037D9C7 /* view */ = {
 			isa = PBXGroup;
 			children = (
+				ACB3B52023A684E10037D9C7 /* cell */,
 				ACB3B51623A642650037D9C7 /* LocalViewController.swift */,
 				ACB3B51723A642650037D9C7 /* LocalViewController.xib */,
 			);
@@ -594,6 +599,15 @@
 				ACB3B51E23A670600037D9C7 /* LocalPresentable.swift */,
 			);
 			path = presenter;
+			sourceTree = "<group>";
+		};
+		ACB3B52023A684E10037D9C7 /* cell */ = {
+			isa = PBXGroup;
+			children = (
+				ACB3B52523A6870A0037D9C7 /* ImagesCollectionViewCell.swift */,
+				ACB3B52623A6870A0037D9C7 /* ImagesCollectionViewCell.xib */,
+			);
+			path = cell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -690,6 +704,7 @@
 				6348F6982392F24E005AA01B /* LoginViewController.xib in Resources */,
 				63F4E8072368E04A00C52D47 /* LaunchScreen.storyboard in Resources */,
 				6348F69D2392F24E005AA01B /* VideoCollectionViewCell.xib in Resources */,
+				ACB3B52823A6870A0037D9C7 /* ImagesCollectionViewCell.xib in Resources */,
 				6348F6B22392F2D6005AA01B /* SF-Compact-Rounded-Light.otf in Resources */,
 				6348F6B62392F2D6005AA01B /* SF-Compact-Rounded-Black.otf in Resources */,
 				63F4E8042368E04A00C52D47 /* Assets.xcassets in Resources */,
@@ -796,6 +811,7 @@
 				6348F69B2392F24E005AA01B /* ProfilePresentable.swift in Sources */,
 				ACB3B51B23A660DC0037D9C7 /* LocalProtocols.swift in Sources */,
 				638B426523A17C5000C3B0B1 /* BasePiperCustomCell.swift in Sources */,
+				ACB3B52723A6870A0037D9C7 /* ImagesCollectionViewCell.swift in Sources */,
 				AC88CF34239842B40082F64D /* InstrumentsPickerViewController.swift in Sources */,
 				6348F69A2392F24E005AA01B /* ProfilePresenter.swift in Sources */,
 				638B426B23A17C5000C3B0B1 /* FilterButton.swift in Sources */,

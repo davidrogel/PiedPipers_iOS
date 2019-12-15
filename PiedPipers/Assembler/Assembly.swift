@@ -40,4 +40,11 @@ final class Assembler {
         loginViewController.configure(with: presenter)
         return loginViewController
     }
+    
+    static func provideLocalDetailView(withCuid local: String) -> UIViewController {
+        let localViewController = LocalViewController()
+        let presenter = LocalPresenter(with: localViewController, localService: Repository.fake)
+        localViewController.configure(with: presenter, local: local)
+        return localViewController
+    }
 }

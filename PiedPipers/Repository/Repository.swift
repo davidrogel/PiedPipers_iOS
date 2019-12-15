@@ -44,6 +44,10 @@ protocol RepositoryFactory: class
     func searchProfiles(currentUserCUID cuid: String, withParameters parameters: SearchProfileParameters, limit: Int, offset: Int, success: @escaping (ProfileList?) -> Void, failure: @escaping (Error?) -> Void)
     
     func searchLocals(currentUserCUID cuid: String, withParameters parameters: SearchLocalParameters, limit: Int, offset: Int, success: @escaping (LocalList?) -> Void, failure: @escaping (Error?) -> Void)
+    
+    // LOCAL REQUESTS
+    /// Obtener un local
+    func getLocal(withCUID cuid: String, success: @escaping (Local?) -> Void, failure: @escaping (Error?) -> Void)
 }
 
 final class FakeRepository: RepositoryFactory
@@ -67,7 +71,7 @@ final class FakeRepository: RepositoryFactory
 
     private let otherProfile = Profile(cuid: "", name: "name", location: Location(lat: 20.0, long: 20.0), contact: Contact(type: .email, data: "Correo.a.encodear@correo.com"), instruments: ["bateria", "guitarra", "voz"], videos: nil, description: "una descripción rexulona", photo: "una foto")
     
-    private let local = Local(cuid: "", name: "un local", dateAdded: "", location: Location(lat: 10.0, long: 10.0), price: 29.99, contact: Contact(type: .email, data: "arroba@correo.ru"), photos: ["kojima", "dos fotos", "tres... fotos?"], description: "una descripción de un local molón con una descripción tope larga que lo flipas chorbo")
+    private let local = Local(cuid: "", name: "Sala Mandra!", dateAdded: "", location: Location(lat: 40.406178, long: -3.681415), price: 29.99, contact: Contact(type: .phone, data: "+34912854820"), photos: ["kojima", "mads", "norman"], description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")
 
     func getProfile(currenUserCUID cuid: String, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
     {
@@ -124,6 +128,12 @@ final class FakeRepository: RepositoryFactory
     {
         // TODO
     }
+    
+    // LOCALS
+    func getLocal(withCUID cuid: String, success: @escaping (Local?) -> Void, failure: @escaping (Error?) -> Void) {
+        success(local)
+    }
+    
 }
 
 final class RemoteRepository: RepositoryFactory
@@ -283,6 +293,11 @@ final class RemoteRepository: RepositoryFactory
                 failure(err)
             }
         }
+    }
+    
+    // LOCALS
+    func getLocal(withCUID cuid: String, success: @escaping (Local?) -> Void, failure: @escaping (Error?) -> Void) {
+        //TODO
     }
     
 }
