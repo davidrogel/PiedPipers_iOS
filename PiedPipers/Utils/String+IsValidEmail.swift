@@ -22,4 +22,10 @@ extension String {
         //return regex.firstMatch(in: self, options: [], range: NSRange(location: 0, length: count)) != nil
         return phonePredicate.evaluate(with: self)
     }
+    
+    func isValidYoutubeUrl() -> Bool {
+        let regex = "^((?:https?:)?\\/\\/)?((?:www|m)\\.)?((youtube\\.com))(\\/([\\w\\-]+\\?v=))([\\w\\-]+)(\\S+)?$"
+        let youtubePredicate = NSPredicate(format: "SELF MATCHES %@", regex)
+        return youtubePredicate.evaluate(with: self)
+    }
 }

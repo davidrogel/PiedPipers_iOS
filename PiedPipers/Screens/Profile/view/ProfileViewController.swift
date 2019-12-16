@@ -551,16 +551,25 @@ extension ProfileViewController: UICollectionViewDelegate {
                             fatalError()
                         }
                         // Puedo llamar a una función que reciba el texto
+                        if !text.isValidYoutubeUrl() {
+                            let youtubeAlert = UIAlertController(title: "It is not a YouTube url", message: "The inserted text is not a YouTube URL.", preferredStyle: .alert)
+                            youtubeAlert.addAction(UIAlertAction(title: "Accept", style: .default, handler: nil))
+                            self?.present(youtubeAlert, animated: true)
+                            return
+                        }
+                        
                         guard let url = URL(string: text) else {
                             let invalidUrl = UIAlertController(title: "Invalid URL", message: "The inserted text is not a valid URL.", preferredStyle: .alert)
                             invalidUrl.addAction(UIAlertAction(title: "Accept", style: .default, handler: nil))
                             self?.present(invalidUrl, animated: true)
                             return
                         }
-                        guard var videoId = url.query else {
+                        guard var videoQuery = url.query else {
                             fatalError()
                         }
-                        videoId.removeFirst(2)
+                        videoQuery.removeFirst(2)
+                        let aux = videoQuery.split(separator: "&")
+                        let videoId = String(aux[0])
                         let thumbnail = "https://img.youtube.com/vi/" + videoId + "/hqdefault.jpg"
                         self?.userVideos.append(VideoPresentable(id: videoId, videoURL: text, thumbnail: thumbnail))
                         self?.selectedVideos.append(false)
