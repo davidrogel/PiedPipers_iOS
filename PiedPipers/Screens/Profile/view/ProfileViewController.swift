@@ -180,6 +180,11 @@ class ProfileViewController: UIViewController {
             }
         }
         
+        if avatarImage.image == nil {
+            self.present(createAlert(withTitle: "Profile image not found", message: "You have to insert profile image."), animated: true)
+            return
+        }
+        
         var updateInstruments: [String] = []
         for n in 0...selectedInstruments.count - 1 {
             if selectedInstruments[n] == false {
@@ -200,6 +205,11 @@ class ProfileViewController: UIViewController {
         let contact = ContactPresentable(type: typeContact, data: contactData)
         
         //TODO: Tengo que comprobar que haya avatar
+//        let img = UIImage(named: "mads")
+//
+//        let resizedImage = img?.resize(size: CGSize(width: 300, height: 300))
+//        let data = resizedImage?.jpegData(compressionQuality: 1)
+        
         let avatar = "https://http2.mlstatic.com/ironman-armadura-infinity-war-plantillas-parmar-patron-D_NQ_NP_822038-MLA27087697817_032018-F.jpg"
         
         let city: String?
