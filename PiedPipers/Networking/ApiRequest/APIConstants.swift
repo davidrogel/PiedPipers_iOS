@@ -44,3 +44,16 @@ let tagsGet = "/profile/tags"
 let searchProfile = "/search/profile"
 /// /search/local
 let searchLocals = "/search/local"
+
+// Notifications
+/// /notification/      /notification/:cuid
+let notiDelete = "/notification/"
+/// /notification
+let notiList = "/notification"
+/// /notification/redeem/     /notification/redeem/:cuid
+let notiRedeem = "/notification/redeem/"
+/// /notification/register
+let notiRegister = "/notification/register"
+/// /notification/unregister
+let notiUnregister = "/notification/unregister"
+
