@@ -19,6 +19,92 @@ class ProfileViewController: UIViewController {
     var availableInstruments: [String] = []
     var reloadFromCamera: Bool = false
     
+    var profile: ProfilePresentable! {
+        didSet {
+            nameLabel.isHidden = false
+            nameLabel.borderStyle = .none
+            nameLabel.isEnabled = false
+            nameLabel.text = profile.name
+            if (profile.city == nil || profile.city == "") {
+                friendlyLocationView.isHidden = true
+            } else {
+                friendlyLocationView.isHidden = false
+                friendlyLocationLabel.borderStyle = .none
+                friendlyLocationLabel.isEnabled = false
+                friendlyLocationLabel.text = profile.city
+            }
+            editButton.isHidden = false
+
+            avatarView.isHidden = false
+            addPhotoButton.isHidden = true
+            avatarImage.alpha = 1
+            
+            //TODO: Esto hay que quitarlo
+            if profile.avatar == nil {
+                avatarImage.image = UIImage(named: "LogoSobreNegro")
+            } else {
+                guard let image = profile.avatar else {
+                    fatalError() //Ahora mismo da error, hasta implementar el nuevo flujo (obligar a tener imagen)
+                }
+                guard let url = String.createUrl(fromImgPath: image) else {
+                    fatalError()
+                }
+                avatarImage.kf.setImage(with: url)
+            }
+            
+            
+            contactView.isHidden = true
+            if profile.contact != nil {
+                guard let type = profile.contact?.type else {
+                    return
+                }
+                if type == .email {
+                    contactType.selectedSegmentIndex = 0
+                    contactButton.setImage(UIImage(named: "mailConnect"), for: .normal)
+                } else {
+                    contactType.selectedSegmentIndex = 1
+                    contactButton.setImage(UIImage(named: "phoneConnect"), for: .normal)
+                }
+                contactText.text = profile.contact?.data
+            }
+            
+            
+            instrumentView.isHidden = false
+            selectedInstruments = []
+            userInstruments = profile.instruments ?? []
+            userInstruments.forEach { _ in
+                selectedInstruments.append(false)
+            }
+            calculateInstrumentsViewHeight()
+            selectedVideos = []
+            userVideos = profile.videos ?? []
+            userVideos.forEach { _ in
+                selectedVideos.append(false)
+            }
+            videoCollection.reloadData()
+            if userVideos.isEmpty {
+                videoView.isHidden = true
+            } else {
+                videoView.isHidden = false
+            }
+            
+            
+            if (profile.aboutMe == nil || profile.aboutMe == "") {
+                aboutMeView.isHidden = true
+            } else {
+                aboutMeView.isHidden = false
+                aboutMeText.isEditable = false
+                aboutMeText.text = profile.aboutMe
+            }
+            aboutMeText.layer.borderWidth = 0
+            let height = calculeAboutMeHeight(textView: aboutMeText)
+            aboutMeHeight.constant = height
+            acceptView.isHidden = true
+            
+            loading = false
+        }
+    }
+    
     var loading: Bool! {
         didSet {
             if loading {
@@ -180,7 +266,7 @@ class ProfileViewController: UIViewController {
             }
         }
         
-        if avatarImage.image == nil {
+        guard let img = avatarImage.image else {
             self.present(createAlert(withTitle: "Profile image not found", message: "You have to insert profile image."), animated: true)
             return
         }
@@ -204,13 +290,8 @@ class ProfileViewController: UIViewController {
         
         let contact = ContactPresentable(type: typeContact, data: contactData)
         
-        //TODO: Tengo que comprobar que haya avatar
-//        let img = UIImage(named: "mads")
-//
-//        let resizedImage = img?.resize(size: CGSize(width: 300, height: 300))
-//        let data = resizedImage?.jpegData(compressionQuality: 1)
-        
-        let avatar = "https://http2.mlstatic.com/ironman-armadura-infinity-war-plantillas-parmar-patron-D_NQ_NP_822038-MLA27087697817_032018-F.jpg"
+        let resizedImage = img.resize(size: CGSize(width: 1000, height: 1000))
+        let data = resizedImage?.jpegData(compressionQuality: 1)
         
         let city: String?
         if friendlyLocationLabel.text == "" {
@@ -226,7 +307,7 @@ class ProfileViewController: UIViewController {
             aboutMe = aboutMeText.text
         }
         
-        let profile = ProfilePresentable(name: name, city: city, avatar: avatar, location: nil, contact: contact, instruments: updateInstruments, videos: updateVideos, aboutMe: aboutMe)
+        let profile = ProfilePresentable(name: name, city: city, avatar: nil, location: nil, contact: contact, instruments: updateInstruments, videos: updateVideos, aboutMe: aboutMe)
         loading = true
         presenter.updateProfile(with: profile)
         
@@ -316,99 +397,16 @@ extension ProfileViewController: ProfileViewProtocol {
     
     
     func setCurrentUserProfileViewWith(model: ProfilePresentable) {
-        
         presenter.isEditing = false
-        
-        nameLabel.isHidden = false
-        nameLabel.borderStyle = .none
-        nameLabel.isEnabled = false
-        nameLabel.text = model.name
-        
-        if (model.city == nil || model.city == "") {
-            friendlyLocationView.isHidden = true
-        } else {
-            friendlyLocationView.isHidden = false
-            friendlyLocationLabel.borderStyle = .none
-            friendlyLocationLabel.isEnabled = false
-            friendlyLocationLabel.text = model.city
-        }
-        
-        editButton.isHidden = false
+        profile = model
         editButton.setImage(UIImage(named: "editButton"), for: .normal)
-        
-        avatarView.isHidden = false
-        addPhotoButton.isHidden = true
-        avatarImage.alpha = 1
-        
-        //TODO: Esto hay que quitarlo
-        if model.avatar == nil {
-            avatarImage.image = UIImage(named: "LogoSobreNegro")
-        } else {
-            guard let image = model.avatar else {
-                fatalError() //Ahora mismo da error, hasta implementar el nuevo flujo (obligar a tener imagen)
-            }
-            guard let url = String.createUrl(fromImgPath: image) else {
-                fatalError()
-            }
-            avatarImage.kf.setImage(with: url)
-        }
-        
-        
         followView.isHidden = true
-        contactView.isHidden = true
-        if model.contact != nil {
-            guard let type = model.contact?.type else {
-                return
-            }
-            if type == .email {
-                contactType.selectedSegmentIndex = 0
-            } else {
-                contactType.selectedSegmentIndex = 1
-            }
-            contactText.text = model.contact?.data
-        }
-        
-        instrumentView.isHidden = false
-        selectedInstruments = []
-        userInstruments = model.instruments ?? []
-        userInstruments.forEach { _ in
-            selectedInstruments.append(false)
-        }
-        calculateInstrumentsViewHeight()
-        selectedVideos = []
-        userVideos = model.videos ?? []
-        userVideos.forEach { _ in
-            selectedVideos.append(false)
-        }
-        videoCollection.reloadData()
-        if userVideos.isEmpty {
-            videoView.isHidden = true
-        } else {
-            videoView.isHidden = false
-        }
-        
-        if (model.aboutMe == nil || model.aboutMe == "") {
-            aboutMeView.isHidden = true
-        } else {
-            aboutMeView.isHidden = false
-            aboutMeText.isEditable = false
-            aboutMeText.text = model.aboutMe
-        }
-        aboutMeText.layer.borderWidth = 0
-        
-        acceptView.isHidden = true
         closeCancelView.isHidden = false
         closeCancelButton.setTitle("Close session", for: .normal)
         contactButton.isHidden = true
-        
-        let height = calculeAboutMeHeight(textView: aboutMeText)
-        aboutMeHeight.constant = height
-
-        loading = false
     }
     
     func setEditProfileView() {
-        //TODO
         presenter.isEditing = true
         presenter.getAvailableInstruments()
         
@@ -441,76 +439,11 @@ extension ProfileViewController: ProfileViewProtocol {
     }
     
     func setOtherUserProfileWith(model: ProfilePresentable) {
-        nameLabel.isHidden = false
-        nameLabel.borderStyle = .none
-        nameLabel.isEnabled = false
-        nameLabel.text = model.name
-        
-        if (model.city == nil || model.city == "") {
-            friendlyLocationView.isHidden = true
-        } else {
-            friendlyLocationView.isHidden = false
-            friendlyLocationLabel.borderStyle = .none
-            friendlyLocationLabel.isEnabled = false
-            friendlyLocationLabel.text = model.city
-        }
-        
-        editButton.isHidden = false
+        profile = model
         editButton.setImage(UIImage(named: "exitButton"), for: .normal)
-        
-        avatarView.isHidden = false
-        addPhotoButton.isHidden = true
-        avatarImage.alpha = 1
-        avatarImage.image = UIImage(named: "LogoSobreNegro") //TODO: Cambiar por la carga del String de imagen
-        //        guard let image = model.avatar else { //TODO: Esto hay que quitarlo
-        //            fatalError() //Ahora mismo da error, hasta implementar el nuevo flujo
-        //        }
-        //        guard let url = URL(string: image) else {
-        //            fatalError()
-        //        }
-        //        avatarImage.kf.setImage(with: url)
-        
         followView.isHidden = false
-        contactView.isHidden = true
-        
-        instrumentView.isHidden = false
-        userInstruments = model.instruments ?? []
-        calculateInstrumentsViewHeight()
-        userVideos = model.videos ?? []
-        videoCollection.reloadData()
-        
-        if userVideos.isEmpty {
-            videoView.isHidden = true
-        } else {
-            videoView.isHidden = false
-        }
-        
-        if (model.aboutMe == nil || model.aboutMe == "") {
-            aboutMeView.isHidden = true
-        } else {
-            aboutMeView.isHidden = false
-            aboutMeText.isEditable = false
-            aboutMeText.text = model.aboutMe
-        }
-        aboutMeText.layer.borderWidth = 0
-        let height = calculeAboutMeHeight(textView: aboutMeText)
-        aboutMeHeight.constant = height
-        
-        acceptView.isHidden = true
         closeCancelView.isHidden = true
-        
-        guard let type = model.contact?.type else {
-            return
-        }
-        if type == .email {
-            contactButton.setImage(UIImage(named: "mailConnect"), for: .normal)
-        } else {
-            contactButton.setImage(UIImage(named: "phoneConnect"), for: .normal)
-        }
-        contactText.text = model.contact?.data
-        
         contactButton.isHidden = false
-        loading = false
     }
     
     func setAvailableInstruments(with instruments: [String]) {

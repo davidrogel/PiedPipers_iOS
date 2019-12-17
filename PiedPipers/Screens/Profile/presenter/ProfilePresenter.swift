@@ -202,4 +202,13 @@ extension ProfilePresenter: ProfilePresenterProtocol {
         })
     }
     
+    func updateProfileAvatar(with data: Data) {
+        let cuid = StoreManager.shared.getLoggedUser()
+        profileService.updateAvatar(currentUserCUID: cuid, image: data, success: { (profile) in
+            
+        }, failure: { (error) in
+            
+        })
+    }
+    
 }
