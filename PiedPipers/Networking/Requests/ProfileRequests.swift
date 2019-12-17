@@ -16,7 +16,7 @@ struct GetProfileRequest: APIRequest
     
     var baseUrl: String { return urlToServer }
     
-    var path: Self.Endpoint { return profileGet }
+    var path: Self._Endpoint { return .profileGet }
     
     var headers: [String : String] {
         let authToken = StoreManager.shared.getString(withKey: currentUserCuid)
@@ -34,7 +34,7 @@ struct GetProfileByIdRequest: APIRequest
     
     var baseUrl: String { return urlToServer }
     
-    var path: Self.Endpoint { return (profileByIdGet + findUserCuid) }
+    var path: Self._Endpoint { return (.profileByIdGet + findUserCuid) }
     
     var headers: [String : String] {
         let authToken = StoreManager.shared.getString(withKey: currentUserCuid)
@@ -53,7 +53,7 @@ struct UpdateProfileRequest: APIRequest
     
     var baseUrl: String { return urlToServer }
     
-    var path: Self.Endpoint { return profileGet }
+    var path: Self._Endpoint { return .profileGet }
     
     var headers: [String : String] {
         let authToken = StoreManager.shared.getString(withKey: currentUserCuid)
@@ -76,7 +76,7 @@ struct GetInstrumentsRequest: APIRequest
     
     var baseUrl: String { return urlToServer }
     
-    var path: Self.Endpoint { return tagsGet }
+    var path: Self._Endpoint { return .tagsGet }
     
     var headers: [String : String] {
         let authToken = StoreManager.shared.getString(withKey: currentUserCuid)
@@ -86,7 +86,6 @@ struct GetInstrumentsRequest: APIRequest
     let currentUserCuid: String
 }
 
-// TODO: Terminal el Avatar!!!
 struct UpdateProfileAvatarRequest: APIRequest
 {
     typealias Response = Profile
@@ -95,7 +94,7 @@ struct UpdateProfileAvatarRequest: APIRequest
     
     var baseUrl: String { return urlToServer }
     
-    var path: Self.Endpoint { return avatarUpdate }
+    var path: Self._Endpoint { return .avatarUpdate }
     
     var headers: [String : String] {
         let authToken = StoreManager.shared.getString(withKey: currentUserCuid)

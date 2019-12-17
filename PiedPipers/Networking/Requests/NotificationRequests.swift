@@ -16,7 +16,7 @@ struct DeleteNotificationRequest: APIRequest
     
     var baseUrl: String { return urlToServer }
     
-    var path: Self.Endpoint { return (notiDelete + notiCuidToDelete) }
+    var path: Self._Endpoint { return (.notiDelete + notiCuidToDelete) }
     
     var headers: [String : String] {
         let authToken = StoreManager.shared.getString(withKey: currentUserCuid)
@@ -35,7 +35,7 @@ struct ListNotificationsRequest: APIRequest
     
     var baseUrl: String { return urlToServer }
     
-    var path: Self.Endpoint { return notiList }
+    var path: Self._Endpoint { return .notiList }
     
     var headers: [String : String] {
         let authToken = StoreManager.shared.getString(withKey: currentUserCuid)
@@ -73,7 +73,7 @@ struct RedeemNotificationRequest: APIRequest
     
     var baseUrl: String { return urlToServer }
     
-    var path: Self.Endpoint { return (notiRedeem + notificationCuid) }
+    var path: Self._Endpoint { return (.notiRedeem + notificationCuid) }
     
     var headers: [String : String] {
         let authToken = StoreManager.shared.getString(withKey: currentUserCuid)

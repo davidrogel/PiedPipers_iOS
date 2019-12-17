@@ -25,20 +25,7 @@ struct SearchProfileParameters: Codable
     var friendlyLocation: String?
     var lat: Double?
     var long: Double?
-//
-//    init(name: String? = nil, instruments: [String]? = nil,
-//         friendlyLocation: String? = nil,
-//         lat: Double? = nil, long: Double? = nil)
-//    {
-//        self.name = name
-//        self.instruments = instruments
-//        self.friendlyLocation = friendlyLocation
-//        self.lat = lat
-//        self.long = long
-//    }
 }
-
-// TODO - Lipiar comentarios y llevarse de aqui las estructs de los parámetros
 
 struct GetProfileBySearchingRequest: APIRequest
 {
@@ -48,7 +35,7 @@ struct GetProfileBySearchingRequest: APIRequest
     
     var baseUrl: String { return urlToServer }
     
-    var path: Self.Endpoint { return searchProfile }
+    var path: Self._Endpoint { return .searchProfile }
     
     var headers: [String : String] {
         let authToken = StoreManager.shared.getString(withKey: currentUserCuid)
@@ -61,27 +48,16 @@ struct GetProfileBySearchingRequest: APIRequest
     
     let currentUserCuid: String
     
-//    let name: String?
-//    let instruments: [String]?
-//    let friendlyLocation: String?
-//    let lat: Double?
-//    let long: Double?
     let limit: Int
     let offset: Int
     
     let profileParameters: SearchProfileParameters?
     
-    init(cuid:String, profileParameters: SearchProfileParameters? = nil/*name: String? = nil, instruments: [String]? = nil,
-         friendlyLocation: String? = nil, lat: Double? = nil,
-         long: Double? = nil*/, limit: Int, offset: Int)
+    init(cuid:String, profileParameters: SearchProfileParameters? = nil,
+         limit: Int, offset: Int)
     {
         self.currentUserCuid = cuid
         self.profileParameters = profileParameters
-//        self.name = name
-//        self.instruments = instruments
-//        self.friendlyLocation = friendlyLocation
-//        self.lat = lat
-//        self.long = long
         self.limit = limit
         self.offset = offset
     }
@@ -139,15 +115,6 @@ struct SearchLocalParameters: Codable
     var price: Double?
     var lat: Double?
     var long: Double?
-    
-//    init(name: String? = nil, price: Double? = nil,
-//         lat: Double? = nil, long: Double? = nil)
-//    {
-//        self.name = name
-//        self.price = price
-//        self.lat = lat
-//        self.long = long
-//    }
 }
 
 struct GetLocalBySearchingRequest: APIRequest
@@ -158,7 +125,7 @@ struct GetLocalBySearchingRequest: APIRequest
     
     var baseUrl: String { return urlToServer }
     
-    var path: Self.Endpoint { return searchLocals }
+    var path: Self._Endpoint { return .searchLocals }
     
     var headers: [String : String] {
         let authToken = StoreManager.shared.getString(withKey: currentUserCuid)
@@ -171,23 +138,15 @@ struct GetLocalBySearchingRequest: APIRequest
     
     let currentUserCuid: String
     
-//    let name: String?
-//    let price: Double?
-//    let lat: Double?
-//    let long: Double?
     let limit: Int
     let offset: Int
     
     let localParameters: SearchLocalParameters?
     
-    init(cuid:String, localParameters: SearchLocalParameters? = nil /*name: String? = nil, price: Double? = nil, lat: Double? = nil,
-         long: Double? = nil*/, limit: Int, offset: Int)
+    init(cuid:String, localParameters: SearchLocalParameters? = nil,
+         limit: Int, offset: Int)
     {
         self.currentUserCuid = cuid
-//        self.name = name
-//        self.price = price
-//        self.lat = lat
-//        self.long = long
         self.limit = limit
         self.offset = offset
         
