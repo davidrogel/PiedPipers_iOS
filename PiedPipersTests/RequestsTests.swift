@@ -422,6 +422,31 @@ class RequestsTests: XCTestCase
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
+    // MARK: FOLLOW
+    
+    // Falla si ya sigues a la persona, habrá que controlarlo
+    func testFollowOtherUser()
+    {
+        let e = expectation(description: "FollowProfile")
+               
+        let followOtherUserRequest = FollowOtherUserRequest(currentUserCuid: cuid, followUserCuid: "ck2avtjvi0000ajpcb5q44wgb")
+
+        followOtherUserRequest.makeRequest { (result) in
+           switch result
+           {
+           case .success(let data):
+                print("User to follow?:", data)
+           case .failure(let err):
+                print("Error:", err.message)
+                print("Puede que ya sigas al otro...?")
+                XCTFail()
+           }
+           e.fulfill()
+        }
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
     // MARK: NOTIFICATIONS
     
     func testListNotifications()
@@ -444,7 +469,6 @@ class RequestsTests: XCTestCase
 
         waitForExpectations(timeout: timeout, handler: nil)
     }
-    
     
     // MARK: - ENCODE DECODE
     

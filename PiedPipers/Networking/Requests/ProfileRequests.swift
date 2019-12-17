@@ -108,3 +108,26 @@ struct UpdateProfileAvatarRequest: APIRequest
     let currentUserCuid: String
     let imgData: Data
 }
+
+struct FollowOtherUserRequest: APIRequest
+{
+    typealias Response = Profile
+    
+    var method: Methods { return .POST }
+    
+    var baseUrl: String { return urlToServer }
+    
+    var path: Self._Endpoint { return .follow }
+    
+    var headers: [String : String] {
+        let authToken = StoreManager.shared.getString(withKey: currentUserCuid)
+        return ["Authorization":authToken, "Content-Type":"application/json"]
+    }
+    
+    var body: Any {
+        return ["userId":followUserCuid]
+    }
+    
+    let currentUserCuid: String
+    let followUserCuid: String
+}

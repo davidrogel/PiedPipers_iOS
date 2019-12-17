@@ -31,6 +31,8 @@ struct EndPoint: RawRepresentable, Equatable, Hashable
     static let avatarUpdate = EndPoint(rawValue: "/profile/avatar")
     /// /profile/tags
     static let tagsGet = EndPoint(rawValue: "/profile/tags")
+    /// /profile/follow
+    static let follow = EndPoint(rawValue: "/profile/follow")
     
     //MARK: Searching
     /// /search/profile
@@ -52,7 +54,7 @@ struct EndPoint: RawRepresentable, Equatable, Hashable
     
     let rawValue: String
     
-    /// El init también nos permite crear una nueva clave si no existe y somos muy vagos de venir aqui para añadirla
+    /// El init también nos permite crear una nueva clave si no existe y somos muy vagos de venir aqui a añadirla
     init(rawValue: String)
     {
         self.rawValue = rawValue
