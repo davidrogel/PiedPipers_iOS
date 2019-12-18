@@ -21,11 +21,11 @@ protocol APIRequest
     
     typealias APIRequestResponse = Result<Response, APIErrorResponse>
     typealias APIRequestCompletion = (APIRequestResponse) -> ()
-    typealias Endpoint = String
+    typealias _Endpoint = EndPoint
     
     var method: Methods { get }
     var baseUrl: String { get }
-    var path: Endpoint { get }
+    var path: _Endpoint { get }
     
     var body: Any { get }
     var headers: [String: String] { get }
@@ -62,7 +62,7 @@ extension APIRequest
             fatalError("Imposible to form base URL \(baseUrl)")
         }
         
-        url.appendPathComponent(path)
+        url.appendPathComponent(path.rawValue)
         
         guard var components = URLComponents(url: url, resolvingAgainstBaseURL: false) else
         {

@@ -41,9 +41,6 @@
                <Test
                   Identifier = "RequestsTests/testCreateUserOnServer()">
                </Test>
-               <Test
-                  Identifier = "RequestsTests/testEncodeProfile()">
-               </Test>
             </SkippedTests>
          </TestableReference>
       </Testables>

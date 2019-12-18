@@ -12,6 +12,10 @@ struct Profile
 {
     typealias Photo = String
     typealias _Video = Video
+    typealias _Follower = String
+    typealias _Followers = [_Follower]
+    typealias _Invitation = String
+    typealias _Invitations = [_Invitation]
     
     let cuid: String
     let name: String?
@@ -22,12 +26,15 @@ struct Profile
     let description: String?
     let photo: Photo?
     let friendlyLocation: String?
+    let followers: _Followers?
+    let invitations: _Invitations?
 
     init(cuid: String, name: String? = nil,
          location: Location? = nil, contact: Contact? = nil,
          instruments: [String]? = nil, videos: [_Video]? = nil,
          description: String? = nil, photo: Photo? = nil,
-         friendlyLocation: String? = nil)
+         friendlyLocation: String? = nil, followers: _Followers? = nil,
+         invitations: _Invitations? = nil)
     {
         self.cuid = cuid
         self.name = name
@@ -38,6 +45,8 @@ struct Profile
         self.description = description
         self.photo = photo
         self.friendlyLocation = friendlyLocation
+        self.followers = followers
+        self.invitations = invitations
     }
 }
 
@@ -54,6 +63,8 @@ extension Profile: Codable
         case description
         case photo
         case friendlyLocation
+        case followers
+        case invitations
     }
     
     init(from decoder: Decoder) throws
@@ -70,6 +81,8 @@ extension Profile: Codable
         description = try container.decodeIfPresent(String.self, forKey: .description)
         photo = try container.decodeIfPresent(Photo.self, forKey: .photo)
         friendlyLocation = try container.decodeIfPresent(String.self, forKey: .friendlyLocation)
+        followers = try container.decodeIfPresent(_Followers.self, forKey: .followers)
+        invitations = try container.decodeIfPresent(_Invitations.self, forKey: .invitations)
     }
     
     func encode(to encoder: Encoder) throws

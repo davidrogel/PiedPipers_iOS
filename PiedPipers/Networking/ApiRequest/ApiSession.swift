@@ -13,7 +13,7 @@ struct APISession
 {
     static func upload<Request: APIRequest>(_ request: Request, _ completion: Request.APIRequestCompletion?)
     {
-        let urlString = request.baseUrl + request.path
+        let urlString = request.baseUrl + request.path.rawValue
 
         if let networkManager = NetworkReachabilityManager(), !networkManager.isReachable
         {
@@ -88,7 +88,7 @@ struct APISession
     
     static func request<Request: APIRequest>(_ request: Request, _ completion: Request.APIRequestCompletion?)
     {
-        let urlString = request.baseUrl + request.path
+        let urlString = request.baseUrl + request.path.rawValue
         
         if let networkManager = NetworkReachabilityManager(), !networkManager.isReachable
         {

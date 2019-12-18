@@ -20,6 +20,8 @@ struct Local
     let contact: Contact
     let photos: [Photo]
     let description: String
+    let shortDescription: String
+    let address: String
 }
 
 extension Local: Codable
@@ -34,6 +36,8 @@ extension Local: Codable
         case contact
         case photos
         case description
+        case shortDescription
+        case address
     }
     
     init(from decoder: Decoder) throws
@@ -48,6 +52,8 @@ extension Local: Codable
         contact = try container.decode(Contact.self, forKey: .contact)
         photos = try container.decode([Photo].self, forKey: .photos)
         description = try container.decode(String.self, forKey: .description)
+        shortDescription = try container.decode(String.self, forKey: .shortDescription)
+        address = try container.decode(String.self, forKey: .address)
     }
     
     func encode(to encoder: Encoder) throws
@@ -62,5 +68,7 @@ extension Local: Codable
         try container.encode(contact, forKey: .contact)
         try container.encode(photos, forKey: .photos)
         try container.encode(description, forKey: .description)
+        try container.encode(shortDescription, forKey: .shortDescription)
+        try container.encode(address, forKey: .address)
     }
 }
