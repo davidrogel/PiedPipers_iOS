@@ -290,8 +290,10 @@ class ProfileViewController: UIViewController {
         
         let contact = ContactPresentable(type: typeContact, data: contactData)
         
-        let resizedImage = img.resize(size: CGSize(width: 1000, height: 1000))
-        let data = resizedImage?.jpegData(compressionQuality: 1)
+        let resizedImage = img.resize(size: CGSize(width: 300, height: 300))
+        guard let data = resizedImage?.jpegData(compressionQuality: 1) else {
+            fatalError()
+        }
         
         let city: String?
         if friendlyLocationLabel.text == "" {
@@ -307,9 +309,17 @@ class ProfileViewController: UIViewController {
             aboutMe = aboutMeText.text
         }
         
-        let profile = ProfilePresentable(name: name, city: city, avatar: nil, location: nil, contact: contact, instruments: updateInstruments, videos: updateVideos, aboutMe: aboutMe)
+        let newProfile = ProfilePresentable(name: name, city: city, avatar: nil, location: nil, contact: contact, instruments: updateInstruments, videos: updateVideos, aboutMe: aboutMe)
+        
+//        if newProfile == profile {
+//            
+//        }
         loading = true
-        presenter.updateProfile(with: profile)
+        let cache = ImageCache.default
+        cache.clearMemoryCache()
+        cache.clearDiskCache()
+        presenter.updateProfile(with: newProfile, image: data)
+        
         
     }
     
@@ -456,6 +466,7 @@ extension ProfileViewController: ProfileViewProtocol {
             self.presenter.loadCurrentUserProfile()
         } else {
             self.present(createAlert(withTitle: "Error updating.", message: "There was an error updating the profile."), animated: true)
+            loading = false
         }
     }
     

@@ -204,11 +204,26 @@ extension ProfilePresenter: ProfilePresenterProtocol {
     
     func updateProfileAvatar(with data: Data) {
         let cuid = StoreManager.shared.getLoggedUser()
-        profileService.updateAvatar(currentUserCUID: cuid, image: data, success: { (profile) in
-            
-        }, failure: { (error) in
-            
+        profileService.updateAvatar(currentUserCUID: cuid, image: data, success: { [weak self] (profile) in
+            self?.ui?.showUpdateAlert(successfully: true)
+        }, failure: { [weak self] (error) in
+            self?.ui?.showUpdateAlert(successfully: false)
         })
+    }
+    
+    func updateProfile(with profilePresentable: ProfilePresentable, image: Data) {
+        let cuid = StoreManager.shared.getLoggedUser()
+        let profile = convert2Profile(withCuid: cuid, profilePresentable: profilePresentable)
+        profileService.updateAvatar(currentUserCUID: cuid, image: image, success: { [weak self] (updateProfile) in
+            self?.profileService.updateProfile(currentUserCUID: cuid, newProfile: profile, success: { [weak self] (updatedProfile) in
+                self?.ui?.showUpdateAlert(successfully: true)
+                }, failure: { [weak self] (error) in
+                    self?.ui?.showUpdateAlert(successfully: false)
+            })
+            }, failure: { [weak self] (error) in
+                self?.ui?.showUpdateAlert(successfully: false)
+        })
+        
     }
     
 }
