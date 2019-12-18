@@ -10,6 +10,21 @@ import UIKit
 
 final class Assembler {
     
+    static func provideView() -> UIViewController {
+        let cuid = StoreManager.shared.getLoggedUser()
+        let hasData = StoreManager.shared.getMinimumDataIsInserted(for: cuid)
+        if hasData {
+            let tabBarView = provideInitialTabBarController()
+            tabBarView.modalPresentationStyle = .fullScreen
+            return tabBarView
+        } else {
+            let profileView = provideCurrentUserProfile()
+            profileView.presenter.isEditing = true
+            profileView.modalPresentationStyle = .fullScreen
+            return profileView
+        }
+    }
+    
     static func provideInitialTabBarController() -> UITabBarController {
         let tabBarController = UITabBarController()
         let profileViewController = provideCurrentUserProfile()
@@ -26,7 +41,7 @@ final class Assembler {
         return tabBarController
     }
     
-    static func provideCurrentUserProfile() -> UIViewController {
+    static func provideCurrentUserProfile() -> ProfileViewController {
         let currentUserViewController = ProfileViewController()
         let presenter = ProfilePresenter(with: currentUserViewController, profileService: Repository.remote)
         currentUserViewController.configure(with: presenter)
@@ -34,7 +49,7 @@ final class Assembler {
         return currentUserViewController
     }
     
-    static func provideLoginScreen() -> UIViewController {
+    static func provideLoginScreen() -> LoginViewController {
         let loginViewController = LoginViewController()
         let presenter = LoginPresenter(with: loginViewController, loginService: Repository.remote)
         loginViewController.configure(with: presenter)
