@@ -109,3 +109,45 @@ struct UpdateProfileAvatarRequest: APIRequest
     let currentUserCuid: String
     let data: Data
 }
+
+struct UnfollowOtherUserRequest: APIRequest
+{
+    typealias Response = Profile
+    
+    var method: Methods { return .POST }
+    
+    var baseUrl: String { return urlToServer }
+    
+    var path: Self._Endpoint { return .unfollow }
+    
+    var headers: [String : String] {
+        let authToken = StoreManager.shared.getString(withKey: currentUserCuid)
+        return ["Authorization":authToken, "Content-Type":"application/json"]
+    }
+    
+    var body: Any {
+        return ["userId":followUserCuid]
+    }
+    
+    let currentUserCuid: String
+    let followUserCuid: String
+}
+
+
+struct GetCurrentProfileBand: APIRequest
+{
+    typealias Response = ProfileList
+    
+    var method: Methods { return .GET }
+    
+    var baseUrl: String { return urlToServer }
+    
+    var path: Self._Endpoint { return .myBand }
+    
+    var headers: [String : String] {
+        let authToken = StoreManager.shared.getString(withKey: currentUserCuid)
+        return ["Authorization":authToken]
+    }
+    
+    let currentUserCuid: String
+}

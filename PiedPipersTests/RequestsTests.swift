@@ -233,7 +233,7 @@ class RequestsTests: XCTestCase
     {
         let e = expectation(description: "LoginUser")
         
-        let loginUserRequest = LoginUserRequest(email: email, password: pass)
+        let loginUserRequest = LoginUserRequest(email: notisEmail, password: notisPass)
         
         loginUserRequest.makeRequest { [weak self](result) in
             switch result
@@ -256,20 +256,17 @@ class RequestsTests: XCTestCase
     {
         let e = expectation(description: "GetUser")
         
-//        if let id = user?.id
-//        {
-            let getUserProfileRequest = GetProfileRequest(currentUserCuid: cuid)
-            
-            getUserProfileRequest.makeRequest { (result) in
-                switch result
-                {
-                case .success(let data):
-                    print("CurrentUserProfile:", data)
-                case .failure(let err):
-                    print("Error:", CodeError(rawValue: err.statusCode).debugDescription)
-                    XCTFail()
-                }
-                e.fulfill()
+
+        let getUserProfileRequest = GetProfileRequest(currentUserCuid: notisUserCUID)
+        
+        getUserProfileRequest.makeRequest { (result) in
+            switch result
+            {
+            case .success(let data):
+                print("CurrentUserProfile:", data)
+            case .failure(let err):
+                print("Error:", CodeError(rawValue: err.statusCode).debugDescription)
+                XCTFail()
             }
 //        }
 //        else
@@ -278,7 +275,8 @@ class RequestsTests: XCTestCase
 //            XCTFail()
 //        }
         
-        waitForExpectations(timeout: timeout, handler: nil)
+            waitForExpectations(timeout: timeout, handler: nil)
+        }
     }
     
     // MARK: GET USER BY ID
@@ -377,21 +375,128 @@ class RequestsTests: XCTestCase
     {
         let e = expectation(description: "SearchProfiles")
                
-           let getProfilesBySearchingRequest = GetProfileBySearchingRequest(cuid: cuid, limit: 10, offset: 10)
-           
-           getProfilesBySearchingRequest.makeRequest { (result) in
-               switch result
-               {
-               case .success(let data):
-                   print("Profiles?:", data)
-               case .failure(let err):
-                   print("Error:", CodeError(rawValue: err.statusCode).debugDescription)
-                   XCTFail()
-               }
-               e.fulfill()
+        let getProfilesBySearchingRequest = GetProfileBySearchingRequest(cuid: cuid, limit: 10, offset: 0)
+
+        getProfilesBySearchingRequest.makeRequest { (result) in
+           switch result
+           {
+           case .success(let data):
+               print("Profiles?:", data)
+           case .failure(let err):
+               print("Error:", CodeError(rawValue: err.statusCode).debugDescription)
+               XCTFail()
+           }
+           e.fulfill()
+        }
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    // MARK: UPDATE AVATAR
+    
+    func testUpdateProfileAvatar()
+    {
+        let e = expectation(description: "UpdateAvatar")
+
+        let img = UIImage(named: "mads")
+        
+        let resizedImage = img?.resize(size: CGSize(width: 300, height: 300))
+        let data = resizedImage?.jpegData(compressionQuality: 1)
+        
+        guard let imgData = data else
+        {
+            XCTFail()
+            return
+        }
+        
+        let updateCurrentUserAvatar = UpdateProfileAvatarRequest(currentUserCuid: cuid, imgData: imgData)
+
+        updateCurrentUserAvatar.makeUpload { (result) in
+            switch result
+            {
+            case .success(let data):
+                print("Profile with updated profile:", data)
+            case .failure(let err):
+                print("Error:", err)
+//                print("Error:", CodeError(rawValue: err.statusCode).debugDescription)
+                XCTFail()
+            }
+            e.fulfill()
+        }
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    // MARK: FOLLOW
+    
+    // Falla si ya sigues a la persona, habrá que controlarlo
+    func testFollowOtherUser()
+    {
+        let e = expectation(description: "FollowProfile")
+               
+        let followOtherUserRequest = FollowOtherUserRequest(currentUserCuid: cuid, followUserCuid: "ck2avtjvi0000ajpcb5q44wgb")
+
+        followOtherUserRequest.makeRequest { (result) in
+           switch result
+           {
+           case .success(let data):
+                print("User to follow?:", data)
+           case .failure(let err):
+                print("Error:", err.message)
+                print("Puede que ya le sigas...")
+                XCTFail()
+           }
+           e.fulfill()
+        }
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    // MARK: UNFOLLOW
+    
+    // Falla si NO sigues a la persona, habrá que controlarlo
+    func testUnfollowOtherUser()
+    {
+        let e = expectation(description: "UnfollowProfile")
+               
+        let unfollowOtherUserRequest = UnfollowOtherUserRequest(currentUserCuid: cuid, followUserCuid: "ck2avtjvi0000ajpcb5q44wg")
+
+        unfollowOtherUserRequest.makeRequest { (result) in
+           switch result
+           {
+           case .success(let data):
+                print("User to follow?:", data)
+           case .failure(let err):
+                print("Error:", err.message)
+                print("Puede que aun no te hayan aceptado...")
+                XCTFail()
+           }
+           e.fulfill()
+        }
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    // MARK: GET MY BAND
+    
+    func testGetProfileBand()
+    {
+        let e = expectation(description: "GetBand")
+               
+        let getCurrentProfileBand = GetCurrentProfileBand(currentUserCuid: notisUserCUID)
+            
+        getCurrentProfileBand.makeRequest { (result) in
+           switch result
+           {
+           case .success(let data):
+                print("Band:", data)
+           case .failure(let err):
+                print("Error:", err.message)
+                XCTFail()
            }
            
            waitForExpectations(timeout: timeout, handler: nil)
+        }
     }
     
     // MARK: - DECODE ENCODE PROFILE
