@@ -235,7 +235,7 @@ class RequestsTests: XCTestCase
     {
         let e = expectation(description: "LoginUser")
         
-        let loginUserRequest = LoginUserRequest(email: email, password: pass)
+        let loginUserRequest = LoginUserRequest(email: notisEmail, password: notisPass)
         
         loginUserRequest.makeRequest { (result) in
             switch result
@@ -257,7 +257,7 @@ class RequestsTests: XCTestCase
     {
         let e = expectation(description: "GetUser")
         
-        let getUserProfileRequest = GetProfileRequest(currentUserCuid: cuid)
+        let getUserProfileRequest = GetProfileRequest(currentUserCuid: notisUserCUID)
         
         getUserProfileRequest.makeRequest { (result) in
             switch result
@@ -438,7 +438,55 @@ class RequestsTests: XCTestCase
                 print("User to follow?:", data)
            case .failure(let err):
                 print("Error:", err.message)
-                print("Puede que ya sigas al otro...?")
+                print("Puede que ya le sigas...")
+                XCTFail()
+           }
+           e.fulfill()
+        }
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    // MARK: UNFOLLOW
+    
+    // Falla si NO sigues a la persona, habrá que controlarlo
+    func testUnfollowOtherUser()
+    {
+        let e = expectation(description: "UnfollowProfile")
+               
+        let unfollowOtherUserRequest = UnfollowOtherUserRequest(currentUserCuid: cuid, followUserCuid: "ck2avtjvi0000ajpcb5q44wg")
+
+        unfollowOtherUserRequest.makeRequest { (result) in
+           switch result
+           {
+           case .success(let data):
+                print("User to follow?:", data)
+           case .failure(let err):
+                print("Error:", err.message)
+                print("Puede que aun no te hayan aceptado...")
+                XCTFail()
+           }
+           e.fulfill()
+        }
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    // MARK: GET MY BAND
+    
+    func testGetProfileBand()
+    {
+        let e = expectation(description: "GetBand")
+               
+        let getCurrentProfileBand = GetCurrentProfileBand(currentUserCuid: notisUserCUID)
+            
+        getCurrentProfileBand.makeRequest { (result) in
+           switch result
+           {
+           case .success(let data):
+                print("Band:", data)
+           case .failure(let err):
+                print("Error:", err.message)
                 XCTFail()
            }
            e.fulfill()

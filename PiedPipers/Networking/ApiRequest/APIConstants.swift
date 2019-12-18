@@ -33,6 +33,10 @@ struct EndPoint: RawRepresentable, Equatable, Hashable
     static let tagsGet = EndPoint(rawValue: "/profile/tags")
     /// /profile/follow
     static let follow = EndPoint(rawValue: "/profile/follow")
+    /// /profile/unfollow
+    static let unfollow = EndPoint(rawValue: "/profile/unfollow")
+    /// /profile/my-band
+    static let myBand = EndPoint(rawValue: "/profile/my-band")
     
     //MARK: Searching
     /// /search/profile
