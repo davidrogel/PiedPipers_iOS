@@ -13,9 +13,9 @@ protocol LoginViewProtocol: AnyObject {
     func setLoginView()
     func showEmptyFieldAlert(field: String)
     func showNotEmailAlert()
-    func dismissView()
     func showNonExistentUserAlert()
     func showRegisterErrorAlert()
+    func provideNextView()
 }
 
 protocol LoginPreseterProtocol: AnyObject {

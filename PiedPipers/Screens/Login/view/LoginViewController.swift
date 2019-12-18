@@ -10,6 +10,17 @@ import UIKit
 
 class LoginViewController: UIViewController {
     
+    // MARK: Properties
+    var loading: Bool! {
+        didSet {
+            if loading {
+                loadingView.isHidden = false
+            } else {
+                loadingView.isHidden = true
+            }
+        }
+    }
+    
     // MARK: Presenter elements
     public private(set) var presenter: LoginPreseterProtocol!
     
@@ -23,6 +34,9 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var emailBox: UITextField!
     @IBOutlet weak var passwordBox: UITextField!
     @IBOutlet weak var signUpView: UIView!
+    @IBOutlet weak var loadingView: UIView!
+    
+    @IBOutlet weak var logInButtonBottomSpace: NSLayoutConstraint!
     
     // MARK: Life Cycle
     override func viewDidLoad() {
@@ -44,17 +58,32 @@ class LoginViewController: UIViewController {
         passwordBox.delegate = self
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        loading = true
+        emailBox.text = ""
+        passwordBox.text = ""
+        setLoginView()
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        let cuid = StoreManager.shared.getLoggedUser()
+        if cuid != "" {
+            self.present(Assembler.provideView(), animated: true)
+        } else {
+            loading = false
+        }
+    }
+    
     // MARK: Actions
     @IBAction func registerButtonTapped(_ sender: Any) {
         presenter.prepareRegisterView()
     }
     
     @IBAction func closeCurrentView(_ sender: Any) {
-        if presenter.isLogging {
-            dismissView()
-        } else {
-            presenter.prepareLoginView()
-        }
+        presenter.prepareLoginView()
     }
     
     @IBAction func loginRegisterButtonTapped(_ sender: Any) {
@@ -69,14 +98,16 @@ extension LoginViewController: LoginViewProtocol {
         presenter.isLogging = true
         signUpView.isHidden = false
         logInButton.setTitle("Login", for: .normal)
-        cancelButton.setTitle("Not now", for: .normal)
+        cancelButton.isHidden = true
+        logInButtonBottomSpace.constant = 16
     }
     
     func setRegisterView() {
         presenter.isLogging = false
         signUpView.isHidden = true
         logInButton.setTitle("Register", for: .normal)
-        cancelButton.setTitle("I have account", for: .normal)
+        cancelButton.isHidden = false
+        logInButtonBottomSpace.constant = 82
     }
     
     func showEmptyFieldAlert(field: String) {
@@ -91,12 +122,8 @@ extension LoginViewController: LoginViewProtocol {
         self.present(alert, animated: true)
     }
     
-    func dismissView() {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
     func showNonExistentUserAlert() {
-        let alert = UIAlertController(title: "Error", message: "Usuario inexistente", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Error", message: "Incorrect user or password.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Accept", style: .default, handler: nil))
         self.present(alert, animated: true)
     }
@@ -105,6 +132,10 @@ extension LoginViewController: LoginViewProtocol {
         let alert = UIAlertController(title: "Error creating user.", message: "Sorry, we had trouble creating your user, try again.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Accept", style: .default, handler: nil))
         self.present(alert, animated: true)
+    }
+    
+    func provideNextView() {
+        self.present(Assembler.provideView(), animated: true)
     }
 }
 

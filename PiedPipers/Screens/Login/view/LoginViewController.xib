@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -11,7 +11,9 @@
             <connections>
                 <outlet property="cancelButton" destination="AbW-5W-z0H" id="oXz-Mo-DUP"/>
                 <outlet property="emailBox" destination="7pe-hX-kE3" id="S2B-CG-8vZ"/>
+                <outlet property="loadingView" destination="HDE-VY-fyr" id="Scc-7q-yCZ"/>
                 <outlet property="logInButton" destination="fMz-tN-HxE" id="Nxd-Wh-5eD"/>
+                <outlet property="logInButtonBottomSpace" destination="tLc-W0-JBu" id="9Zx-IA-cvx"/>
                 <outlet property="passwordBox" destination="eUc-tL-siR" id="ctx-uP-S7V"/>
                 <outlet property="signUpView" destination="fNx-sl-doO" id="L5k-uT-CAT"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -106,19 +108,33 @@
                         <constraint firstAttribute="height" constant="50" id="Qn8-my-a9n"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                    <state key="normal" title="Not now">
+                    <state key="normal" title="I have account">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                     <connections>
                         <action selector="closeCurrentView:" destination="-1" eventType="touchUpInside" id="Stk-C4-M8X"/>
                     </connections>
                 </button>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HDE-VY-fyr" userLabel="loadingView">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                    <subviews>
+                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="faY-6h-Lkp">
+                            <rect key="frame" x="188.5" y="429.5" width="37" height="37"/>
+                        </activityIndicatorView>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <constraints>
+                        <constraint firstItem="faY-6h-Lkp" firstAttribute="centerY" secondItem="HDE-VY-fyr" secondAttribute="centerY" id="eFp-MZ-ciz"/>
+                        <constraint firstItem="faY-6h-Lkp" firstAttribute="centerX" secondItem="HDE-VY-fyr" secondAttribute="centerX" id="qTm-1s-tuv"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="eUc-tL-siR" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="5qQ-ke-d7P"/>
                 <constraint firstItem="fMz-tN-HxE" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="AQf-LG-f7u"/>
                 <constraint firstItem="AbW-5W-z0H" firstAttribute="top" secondItem="fMz-tN-HxE" secondAttribute="bottom" constant="16" id="Bri-Qm-BoR"/>
+                <constraint firstAttribute="bottom" secondItem="HDE-VY-fyr" secondAttribute="bottom" id="C4f-Wc-HCn"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="eUc-tL-siR" secondAttribute="trailing" constant="16" id="GdX-lc-1pg"/>
                 <constraint firstItem="fNx-sl-doO" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="I9t-SW-Hjj"/>
                 <constraint firstItem="eUc-tL-siR" firstAttribute="top" secondItem="7pe-hX-kE3" secondAttribute="bottom" constant="46" id="JQx-Jg-xvk"/>
@@ -132,9 +148,13 @@
                 <constraint firstItem="AbW-5W-z0H" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="bsi-PR-xd8"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="AbW-5W-z0H" secondAttribute="trailing" constant="16" id="byO-Rj-Ftk"/>
                 <constraint firstItem="eUc-tL-siR" firstAttribute="top" secondItem="vpO-pN-09M" secondAttribute="bottom" constant="9" id="nH9-AS-cQa"/>
+                <constraint firstItem="HDE-VY-fyr" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="nJM-XI-jLA"/>
                 <constraint firstItem="aJ5-bQ-3iR" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="qr0-li-6EL"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="fMz-tN-HxE" secondAttribute="bottom" constant="82" id="tLc-W0-JBu"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="AbW-5W-z0H" secondAttribute="bottom" constant="16" id="viX-4c-bcD"/>
                 <constraint firstItem="7pe-hX-kE3" firstAttribute="top" secondItem="Cai-kC-VHW" secondAttribute="bottom" constant="9" id="wPx-v0-TWH"/>
+                <constraint firstItem="HDE-VY-fyr" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="wY0-VK-zpC"/>
+                <constraint firstItem="HDE-VY-fyr" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="zPL-xC-jcL"/>
                 <constraint firstItem="Cai-kC-VHW" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="32" id="zvg-PN-s6Z"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>

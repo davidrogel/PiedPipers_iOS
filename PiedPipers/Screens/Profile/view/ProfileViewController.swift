@@ -104,6 +104,7 @@ class ProfileViewController: UIViewController {
             loading = false
         }
     }
+    var firstTimeEditing: Bool = false
     
     var loading: Bool! {
         didSet {
@@ -190,6 +191,7 @@ class ProfileViewController: UIViewController {
         //TODO: Esto llamaría al back cada vez que accedamos al perfil (GUARDAR EL PERFIL EN USER DEFAULT)
         if presenter.isEditing {
             presenter.prepareEditView()
+            setEditProfileView()
         } else {
             presenter.loadCurrentUserProfile()
             loading = true
@@ -220,7 +222,7 @@ class ProfileViewController: UIViewController {
     }
     
     @IBAction func closeCancelButtonTapped(_ sender: Any) {
-        if presenter.isEditing {
+        if presenter.isEditing && !firstTimeEditing {
             //TODO: Si le damos a cancel y seguimos sin meter datos, mandarlo al tab Home
             presenter.isEditing = false
             presenter.loadCurrentUserProfile()
@@ -228,7 +230,6 @@ class ProfileViewController: UIViewController {
         } else {
             StoreManager.shared.removeStoreCuid()
             self.dismiss(animated: true, completion: nil)
-            tabBarController?.selectedIndex = 0
         }
     }
     
@@ -446,6 +447,12 @@ extension ProfileViewController: ProfileViewProtocol {
         acceptView.isHidden = false
         closeCancelButton.setTitle("Cancel", for: .normal)
         contactButton.isHidden = true
+        loading = false
+        let cuid = StoreManager.shared.getLoggedUser()
+        let hasData = StoreManager.shared.getMinimumDataIsInserted(for: cuid)
+        if !hasData {
+            firstTimeEditing = true
+        }
     }
     
     func setOtherUserProfileWith(model: ProfilePresentable) {
@@ -463,7 +470,16 @@ extension ProfileViewController: ProfileViewProtocol {
     func showUpdateAlert(successfully: Bool) {
         if successfully {
             self.present(createAlert(withTitle: "Success updating.", message: "Your profile has updated successfully."), animated: true)
-            self.presenter.loadCurrentUserProfile()
+            if firstTimeEditing {
+                let cuid = StoreManager.shared.getLoggedUser()
+                StoreManager.shared.setMinimumDataIsInserted(for: cuid, with: true)
+                weak var pvc = self.presentingViewController
+                self.dismiss(animated: true, completion: {
+                    pvc?.present(Assembler.provideView(), animated: true)
+                })
+            } else {
+                self.presenter.loadCurrentUserProfile()
+            }
         } else {
             self.present(createAlert(withTitle: "Error updating.", message: "There was an error updating the profile."), animated: true)
             loading = false

@@ -722,7 +722,6 @@
 				6348F69B2392F24E005AA01B /* ProfilePresentable.swift in Sources */,
 				AC88CF34239842B40082F64D /* InstrumentsPickerViewController.swift in Sources */,
 				6348F69A2392F24E005AA01B /* ProfilePresenter.swift in Sources */,
-				63F4E81F236910F600C52D47 /* Dummy_Profile.swift in Sources */,
 				6348F6992392F24E005AA01B /* LoginViewController.swift in Sources */,
 				63E265B5236B738D007FEA74 /* UserRequests.swift in Sources */,
 				63335AD7236CC69A00F8CC8F /* ProfileRequests.swift in Sources */,
@@ -917,7 +916,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ironmacdev.PiedPipers;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jongonzalez.PiedPipers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -936,7 +935,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ironmacdev.PiedPipers;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jongonzalez.PiedPipers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

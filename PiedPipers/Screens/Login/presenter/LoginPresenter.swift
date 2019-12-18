@@ -64,7 +64,7 @@ extension LoginPresenter: LoginPreseterProtocol {
                     fatalError()
                 }
                 StoreManager.shared.setLoggedUser(userCuid: userLogged.id)
-                self?.ui?.dismissView()
+                self?.ui?.provideNextView()
             }, failure: { [weak self] (error) in
                 //TODO: Mostrar error de usuario no existe o contraseña incorrecta
                 // Todavía no lo tiene implementado David (ECHAR UN VISTAZO EN CUANTO PUEDA)
