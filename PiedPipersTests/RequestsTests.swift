@@ -23,6 +23,8 @@ class RequestsTests: XCTestCase
     let notisPass = "1234567"
     let notisUserCUID = "ck40dve7l00013epcdiq9gmju"
     
+    let localCUID = "ck3yxb4qp0009xapc2nypd6xo"
+    
     let profileToEncode = Profile(cuid: "CUID", name: "name", location: Location(lat: 20.0, long: 20.0), contact: Contact(type: .email, data: "Correo.a.encodear@correo.com"), instruments: ["bateria", "guitarra", "voz"], videos: nil, description: "una descripción rexulona", photo: "una foto")
     
     let profileData = """
@@ -235,7 +237,7 @@ class RequestsTests: XCTestCase
     {
         let e = expectation(description: "LoginUser")
         
-        let loginUserRequest = LoginUserRequest(email: notisEmail, password: notisPass)
+        let loginUserRequest = LoginUserRequest(email: email, password: pass)
         
         loginUserRequest.makeRequest { (result) in
             switch result
@@ -454,7 +456,7 @@ class RequestsTests: XCTestCase
     {
         let e = expectation(description: "UnfollowProfile")
                
-        let unfollowOtherUserRequest = UnfollowOtherUserRequest(currentUserCuid: cuid, followUserCuid: "ck2avtjvi0000ajpcb5q44wg")
+        let unfollowOtherUserRequest = UnfollowOtherUserRequest(currentUserCuid: cuid,unfollowUserCuid: "ck2avtjvi0000ajpcb5q44wg")
 
         unfollowOtherUserRequest.makeRequest { (result) in
            switch result
@@ -508,6 +510,30 @@ class RequestsTests: XCTestCase
            {
            case .success(let data):
                 print("Notis:", data)
+           case .failure(let err):
+                print("Error:", err.message)
+                XCTFail()
+           }
+           e.fulfill()
+        }
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    // MARK: LOCALS
+    // Estas Requests en un principio no requieren de Token de Autorización
+    
+    func testGetLocalById()
+    {
+        let e = expectation(description: "GetLocalById")
+               
+        let getLocalByIdRequest = GetLocalByIdRequest(localCuid: localCUID)
+        
+        getLocalByIdRequest.makeRequest { (result) in
+           switch result
+           {
+           case .success(let data):
+                print("Local:", data)
            case .failure(let err):
                 print("Error:", err.message)
                 XCTFail()

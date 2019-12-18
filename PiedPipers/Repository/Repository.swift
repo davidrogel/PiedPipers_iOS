@@ -38,8 +38,18 @@ protocol RepositoryFactory: class
     func updateAvatar(currentUserCUID cuid: String, image data: Data, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
     /// Obtener los instrumentos que se pueden usar
     func getAvaliableInstruments(currentUserCUID cuid: String, success: @escaping ([String]?) -> Void, failure: @escaping (Error?) -> Void)
+    /// Seguir a un usuario
+    func followProfile(currentUserCUID cuid: String, otherProfileCUID otherCUID: String, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
+    /// Dejar de seguir a otro usuario
+    func unfollowProfile(currentUserCUID cuid: String, otherProfileCUID otherCUID: String, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
+    /// Obtener tu banda, obtienes un array de Perfiles ligados a ti
+    func getProfileBand(currentUserCUID cuid: String, success: @escaping (ProfileList?) -> Void, failure: @escaping (Error?) -> Void)
     
-    // MARK: - NOTIFICATIONS
+    // MARK: - LOCAL REQUESTS
+    /// Obtener un local por su CUID
+    func getLocalById(localCuid cuid: String, success: @escaping (Local?) -> Void, failure: @escaping (Error?) -> Void)
+    
+    // MARK: - NOTIFICATIONS REQUESTS
     /// Borrar una notificación
     func deleteNotification(currentUserCUID cuid: String, notificationToDeleteCUID notiCuid: String, success: @escaping (Int) -> Void, failure: @escaping (Error?) -> Void)
     /// Obtener la lista de notificaciones que te han llegado
@@ -55,6 +65,26 @@ protocol RepositoryFactory: class
 
 final class FakeRepository: RepositoryFactory
 {
+    func getLocalById(localCuid cuid: String, success: @escaping (Local?) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        // TODO
+    }
+    
+    func followProfile(currentUserCUID cuid: String, otherProfileCUID otherCUID: String, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        // TODO
+    }
+    
+    func unfollowProfile(currentUserCUID cuid: String, otherProfileCUID otherCUID: String, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        // TODO
+    }
+    
+    func getProfileBand(currentUserCUID cuid: String, success: @escaping (ProfileList?) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        // TODO
+    }
+    
     func getListOfNotifications(currentUserCUID cuid: String, limit: Int, offset: Int, success: @escaping (NotiList) -> Void, failure: @escaping (Error?) -> Void)
     {
         // TODO
@@ -273,6 +303,68 @@ final class RemoteRepository: RepositoryFactory
             case .failure(let err):
                 failure(err)
             }
+        }
+    }
+    
+    func followProfile(currentUserCUID cuid: String, otherProfileCUID otherCUID: String, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        let followOtherUserRequest = FollowOtherUserRequest(currentUserCuid: cuid, followUserCuid: otherCUID)
+
+        followOtherUserRequest.makeRequest { (result) in
+           switch result
+           {
+           case .success(let data):
+                success(data)
+           case .failure(let err):
+                failure(err)
+           }
+        }
+    }
+    
+    func unfollowProfile(currentUserCUID cuid: String, otherProfileCUID otherCUID: String, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        let unfollowOtherUserRequest = UnfollowOtherUserRequest(currentUserCuid: cuid, unfollowUserCuid: otherCUID)
+
+        unfollowOtherUserRequest.makeRequest { (result) in
+           switch result
+           {
+           case .success(let data):
+                success(data)
+           case .failure(let err):
+                failure(err)
+           }
+        }
+    }
+    
+    func getProfileBand(currentUserCUID cuid: String, success: @escaping (ProfileList?) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        let getCurrentProfileBand = GetCurrentProfileBand(currentUserCuid: cuid)
+            
+        getCurrentProfileBand.makeRequest { (result) in
+           switch result
+           {
+           case .success(let data):
+                success(data)
+           case .failure(let err):
+                failure(err)
+           }
+        }
+    }
+    
+    // MARK: - LOCAL
+    
+    func getLocalById(localCuid cuid: String, success: @escaping (Local?) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        let getLocalByIdRequest = GetLocalByIdRequest(localCuid: cuid)
+        
+        getLocalByIdRequest.makeRequest { (result) in
+           switch result
+           {
+           case .success(let data):
+                success(data)
+           case .failure(let err):
+                failure(err)
+           }
         }
     }
     

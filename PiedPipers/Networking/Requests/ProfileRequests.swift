@@ -148,11 +148,11 @@ struct UnfollowOtherUserRequest: APIRequest
     }
     
     var body: Any {
-        return ["userId":followUserCuid]
+        return ["userId":unfollowUserCuid]
     }
     
     let currentUserCuid: String
-    let followUserCuid: String
+    let unfollowUserCuid: String
 }
 
 
