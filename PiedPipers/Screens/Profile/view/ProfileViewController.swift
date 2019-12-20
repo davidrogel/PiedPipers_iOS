@@ -229,9 +229,15 @@ class ProfileViewController: UIViewController {
             loading = true
         } else {
             let cuid = StoreManager.shared.getLoggedUser()
-            let a = StoreManager.shared.deleteData(withKey: cuid)
-            StoreManager.shared.removeStoreCuid()
-            self.dismiss(animated: true, completion: nil)
+            let tokenDeleted = StoreManager.shared.deleteData(withKey: cuid)
+            if tokenDeleted {
+                StoreManager.shared.removeStoreCuid()
+                self.dismiss(animated: true, completion: nil)
+            } else {
+                let alert = createAlert(withTitle: "Error logging out.", message: "There was an error logging out. Please retry in a few minutes.")
+                self.present(alert, animated: true)
+            }
+            
         }
     }
     
