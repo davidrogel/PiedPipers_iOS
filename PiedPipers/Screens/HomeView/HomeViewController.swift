@@ -13,6 +13,8 @@ typealias BandProfileCustomCell = ProfileCustomCell
 class HomeViewController: UIViewController
 {
     // MARK: - Views
+    private let scrollView = UIScrollView()
+    
     private let logoImageView: UIImageView = {
         let imgView = UIImageView(image: #imageLiteral(resourceName: "Tuned-Logo.png"))
         imgView.translatesAutoresizingMaskIntoConstraints = false
@@ -101,9 +103,7 @@ class HomeViewController: UIViewController
         presenter = HomeViewPresenter(homeViewDelegate: self)
         
         presenter.requestLocals(cuid: cuid, limit: 10, offset: 0)
-        
-//        localsCollectionView.tag = 1
-//        bandCollectionView.tag = 2
+        presenter.requestBand(currentUserCuid: cuid)
         
         localsCollectionView.dataSource = self
         bandCollectionView.dataSource = self
@@ -111,23 +111,50 @@ class HomeViewController: UIViewController
         localsCollectionView.delegate = self
         bandCollectionView.delegate = self
         
-        localsCollectionView.backgroundColor = .white
-        bandCollectionView.backgroundColor = .white
+        localsCollectionView.backgroundColor = .red
+        bandCollectionView.backgroundColor = .red
         
         bandCollectionView.register(BandProfileCustomCell.self, forCellWithReuseIdentifier: cellBandProfileId)
         localsCollectionView.register(LocalCustomCell.self, forCellWithReuseIdentifier: cellLocalId)
         
-        view.addSubview(logoImageView)
-        view.addSubview(localsTitleLbl)
-        view.addSubview(yourBandTitleLbl)
+        
+        scrollView.backgroundColor = .systemYellow
+//        scrollView.isScrollEnabled = true
+        
+        scrollView.addSubview(logoImageView)
+        scrollView.addSubview(localsTitleLbl)
+        scrollView.addSubview(localsCollectionView)
+        scrollView.addSubview(yourBandTitleLbl)
+        scrollView.addSubview(bandCollectionView)
+        
+        view.addSubview(scrollView)
+        
+//        view.addSubview(logoImageView)
+//        view.addSubview(localsTitleLbl)
+//        view.addSubview(yourBandTitleLbl)
 //        view.addSubview(bandCollectionView)
-        view.addSubview(localsCollectionView)
+//        view.addSubview(localsCollectionView)
+        
+        
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        
         
         configureLogoImageViewConstraints()
+        
         configureLocalsTitleLabelConstraints()
         configureYourBandTitleLabelConstraints()
         
         configureLocalsCollectionViewConstraints()
+        configureBandCollectionViewConstraints()
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
     }
 }
 
@@ -172,17 +199,33 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
-        print("selected")
+        if collectionView === localsCollectionView
+        {
+            print("selected local")
+        }
+        else if collectionView === bandCollectionView
+        {
+            print("selected band profile")
+        }
     }
 }
 
 // MARK: - DelegateView Presenter
 extension HomeViewController: HomeViewDelegate
 {
+    func hideLocals() {
+        localsCollectionView.isHidden = true
+    }
+    
+    func hideBand() {
+        bandCollectionView.isHidden = true
+    }
+    
     func show(locals: [HomeLocalPresentable])
     {
         if locals.count > 0
         {
+            localsCollectionView.isHidden = false
             self.locals = locals
         }
     }
@@ -191,6 +234,7 @@ extension HomeViewController: HomeViewDelegate
     {
         if bandProfiles.count > 0
         {
+            bandCollectionView.isHidden = false
             self.bandProfiles = bandProfiles
         }
     }
@@ -201,29 +245,48 @@ extension HomeViewController
 {
     private func configureLogoImageViewConstraints()
     {
-        logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16).isActive = true
-        logoImageView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        let safe = view.safeAreaLayoutGuide
+        logoImageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16).isActive = true
+        logoImageView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
     }
     
     private func configureLocalsTitleLabelConstraints()
     {
+        
+        let safe = view.safeAreaLayoutGuide
         localsTitleLbl.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 16).isActive = true
-        localsTitleLbl.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        localsTitleLbl.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 24).isActive = true
+//        localsTitleLbl.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
     }
     
     private func configureYourBandTitleLabelConstraints()
     {
+        
+        let safe = view.safeAreaLayoutGuide
         yourBandTitleLbl.topAnchor.constraint(equalTo: localsCollectionView.bottomAnchor, constant: 16).isActive = true
-        yourBandTitleLbl.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        yourBandTitleLbl.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 24).isActive = true
+//        yourBandTitleLbl.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
     }
     
     private func configureLocalsCollectionViewConstraints()
     {
-        localsCollectionView.clipsToBounds = false
+        
+        let safe = view.safeAreaLayoutGuide
         localsCollectionView.topAnchor.constraint(equalTo: localsTitleLbl.bottomAnchor, constant: 8).isActive = true
-        localsCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
-        localsCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8).isActive = true
-//        localsCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8).isActive = true
+        localsCollectionView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 8).isActive = true
+        localsCollectionView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -8).isActive = true
+//        localsCollectionView.bottomAnchor.constraint(equalTo: yourBandTitleLbl.topAnchor, constant: -8).isActive = true
         localsCollectionView.heightAnchor.constraint(equalToConstant: 250).isActive = true
+    }
+    
+    private func configureBandCollectionViewConstraints()
+    {
+        
+        let safe = view.safeAreaLayoutGuide
+        bandCollectionView.topAnchor.constraint(equalTo: yourBandTitleLbl.bottomAnchor, constant: 8).isActive = true
+        bandCollectionView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 8).isActive = true
+        bandCollectionView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -8).isActive = true
+//        localsCollectionView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -8).isActive = true
+        bandCollectionView.heightAnchor.constraint(equalToConstant: 250).isActive = true
     }
 }

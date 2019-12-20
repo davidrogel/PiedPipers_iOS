@@ -13,6 +13,8 @@ typealias HomeProfilePresentable = SearchProfilePresentable
 
 protocol HomeViewDelegate: class
 {
+    func hideLocals()
+    func hideBand()
     func show(locals: [HomeLocalPresentable])
     func show(bandProfiles: [HomeProfilePresentable])
 }
@@ -34,6 +36,7 @@ final class HomeViewPresenter
             
             guard let locals = localList else {
 //                self?.showErrorNotFound(withMsg: "Error 404!")
+                self?.homeViewDelegate.hideLocals()
                 return
             }
             
@@ -46,11 +49,16 @@ final class HomeViewPresenter
     
     public func requestBand(currentUserCuid cuid: String)
     {
+        homeViewDelegate.show(bandProfiles: [HomeProfilePresentable(cuid: "", profileName: "name", friendlyLocation: "here", image: "kojima", instruments: ["zambomba", "guitarra"]),
+                                             HomeProfilePresentable(cuid: "", profileName: "name", friendlyLocation: "here", image: "kojima", instruments: ["zambomba", "guitarra"]),
+                                             HomeProfilePresentable(cuid: "", profileName: "name", friendlyLocation: "here", image: "kojima", instruments: ["zambomba", "guitarra"]),
+                                             HomeProfilePresentable(cuid: "", profileName: "name", friendlyLocation: "here", image: "kojima", instruments: ["zambomba", "guitarra"])])
+        return
         repo.getProfileBand(currentUserCUID: cuid, success: {
-            (profileList) in
+            [weak self] (profileList) in
             
             guard let profiles = profileList else {
-                
+                self?.homeViewDelegate.hideLocals()
                 // all bad
                 return
             }
