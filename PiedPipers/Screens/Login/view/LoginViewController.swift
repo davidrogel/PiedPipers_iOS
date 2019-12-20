@@ -134,6 +134,10 @@ extension LoginViewController: LoginViewProtocol {
         self.present(alert, animated: true)
     }
     
+    func checkIfHasMinimumData() {
+        presenter.getCurrentProfile()
+    }
+    
     func provideNextView() {
         self.present(Assembler.provideView(), animated: true)
     }

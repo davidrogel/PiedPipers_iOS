@@ -115,7 +115,7 @@
                         <action selector="closeCurrentView:" destination="-1" eventType="touchUpInside" id="Stk-C4-M8X"/>
                     </connections>
                 </button>
-                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HDE-VY-fyr" userLabel="loadingView">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HDE-VY-fyr" userLabel="loadingView">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                     <subviews>
                         <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="faY-6h-Lkp">

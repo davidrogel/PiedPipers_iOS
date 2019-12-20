@@ -71,6 +71,10 @@ final class StoreManager
         userDefaults.set(with, forKey: user)
     }
     
+    func hasEverLogin(key: String) -> Bool {
+        return userDefaults.object(forKey: key) != nil
+    }
+    
     /// True if the item was successfully deleted.
     public func deleteData(withKey key:String) -> Bool
     {

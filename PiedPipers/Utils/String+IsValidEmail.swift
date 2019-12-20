@@ -24,8 +24,13 @@ extension String {
     }
     
     func isValidYoutubeUrl() -> Bool {
-        let regex = "^((?:https?:)?\\/\\/)?((?:www|m)\\.)?((youtube\\.com))(\\/([\\w\\-]+\\?v=))([\\w\\-]+)(\\S+)?$"
-        let youtubePredicate = NSPredicate(format: "SELF MATCHES %@", regex)
-        return youtubePredicate.evaluate(with: self)
+        if self.contains("channel") {
+            return false
+        } else {
+            let regex = "^((?:https?:)?\\/\\/)?((?:www|m)\\.)?((?:youtube\\.com|youtu.be))(\\/(?:[\\w\\-]+\\?v=|embed\\/|v\\/)?)([\\w\\-]+)(\\S+)?$"
+            //let regex = "^((?:https?:)?\\/\\/)?((?:www|m)\\.)?((youtube\\.com))(\\/([\\w\\-]+\\?v=))([\\w\\-]+)(\\S+)?$"
+            let youtubePredicate = NSPredicate(format: "SELF MATCHES %@", regex)
+            return youtubePredicate.evaluate(with: self)
+        }
     }
 }

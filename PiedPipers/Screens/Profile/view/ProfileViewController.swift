@@ -228,6 +228,8 @@ class ProfileViewController: UIViewController {
             presenter.loadCurrentUserProfile()
             loading = true
         } else {
+            let cuid = StoreManager.shared.getLoggedUser()
+            let a = StoreManager.shared.deleteData(withKey: cuid)
             StoreManager.shared.removeStoreCuid()
             self.dismiss(animated: true, completion: nil)
         }
@@ -522,7 +524,7 @@ extension ProfileViewController: UICollectionViewDelegate {
                         }
                         // Puedo llamar a una función que reciba el texto
                         if !text.isValidYoutubeUrl() {
-                            let youtubeAlert = UIAlertController(title: "It is not a YouTube url", message: "The inserted text is not a YouTube URL.", preferredStyle: .alert)
+                            let youtubeAlert = UIAlertController(title: "It is not a YouTube video URL", message: "The inserted text is not a YouTube video URL.", preferredStyle: .alert)
                             youtubeAlert.addAction(UIAlertAction(title: "Accept", style: .default, handler: nil))
                             self?.present(youtubeAlert, animated: true)
                             return
@@ -534,12 +536,19 @@ extension ProfileViewController: UICollectionViewDelegate {
                             self?.present(invalidUrl, animated: true)
                             return
                         }
-                        guard var videoQuery = url.query else {
-                            fatalError()
+                        var videoId = ""
+                        if let videoQuery = url.query {
+                            let parameters = videoQuery.split(separator: "&")
+                            parameters.forEach { parameter in
+                                if parameter.contains("v=") {
+                                    videoId = String(parameter)
+                                    videoId.removeFirst(2)
+                                }
+                            }
+                        } else {
+                            videoId = url.path
+                            videoId.removeFirst()
                         }
-                        videoQuery.removeFirst(2)
-                        let aux = videoQuery.split(separator: "&")
-                        let videoId = String(aux[0])
                         let thumbnail = "https://img.youtube.com/vi/" + videoId + "/hqdefault.jpg"
                         self?.userVideos.append(VideoPresentable(id: videoId, videoURL: text, thumbnail: thumbnail))
                         self?.selectedVideos.append(false)

@@ -41,11 +41,11 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="414" height="1514"/>
+            <rect key="frame" x="0.0" y="0.0" width="414" height="1145"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="6gv-bc-qpx">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="1514"/>
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="1145"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QXT-26-Rn2" userLabel="contentView">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="1131"/>
@@ -124,7 +124,7 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qyv-uj-vEy" userLabel="avatarView">
                                     <rect key="frame" x="35" y="78" width="344" height="344"/>
                                     <subviews>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="addImage" translatesAutoresizingMaskIntoConstraints="NO" id="Poc-33-7r3" userLabel="avatarImageView">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Poc-33-7r3" userLabel="avatarImageView">
                                             <rect key="frame" x="0.0" y="0.0" width="344" height="344"/>
                                         </imageView>
                                         <button hidden="YES" opaque="NO" alpha="0.75" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hWF-YE-FJs" userLabel="addPhoto">
@@ -202,7 +202,7 @@
                                                     <rect key="frame" x="20" y="68" width="374" height="34"/>
                                                     <color key="backgroundColor" red="0.96599811319999995" green="0.96611362700000003" blue="0.96595877409999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="emailAddress" returnKeyType="done" textContentType="email"/>
                                                 </textField>
                                             </subviews>
                                             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -289,7 +289,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="Your description" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="3Fp-gM-XBZ" userLabel="AboutMeText">
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="3Fp-gM-XBZ" userLabel="AboutMeText">
                                                     <rect key="frame" x="20" y="37" width="374" height="38"/>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                     <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -369,17 +369,17 @@
                             <constraints>
                                 <constraint firstItem="qyv-uj-vEy" firstAttribute="top" secondItem="bho-Hs-5J2" secondAttribute="bottom" constant="10" id="025-1e-j3r"/>
                                 <constraint firstItem="bho-Hs-5J2" firstAttribute="leading" secondItem="QXT-26-Rn2" secondAttribute="leading" constant="35" id="1vN-l2-62J"/>
+                                <constraint firstAttribute="bottom" secondItem="0MF-5x-tNL" secondAttribute="bottom" constant="68" id="6rD-W0-9uh"/>
                                 <constraint firstAttribute="trailing" secondItem="qyv-uj-vEy" secondAttribute="trailing" constant="35" id="7lW-nm-KFw"/>
                                 <constraint firstItem="qyv-uj-vEy" firstAttribute="leading" secondItem="QXT-26-Rn2" secondAttribute="leading" constant="35" id="9As-of-9Ue"/>
                                 <constraint firstAttribute="trailing" secondItem="Jyr-H9-w3r" secondAttribute="trailing" id="G5h-Tm-HIf"/>
-                                <constraint firstItem="Jyr-H9-w3r" firstAttribute="top" secondItem="0MF-5x-tNL" secondAttribute="bottom" priority="250" id="H7T-80-YFD"/>
                                 <constraint firstItem="Jyr-H9-w3r" firstAttribute="leading" secondItem="QXT-26-Rn2" secondAttribute="leading" id="JuA-cN-Mi1"/>
                                 <constraint firstItem="0MF-5x-tNL" firstAttribute="top" secondItem="qyv-uj-vEy" secondAttribute="bottom" constant="16" id="P8p-fm-Y87"/>
-                                <constraint firstAttribute="bottom" secondItem="Jyr-H9-w3r" secondAttribute="bottom" constant="8" id="V62-Fy-SqU"/>
                                 <constraint firstAttribute="trailing" secondItem="0MF-5x-tNL" secondAttribute="trailing" id="cZk-rN-A2P"/>
                                 <constraint firstItem="bho-Hs-5J2" firstAttribute="top" secondItem="QXT-26-Rn2" secondAttribute="top" constant="8" id="kai-8U-8X8"/>
                                 <constraint firstAttribute="trailing" secondItem="bho-Hs-5J2" secondAttribute="trailing" constant="20" id="n2T-6U-Cr2"/>
                                 <constraint firstItem="0MF-5x-tNL" firstAttribute="leading" secondItem="QXT-26-Rn2" secondAttribute="leading" id="nUX-NS-xT9"/>
+                                <constraint firstAttribute="bottom" secondItem="Jyr-H9-w3r" secondAttribute="bottom" constant="8" id="yj1-2P-o9v"/>
                             </constraints>
                         </view>
                     </subviews>
@@ -392,7 +392,7 @@
                     </constraints>
                 </scrollView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="usa-jj-O2n">
-                    <rect key="frame" x="340" y="1428" width="64" height="66"/>
+                    <rect key="frame" x="340" y="1059" width="64" height="66"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="64" id="CTA-Vx-Bbx"/>
                         <constraint firstAttribute="height" constant="66" id="KIV-dY-dWs"/>
@@ -401,10 +401,10 @@
                     <state key="normal" image="phoneConnect"/>
                 </button>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ijk-fK-Fx6" userLabel="loadView">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="1514"/>
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="1145"/>
                     <subviews>
                         <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="np1-Vp-MUJ">
-                            <rect key="frame" x="188.5" y="738.5" width="37" height="37"/>
+                            <rect key="frame" x="188.5" y="554" width="37" height="37"/>
                         </activityIndicatorView>
                     </subviews>
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -433,7 +433,6 @@
         </view>
     </objects>
     <resources>
-        <image name="addImage" width="311" height="311"/>
         <image name="addPhoto" width="152" height="128"/>
         <image name="editButton" width="64" height="64"/>
         <image name="phoneConnect" width="64" height="66"/>

@@ -12,6 +12,7 @@ final class Assembler {
     
     static func provideView() -> UIViewController {
         let cuid = StoreManager.shared.getLoggedUser()
+        
         let hasData = StoreManager.shared.getMinimumDataIsInserted(for: cuid)
         if hasData {
             let tabBarView = provideInitialTabBarController()
@@ -55,4 +56,16 @@ final class Assembler {
         loginViewController.configure(with: presenter)
         return loginViewController
     }
+    
+//    private static func setFirstTimeMinimumData(user: String) {
+//        Repository.remote.getProfile(currenUserCUID: user, success: { (profile) in
+//            if profile?.name == "" || profile?.name == nil {
+//                StoreManager.shared.setMinimumDataIsInserted(for: user, with: false)
+//            } else {
+//                StoreManager.shared.setMinimumDataIsInserted(for: user, with: true)
+//            }
+//        }, failure: { (error) in
+//            StoreManager.shared.setMinimumDataIsInserted(for: user, with: false)
+//        })
+//    }
 }
