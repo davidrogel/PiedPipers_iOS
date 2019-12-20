@@ -7,6 +7,8 @@
 //
 
 import XCTest
+import UIKit
+import Alamofire
 @testable import PiedPipers
 
 class RequestsTests: XCTestCase
@@ -15,8 +17,13 @@ class RequestsTests: XCTestCase
     
     let email = "otroCorreo2@correo.com"
     let pass = "vouteEsnaquizar"
-    
     let cuid = "ck2g3ps39000c93pcfox7e8jn"
+    
+    let notisEmail = "alb.garciam@gmail.com"
+    let notisPass = "1234567"
+    let notisUserCUID = "ck40dve7l00013epcdiq9gmju"
+    
+    let localCUID = "ck3yxb4qp0009xapc2nypd6xo"
     
     let profileToEncode = Profile(cuid: "CUID", name: "name", location: Location(lat: 20.0, long: 20.0), contact: Contact(type: .email, data: "Correo.a.encodear@correo.com"), instruments: ["bateria", "guitarra", "voz"], videos: nil, description: "una descripción rexulona", photo: "una foto")
     
@@ -175,7 +182,22 @@ class RequestsTests: XCTestCase
         }
     """
     
-    var user: User?
+    let notificationData = """
+        {
+            "cuid": "ck406fpu200003epcdszo3iil",
+            "notificationType": "follow",
+            "data": {
+                "image": "",
+                "origin": "ck2w7u2el00010cpc5d0i1lnm",
+                "originName": "Eric Sans",
+                "destination": "ck40dve7l00013epcdiq9gmju",
+                "destinationName": "Alberto García"
+            },
+            "destination": "ck40dve7l00013epcdiq9gmju",
+            "dateAdded": "2019-12-10T22:10:56.109Z",
+            "state": "pending"
+        }
+    """
     
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -183,24 +205,6 @@ class RequestsTests: XCTestCase
 
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-    
-    // MARK: - REMOTE REPOSITORY TESTING
-    
-    func testGetRemoteUser()
-    {
-        let e = expectation(description: "GetUserRemote")
-        
-        Repository.remote.getProfile(currenUserCUID: cuid, success: { (profile) in
-            print("Se ha obtenido un user")
-            e.fulfill()
-        }) { (error) in
-            print("ha habido un error")
-            XCTFail()
-            e.fulfill()
-        }
-        
-        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     // MARK: - NETWORK TESTING
@@ -235,12 +239,11 @@ class RequestsTests: XCTestCase
         
         let loginUserRequest = LoginUserRequest(email: notisEmail, password: notisPass)
         
-        loginUserRequest.makeRequest { [weak self](result) in
+        loginUserRequest.makeRequest { (result) in
             switch result
             {
             case .success(let data):
                 print("Data:", data)
-                self?.user = data
             case .failure(let err):
                 print("Error:", CodeError(rawValue: err.statusCode).debugDescription)
                 XCTFail()
@@ -256,7 +259,6 @@ class RequestsTests: XCTestCase
     {
         let e = expectation(description: "GetUser")
         
-
         let getUserProfileRequest = GetProfileRequest(currentUserCuid: notisUserCUID)
         
         getUserProfileRequest.makeRequest { (result) in
@@ -268,15 +270,10 @@ class RequestsTests: XCTestCase
                 print("Error:", CodeError(rawValue: err.statusCode).debugDescription)
                 XCTFail()
             }
-//        }
-//        else
-//        {
-//            e.fulfill()
-//            XCTFail()
-//        }
-        
-            waitForExpectations(timeout: timeout, handler: nil)
+            e.fulfill()
         }
+        
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     // MARK: GET USER BY ID
@@ -314,7 +311,7 @@ class RequestsTests: XCTestCase
             switch result
             {
             case .success(let data):
-                print("UserProfileById:", data)
+                print("Updated Profile:", data)
             case .failure(let err):
                 print("Error:", CodeError(rawValue: err.statusCode).debugDescription)
                 XCTFail()
@@ -354,7 +351,7 @@ class RequestsTests: XCTestCase
     {
         let e = expectation(description: "SearchLocals")
         
-        let getLocalsBySearchingRequest = GetLocalBySearchingRequest(cuid: cuid, limit: 10, offset: 10)
+        let getLocalsBySearchingRequest = GetLocalBySearchingRequest(cuid: cuid, limit: 10, offset: 0)
         
         getLocalsBySearchingRequest.makeRequest { (result) in
             switch result
@@ -374,6 +371,67 @@ class RequestsTests: XCTestCase
     func testSearchProfiles()
     {
         let e = expectation(description: "SearchProfiles")
+
+        let parameters: SearchProfileParameters = SearchProfileParameters(name: "Gabi"/*, instruments: ["zambomba"]*/, friendlyLocation: "Kabul")
+        
+        let getProfilesBySearchingRequest = GetProfileBySearchingRequest(cuid: cuid, profileParameters: parameters, limit: 10, offset: 0)
+
+        getProfilesBySearchingRequest.makeRequest { (result) in
+           switch result
+           {
+           case .success(let data):
+               print("Profiles?:", data)
+           case .failure(let err):
+               print("Error:", CodeError(rawValue: err.statusCode).debugDescription)
+               XCTFail()
+           }
+           e.fulfill()
+        }
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    // MARK: UPDATE AVATAR
+    
+    func testUpdateProfileAvatar()
+    {
+        let e = expectation(description: "UpdateAvatar")
+
+        let img = UIImage(named: "mads")
+        
+        let resizedImage = img?.resize(size: CGSize(width: 300, height: 300))
+        let data = resizedImage?.jpegData(compressionQuality: 1)
+        
+        guard let imgData = data else
+        {
+            XCTFail()
+            return
+        }
+        
+        let updateCurrentUserAvatar = UpdateProfileAvatarRequest(currentUserCuid: cuid, imgData: imgData)
+
+        updateCurrentUserAvatar.makeUpload { (result) in
+            switch result
+            {
+            case .success(let data):
+                print("Profile with updated profile:", data)
+            case .failure(let err):
+                print("Error:", err)
+//                print("Error:", CodeError(rawValue: err.statusCode).debugDescription)
+                XCTFail()
+            }
+            e.fulfill()
+        }
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    // MARK: FOLLOW
+    
+    // Falla si ya sigues a la persona, habrá que controlarlo
+    func testFollowOtherUser()
+    {
+        let e = expectation(description: "FollowProfile")
                
         let getProfilesBySearchingRequest = GetProfileBySearchingRequest(cuid: cuid, limit: 10, offset: 0)
 
@@ -433,7 +491,7 @@ class RequestsTests: XCTestCase
     func testFollowOtherUser()
     {
         let e = expectation(description: "FollowProfile")
-               
+
         let followOtherUserRequest = FollowOtherUserRequest(currentUserCuid: cuid, followUserCuid: "ck2avtjvi0000ajpcb5q44wgb")
 
         followOtherUserRequest.makeRequest { (result) in
@@ -459,7 +517,7 @@ class RequestsTests: XCTestCase
     {
         let e = expectation(description: "UnfollowProfile")
                
-        let unfollowOtherUserRequest = UnfollowOtherUserRequest(currentUserCuid: cuid, followUserCuid: "ck2avtjvi0000ajpcb5q44wg")
+        let unfollowOtherUserRequest = UnfollowOtherUserRequest(currentUserCuid: cuid,unfollowUserCuid: "ck2avtjvi0000ajpcb5q44wg")
 
         unfollowOtherUserRequest.makeRequest { (result) in
            switch result
@@ -494,13 +552,62 @@ class RequestsTests: XCTestCase
                 print("Error:", err.message)
                 XCTFail()
            }
-           
-           waitForExpectations(timeout: timeout, handler: nil)
+           e.fulfill()
         }
+
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    // MARK: - DECODE ENCODE PROFILE
+    // MARK: NOTIFICATIONS
     
+    func testListNotifications()
+    {
+        let e = expectation(description: "ListNotifications")
+               
+        let getListNotificationsRequest = ListNotificationsRequest(currentUserCuid: cuid, limit: 10, offset: 0)
+
+        getListNotificationsRequest.makeRequest { (result) in
+           switch result
+           {
+           case .success(let data):
+                print("Notis:", data)
+           case .failure(let err):
+                print("Error:", err.message)
+                XCTFail()
+           }
+           e.fulfill()
+        }
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    // MARK: LOCALS
+    // Estas Requests en un principio no requieren de Token de Autorización
+    
+    func testGetLocalById()
+    {
+        let e = expectation(description: "GetLocalById")
+               
+        let getLocalByIdRequest = GetLocalByIdRequest(localCuid: localCUID)
+        
+        getLocalByIdRequest.makeRequest { (result) in
+           switch result
+           {
+           case .success(let data):
+                print("Local:", data)
+           case .failure(let err):
+                print("Error:", err.message)
+                XCTFail()
+           }
+           e.fulfill()
+        }
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    // MARK: - ENCODE DECODE
+    
+    // MARK: PROFILE
     func testProfileToJsonAndViceversa()
     {
         let data = try? JSONSerialization.data(withJSONObject: Profile(cuid: cuid, name: "Not tiene gracia", location: Location(lat: 10.00, long: 20.00), description: "Chistes para todos!!!").toBody(), options: [])
@@ -539,7 +646,7 @@ class RequestsTests: XCTestCase
         }
     }
     
-    // MARK: - ENCODE DECODE INSTRUMENTS
+    // MARK: INSTRUMENTS
     
     func testDecodeInstruments()
     {
@@ -570,7 +677,7 @@ class RequestsTests: XCTestCase
         }
     }
     
-    // MARK: - ENCODE DECODE LOCAL
+    // MARK: LOCAL
     
     func testDecodeLocal()
     {
@@ -601,7 +708,7 @@ class RequestsTests: XCTestCase
         }
     }
     
-    // MARK: - ENCODE DECODE LISTS
+    // MARK: LISTS
     
     func testDecodeLocalList()
     {
@@ -654,6 +761,37 @@ class RequestsTests: XCTestCase
             let encoder = JSONEncoder()
             let _profileList = try encoder.encode(profileList)
             XCTAssertNotNil(_profileList)
+        }
+        catch
+        {
+            XCTFail()
+        }
+    }
+    
+    // MARK: NOTIFICATIONS
+    
+    func testDecodeNotification()
+    {
+        do
+        {
+            let jsonData = notificationData.data(using: .utf8)
+            let decoder = JSONDecoder()
+            let notification = try decoder.decode(Noti.self, from: jsonData!)
+            XCTAssertNotNil(notification)
+        }
+        catch
+        {
+            XCTFail()
+        }
+    }
+    
+    func testEncodeNotification()
+    {
+        do
+        {
+            let encoder = JSONEncoder()
+            let noti = try encoder.encode(notificationData)
+            XCTAssertNotNil(noti)
         }
         catch
         {

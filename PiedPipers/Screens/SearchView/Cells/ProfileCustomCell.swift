@@ -8,14 +8,63 @@
 
 import UIKit
 
+final class SearchInstrumentLabel: UILabel
+{
+    override init(frame: CGRect)
+    {
+        super.init(frame: frame)
+        
+        isHidden = true
+        textAlignment = .center
+        layer.backgroundColor = UIColor(red: 0.514, green: 0.557, blue: 0.871, alpha: 1).cgColor
+        layer.cornerRadius = 10
+        translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    required init?(coder: NSCoder)
+    {
+        super.init(coder: coder)
+    }
+}
+
+final class RemainingInstrumentsLabel: UILabel
+{
+    override init(frame: CGRect)
+    {
+        super.init(frame: frame)
+        
+        isHidden = true
+//        text = "+\(remaining)"
+        textAlignment = .center
+        textColor = UIColor(red: 0.514, green: 0.557, blue: 0.871, alpha: 1)
+        backgroundColor = .white
+        layer.borderColor = UIColor(red: 0.514, green: 0.557, blue: 0.871, alpha: 1).cgColor
+        layer.cornerRadius = 10
+        layer.borderWidth = 1
+        translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    required init?(coder: NSCoder)
+    {
+        super.init(coder: coder)
+    }
+}
+
 /// Celda dedicada  a mostrar Perfiles de usuarios
 class ProfileCustomCell: BasePiperCustomCell
 {
+    // MARK: - Views
+    
+    private let instrumentLbls: [SearchInstrumentLabel] = [SearchInstrumentLabel(), SearchInstrumentLabel()]
+    private let remainingInstrumentsLbl: RemainingInstrumentsLabel = RemainingInstrumentsLabel()
+    
     // MARK: - Constructors
     
     override init(frame: CGRect)
     {
         super.init(frame: frame)
+        
+        configureInstrumentsLabelsConstraints()
     }
     
     required init?(coder: NSCoder)
@@ -23,31 +72,17 @@ class ProfileCustomCell: BasePiperCustomCell
         super.init(coder: coder)
     }
     
-    // MARK: - Setters
+    // MARK: - Filler
     
-    public func setPortrait(withImgPath imgPath: String)
+    public func fill(withProfilePresentable profile: SearchProfilePresentable)
     {
-        UIImage.load(withImgPath: imgPath) { [weak self] (img) in
-            self?.portrait.image = img
-        }
+        nameLabel.text = profile.profileName
+        secondLabel.text = profile.friendlyLocation
+        Loader.loadImg(onImageView: portrait, from: String.createUrl(fromImgPath: profile.image), placeholder: placeholder!)
+        setInstruments(instruments: profile.instruments)
     }
     
-    public func setPortrait(withImage image: UIImage)
-    {
-        portrait.image = image
-    }
-    
-    public func setName(name:String)
-    {
-        nameLabel.text = name
-    }
-    
-    public func setFriendlyLocation(name: String)
-    {
-        secondLabel.text = name
-    }
-    
-    public func setInstruments(instruments: [String])
+    private func setInstruments(instruments: [String])
     {
         if instruments.isEmpty { return }
         
@@ -56,94 +91,80 @@ class ProfileCustomCell: BasePiperCustomCell
             for i in 0..<2
             {
                 let name = instruments[i]
-                let instrumentLabel: UILabel = {
-                    let label = UILabel()
-                    label.text = name
-                    label.textAlignment = .center
-                    label.layer.backgroundColor = UIColor(red: 0.514, green: 0.557, blue: 0.871, alpha: 1).cgColor
-                    label.layer.cornerRadius = 10
-                    label.translatesAutoresizingMaskIntoConstraints = false
-                    return label
-                }()
-                
-                self.dataView.addSubview(instrumentLabel)
-                
-                if i == 0
-                {
-                    instrumentLabel.leadingAnchor.constraint(equalTo: self.dataView.leadingAnchor, constant: 16).isActive = true
-                    instrumentLabel.bottomAnchor.constraint(equalTo: self.dataView.bottomAnchor, constant: -8).isActive = true
-                    instrumentLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
-                    continue
-                }
-                
-                let lastViewAdded = self.dataView.subviews[self.dataView.subviews.count - 2]
-                
-                instrumentLabel.leadingAnchor.constraint(equalTo: lastViewAdded.trailingAnchor, constant: 8).isActive = true
-                instrumentLabel.bottomAnchor.constraint(equalTo: lastViewAdded.bottomAnchor).isActive = true
-                instrumentLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
+                setAndShowInstrumentLabel(index: i, name: name)
             }
             
             let remaining = instruments.count - 2
-            
+
             if remaining <= 0
             {
                 return
             }
             
-            let endView = self.dataView.subviews[self.dataView.subviews.count - 1]
-            
-            let instrumentsRemaining: UILabel = {
-               
-                let label = UILabel()
-                label.text = "+\(remaining)"
-                label.textAlignment = .center
-                label.textColor = UIColor(red: 0.514, green: 0.557, blue: 0.871, alpha: 1)
-                label.backgroundColor = .white
-                label.layer.borderColor = UIColor(red: 0.514, green: 0.557, blue: 0.871, alpha: 1).cgColor
-                label.layer.cornerRadius = 10
-                label.layer.borderWidth = 1
-                label.translatesAutoresizingMaskIntoConstraints = false
-                return label
-            }()
-            
-            self.dataView.addSubview(instrumentsRemaining)
-            
-            instrumentsRemaining.leadingAnchor.constraint(equalTo: endView.trailingAnchor, constant: 8).isActive = true
-            instrumentsRemaining.bottomAnchor.constraint(equalTo: endView.bottomAnchor).isActive = true
-            instrumentsRemaining.widthAnchor.constraint(equalToConstant: 50).isActive = true
+            setAndShowRemainingInstruments(count: remaining)
         }
         else
         {
             for i in 0..<instruments.count
             {
                 let name = instruments[i]
-                let instrumentLabel: UILabel = {
-                    let label = UILabel()
-                    label.text = name
-                    label.textAlignment = .center
-                    label.layer.backgroundColor = UIColor(red: 0.514, green: 0.557, blue: 0.871, alpha: 1).cgColor
-                    label.layer.cornerRadius = 10
-                    label.translatesAutoresizingMaskIntoConstraints = false
-                    return label
-                }()
-                
-                self.dataView.addSubview(instrumentLabel)
-                
-                if i == 0
-                {
-                    instrumentLabel.leadingAnchor.constraint(equalTo: self.dataView.leadingAnchor, constant: 16).isActive = true
-                    instrumentLabel.bottomAnchor.constraint(equalTo: self.dataView.bottomAnchor, constant: -8).isActive = true
-                    instrumentLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
-                    continue
-                }
-                
-                let lastViewAdded = self.dataView.subviews[self.dataView.subviews.count - 2]
-                
-                instrumentLabel.leadingAnchor.constraint(equalTo: lastViewAdded.trailingAnchor, constant: 8).isActive = true
-                instrumentLabel.bottomAnchor.constraint(equalTo: lastViewAdded.bottomAnchor).isActive = true
-                instrumentLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
+                setAndShowInstrumentLabel(index: i, name: name)
             }
         }
     }
+    
+    private func setAndShowInstrumentLabel(index: Int, name: String)
+    {
+        instrumentLbls[index].text = name
+        instrumentLbls[index].isHidden = false
+    }
+    
+    private func setAndShowRemainingInstruments(count: Int)
+    {
+        remainingInstrumentsLbl.text = "+\(count)"
+        remainingInstrumentsLbl.isHidden = false
+    }
+    
+    // MARK: - Prepare it
+    override func prepareForReuse()
+    {
+        super.prepareForReuse()
+        
+        nameLabel.text = ""
+        secondLabel.text = ""
+        portrait.image = nil
+        for v in instrumentLbls
+        {
+            v.text = ""
+            v.isHidden = true
+        }
+        remainingInstrumentsLbl.text = ""
+        remainingInstrumentsLbl.isHidden = true
+    }
 }
 
+// MARK: - Constraints
+extension ProfileCustomCell
+{
+    private func configureInstrumentsLabelsConstraints()
+    {
+        let first = instrumentLbls[0]
+        let second = instrumentLbls[1]
+        
+        dataView.addSubview(first)
+        dataView.addSubview(second)
+        dataView.addSubview(remainingInstrumentsLbl)
+        
+        first.leadingAnchor.constraint(equalTo: self.dataView.leadingAnchor, constant: 16).isActive = true
+        first.bottomAnchor.constraint(equalTo: self.dataView.bottomAnchor, constant: -8).isActive = true
+        first.widthAnchor.constraint(equalToConstant: 100).isActive = true
+
+        second.leadingAnchor.constraint(equalTo: first.trailingAnchor, constant: 8).isActive = true
+        second.bottomAnchor.constraint(equalTo: first.bottomAnchor).isActive = true
+        second.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        
+        remainingInstrumentsLbl.leadingAnchor.constraint(equalTo: second.trailingAnchor, constant: 8).isActive = true
+        remainingInstrumentsLbl.bottomAnchor.constraint(equalTo: second.bottomAnchor).isActive = true
+        remainingInstrumentsLbl.widthAnchor.constraint(equalToConstant: 50).isActive = true
+    }
+}

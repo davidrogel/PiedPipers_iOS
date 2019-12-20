@@ -17,7 +17,7 @@ final class Repository
 
 protocol RepositoryFactory: class
 {
-    // USER REQUESTS
+    // MARK: - USER REQUESTS
     /// Crea un usuario
     func createUser(withEmail email: String, withPassword pass: String, success: @escaping (User?) -> Void, failure: @escaping (Error?) -> Void)
     /// Loggin con un usuario creado
@@ -27,20 +27,37 @@ protocol RepositoryFactory: class
     /// Borra un usuario
     func deleteUser(currentUserCUID cuid: String, success: @escaping (Int) -> Void, failure: @escaping (Error?) -> Void)
     
-    // PROFILE REQUESTS
+    // MARK: - PROFILE REQUESTS
     /// Obtener tú perfil
     func getProfile(currenUserCUID cuid: String, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
     /// Obtener el perfil de otro usuario
     func getProfile(currentUserCUID cuid: String, userPickedCUID otherCuid: String, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
     /// Actualizar tú perfil
     func updateProfile(currentUserCUID cuid: String, newProfile profile: Profile, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
+    /// Actualizar el avatar del usuario
+    func updateAvatar(currentUserCUID cuid: String, image data: Data, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
     /// Obtener los instrumentos que se pueden usar
     func getAvaliableInstruments(currentUserCUID cuid: String, success: @escaping ([String]?) -> Void, failure: @escaping (Error?) -> Void)
+    /// Seguir a un usuario
+    func followProfile(currentUserCUID cuid: String, otherProfileCUID otherCUID: String, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
+    /// Dejar de seguir a otro usuario
+    func unfollowProfile(currentUserCUID cuid: String, otherProfileCUID otherCUID: String, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
+    /// Obtener tu banda, obtienes un array de Perfiles ligados a ti
+    func getProfileBand(currentUserCUID cuid: String, success: @escaping (ProfileList?) -> Void, failure: @escaping (Error?) -> Void)
     
-        // FALTA EL AVATAR DEL PROFILE REQUEST
+    // MARK: - LOCAL REQUESTS
+    /// Obtener un local por su CUID
+    func getLocalById(localCuid cuid: String, success: @escaping (Local?) -> Void, failure: @escaping (Error?) -> Void)
     
-    // SEARCH REQUESTS
+    // MARK: - NOTIFICATIONS REQUESTS
+    /// Borrar una notificación
+    func deleteNotification(currentUserCUID cuid: String, notificationToDeleteCUID notiCuid: String, success: @escaping (Int) -> Void, failure: @escaping (Error?) -> Void)
+    /// Obtener la lista de notificaciones que te han llegado
+    func getListOfNotifications(currentUserCUID cuid: String, limit: Int, offset: Int, success: @escaping (NotiList) -> Void, failure: @escaping (Error?) -> Void)
+    /// Redimir una notificación
+    func redeemNotification(currentUserCUID cuid: String, notificationCUID notiCuid: String, success: @escaping (Noti) -> Void, failure: @escaping (Error?) -> Void)
     
+    // MARK: - SEARCH REQUESTS
     func searchProfiles(currentUserCUID cuid: String, withParameters parameters: SearchProfileParameters, limit: Int, offset: Int, success: @escaping (ProfileList?) -> Void, failure: @escaping (Error?) -> Void)
     
     func searchLocals(currentUserCUID cuid: String, withParameters parameters: SearchLocalParameters, limit: Int, offset: Int, success: @escaping (LocalList?) -> Void, failure: @escaping (Error?) -> Void)
@@ -52,6 +69,40 @@ protocol RepositoryFactory: class
 
 final class FakeRepository: RepositoryFactory
 {
+    func getLocalById(localCuid cuid: String, success: @escaping (Local?) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        // TODO
+    }
+    
+    func followProfile(currentUserCUID cuid: String, otherProfileCUID otherCUID: String, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        // TODO
+    }
+    
+    func unfollowProfile(currentUserCUID cuid: String, otherProfileCUID otherCUID: String, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        // TODO
+    }
+    
+    func getProfileBand(currentUserCUID cuid: String, success: @escaping (ProfileList?) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        // TODO
+    }
+    
+    func getListOfNotifications(currentUserCUID cuid: String, limit: Int, offset: Int, success: @escaping (NotiList) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        // TODO
+    }
+    
+    func redeemNotification(currentUserCUID cuid: String, notificationCUID notiCuid: String, success: @escaping (Noti) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        // TODO
+    }
+    
+    func deleteNotification(currentUserCUID cuid: String, notificationToDeleteCUID notiCuid: String, success: @escaping (Int) -> Void, failure: @escaping (Error?) -> Void) {
+        // TODO
+    }
+    
     
     private let video1: Video = Video(id: "x52u8R2VNoE", video: "https://www.youtube.com/watch?v=x52u8R2VNoE", embedVideo: "https://www.youtube.com/embed/x52u8R2VNoE?ecver=1&amp;iv_load_policy=1&amp;yt:stretch=16:9&amp;autohide=1&amp;color=red&amp;", thumbnail: "https://img.youtube.com/vi/x52u8R2VNoE/hqdefault.jpg")
     
@@ -102,6 +153,11 @@ final class FakeRepository: RepositoryFactory
         success(notifications)
     }
     
+    func updateAvatar(currentUserCUID cuid: String, image data: Data, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        
+    }
+    
     func searchProfiles(currentUserCUID cuid: String, withParameters parameters: SearchProfileParameters, limit: Int, offset: Int, success: @escaping (ProfileList?) -> Void, failure: @escaping (Error?) -> Void)
     {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -146,8 +202,7 @@ final class FakeRepository: RepositoryFactory
 
 final class RemoteRepository: RepositoryFactory
 {
-    
-    // USER
+    // MARK: - USER
     
     func createUser(withEmail email: String, withPassword pass: String, success: @escaping (User?) -> Void, failure: @escaping (Error?) -> Void)
     {
@@ -209,7 +264,7 @@ final class RemoteRepository: RepositoryFactory
         }
     }
     
-    // PROFILE
+    // MARK: - PROFILE
     
     func getProfile(currenUserCUID cuid: String, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
     {
@@ -256,6 +311,21 @@ final class RemoteRepository: RepositoryFactory
         }
     }
     
+    func updateAvatar(currentUserCUID cuid: String, image data: Data, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        let updateCurrentUserAvatar = UpdateProfileAvatarRequest(currentUserCuid: cuid, imgData: data)
+        
+        updateCurrentUserAvatar.makeUpload { (result) in
+            switch result
+            {
+            case .success(let data):
+                success(data)
+            case .failure(let err):
+                failure(err)
+            }
+        }
+    }
+    
     func getAvaliableInstruments(currentUserCUID cuid: String, success: @escaping ([String]?) -> Void, failure: @escaping (Error?) -> Void)
     {
         let getInstrumentsRequest = GetInstrumentsRequest(currentUserCuid: cuid)
@@ -272,7 +342,116 @@ final class RemoteRepository: RepositoryFactory
         }
     }
     
-    // SEARCHING
+    func followProfile(currentUserCUID cuid: String, otherProfileCUID otherCUID: String, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        let followOtherUserRequest = FollowOtherUserRequest(currentUserCuid: cuid, followUserCuid: otherCUID)
+
+        followOtherUserRequest.makeRequest { (result) in
+           switch result
+           {
+           case .success(let data):
+                success(data)
+           case .failure(let err):
+                failure(err)
+           }
+        }
+    }
+    
+    func unfollowProfile(currentUserCUID cuid: String, otherProfileCUID otherCUID: String, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        let unfollowOtherUserRequest = UnfollowOtherUserRequest(currentUserCuid: cuid, unfollowUserCuid: otherCUID)
+
+        unfollowOtherUserRequest.makeRequest { (result) in
+           switch result
+           {
+           case .success(let data):
+                success(data)
+           case .failure(let err):
+                failure(err)
+           }
+        }
+    }
+    
+    func getProfileBand(currentUserCUID cuid: String, success: @escaping (ProfileList?) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        let getCurrentProfileBand = GetCurrentProfileBand(currentUserCuid: cuid)
+            
+        getCurrentProfileBand.makeRequest { (result) in
+           switch result
+           {
+           case .success(let data):
+                success(data)
+           case .failure(let err):
+                failure(err)
+           }
+        }
+    }
+    
+    // MARK: - LOCAL
+    
+    func getLocalById(localCuid cuid: String, success: @escaping (Local?) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        let getLocalByIdRequest = GetLocalByIdRequest(localCuid: cuid)
+        
+        getLocalByIdRequest.makeRequest { (result) in
+           switch result
+           {
+           case .success(let data):
+                success(data)
+           case .failure(let err):
+                failure(err)
+           }
+        }
+    }
+    
+    // MARK: - NOTIFICATIONS
+    
+    func deleteNotification(currentUserCUID cuid: String, notificationToDeleteCUID notiCuid: String, success: @escaping (Int) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        let deleteNotificationRequest = DeleteNotificationRequest(currentUserCuid: cuid, notiCuidToDelete: notiCuid)
+        
+        deleteNotificationRequest.makeRequest { (result) in
+           switch result
+           {
+           case .success(let data):
+                success(data)
+           case .failure(let err):
+                failure(err)
+           }
+        }
+    }
+    
+    func getListOfNotifications(currentUserCUID cuid: String, limit: Int, offset: Int, success: @escaping (NotiList) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        let getListNotificationsRequest = ListNotificationsRequest(currentUserCuid: cuid, limit: limit, offset: offset)
+
+        getListNotificationsRequest.makeRequest { (result) in
+           switch result
+           {
+           case .success(let data):
+                success(data)
+           case .failure(let err):
+                failure(err)
+           }
+        }
+    }
+    
+    func redeemNotification(currentUserCUID cuid: String, notificationCUID notiCuid: String, success: @escaping (Noti) -> Void, failure: @escaping (Error?) -> Void)
+    {
+        let redeemNotificationRequest = RedeemNotificationRequest(currentUserCuid: cuid, notificationCuid: notiCuid)
+        
+        redeemNotificationRequest.makeRequest { (result) in
+           switch result
+           {
+           case .success(let data):
+                success(data)
+           case .failure(let err):
+                failure(err)
+           }
+        }
+    }
+    
+    // MARK: - SEARCHING
     
     func searchProfiles(currentUserCUID cuid: String, withParameters parameters: SearchProfileParameters, limit: Int, offset: Int, success: @escaping (ProfileList?) -> Void, failure: @escaping (Error?) -> Void)
     {

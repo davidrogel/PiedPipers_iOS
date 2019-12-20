@@ -11,11 +11,23 @@ import UIKit
 /// Celda dedicada a mostrar Locales
 class LocalCustomCell: BasePiperCustomCell
 {
+    // MARK: - Views
+    
+    let descriptionLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .lightGray
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     // MARK: - Constructors
     
     override init(frame: CGRect)
     {
         super.init(frame: frame)
+        
+        self.dataView.addSubview(descriptionLabel)
+        configureDescriptionLabelConstraints()
     }
     
     required init?(coder: NSCoder)
@@ -23,35 +35,21 @@ class LocalCustomCell: BasePiperCustomCell
         super.init(coder: coder)
     }
     
-    // MARK: - Setters
+    // MARK: - Filler
     
-    public func setPortrait(withImage image: UIImage)
+    public func fill(withLocalPresentable local: SearchLocalPresentable)
     {
-        portrait.image = image
+        nameLabel.text = local.localName
+        secondLabel.text = local.price
+        descriptionLabel.text = local.description
+        Loader.loadImg(onImageView: portrait, from: String.createUrl(fromImgPath: local.image), placeholder: placeholder!)
     }
-    
-    public func setName(name:String)
+}
+
+extension LocalCustomCell
+{
+    private func configureDescriptionLabelConstraints()
     {
-        nameLabel.text = name
-    }
-    
-    public func setPrice(price: String)
-    {
-        secondLabel.text = price
-    }
-    
-    public func setDescription(text: String)
-    {
-        let descriptionLabel: UILabel = {
-            let label = UILabel()
-            label.text = text
-            label.textColor = .lightGray
-            label.translatesAutoresizingMaskIntoConstraints = false
-            return label
-        }()
-        
-        self.dataView.addSubview(descriptionLabel)
-        
         descriptionLabel.leadingAnchor.constraint(equalTo: self.dataView.leadingAnchor, constant: 16).isActive = true
         descriptionLabel.trailingAnchor.constraint(equalTo: self.dataView.trailingAnchor, constant: -16).isActive = true
         descriptionLabel.bottomAnchor.constraint(equalTo: self.dataView.bottomAnchor, constant: -8).isActive = true

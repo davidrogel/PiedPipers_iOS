@@ -16,7 +16,7 @@ struct GetProfileRequest: APIRequest
     
     var baseUrl: String { return urlToServer }
     
-    var path: Self.Endpoint { return profileGet }
+    var path: Self._Endpoint { return .profileGet }
     
     var headers: [String : String] {
         let authToken = StoreManager.shared.getString(withKey: currentUserCuid)
@@ -34,7 +34,7 @@ struct GetProfileByIdRequest: APIRequest
     
     var baseUrl: String { return urlToServer }
     
-    var path: Self.Endpoint { return (profileByIdGet + findUserCuid) }
+    var path: Self._Endpoint { return (.profileByIdGet + findUserCuid) }
     
     var headers: [String : String] {
         let authToken = StoreManager.shared.getString(withKey: currentUserCuid)
@@ -53,7 +53,7 @@ struct UpdateProfileRequest: APIRequest
     
     var baseUrl: String { return urlToServer }
     
-    var path: Self.Endpoint { return profileGet }
+    var path: Self._Endpoint { return .profileGet }
     
     var headers: [String : String] {
         let authToken = StoreManager.shared.getString(withKey: currentUserCuid)
@@ -76,7 +76,7 @@ struct GetInstrumentsRequest: APIRequest
     
     var baseUrl: String { return urlToServer }
     
-    var path: Self.Endpoint { return tagsGet }
+    var path: Self._Endpoint { return .tagsGet }
     
     var headers: [String : String] {
         let authToken = StoreManager.shared.getString(withKey: currentUserCuid)
@@ -86,7 +86,6 @@ struct GetInstrumentsRequest: APIRequest
     let currentUserCuid: String
 }
 
-// TODO: Terminal el Avatar!!!
 struct UpdateProfileAvatarRequest: APIRequest
 {
     typealias Response = Profile
@@ -95,7 +94,30 @@ struct UpdateProfileAvatarRequest: APIRequest
     
     var baseUrl: String { return urlToServer }
     
-    var path: Self.Endpoint { return avatarUpdate }
+    var path: Self._Endpoint { return .avatarUpdate }
+    
+    var headers: [String : String] {
+        let authToken = StoreManager.shared.getString(withKey: currentUserCuid)
+        return ["Authorization":authToken, "Content-Type":"application/json"]
+    }
+    
+    var data: [String: Data] {
+        return ["photo":imgData]
+    }
+    
+    let currentUserCuid: String
+    let imgData: Data
+}
+
+struct FollowOtherUserRequest: APIRequest
+{
+    typealias Response = Profile
+    
+    var method: Methods { return .POST }
+    
+    var baseUrl: String { return urlToServer }
+    
+    var path: Self._Endpoint { return .follow }
     
     var headers: [String : String] {
         let authToken = StoreManager.shared.getString(withKey: currentUserCuid)
@@ -103,11 +125,53 @@ struct UpdateProfileAvatarRequest: APIRequest
     }
     
     var body: Any {
-        return ["photo":data]
+        return ["userId":followUserCuid]
     }
     
     let currentUserCuid: String
-    let data: Data
+    let followUserCuid: String
+}
+
+struct UnfollowOtherUserRequest: APIRequest
+{
+    typealias Response = Profile
+    
+    var method: Methods { return .POST }
+    
+    var baseUrl: String { return urlToServer }
+    
+    var path: Self._Endpoint { return .unfollow }
+    
+    var headers: [String : String] {
+        let authToken = StoreManager.shared.getString(withKey: currentUserCuid)
+        return ["Authorization":authToken, "Content-Type":"application/json"]
+    }
+    
+    var body: Any {
+        return ["userId":unfollowUserCuid]
+    }
+    
+    let currentUserCuid: String
+    let unfollowUserCuid: String
+}
+
+
+struct GetCurrentProfileBand: APIRequest
+{
+    typealias Response = ProfileList
+    
+    var method: Methods { return .GET }
+    
+    var baseUrl: String { return urlToServer }
+    
+    var path: Self._Endpoint { return .myBand }
+    
+    var headers: [String : String] {
+        let authToken = StoreManager.shared.getString(withKey: currentUserCuid)
+        return ["Authorization":authToken]
+    }
+    
+    let currentUserCuid: String
 }
 
 struct UnfollowOtherUserRequest: APIRequest

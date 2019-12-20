@@ -17,3 +17,4 @@ struct APIList<T:Codable>: Codable
 
 typealias ProfileList = APIList<Profile>
 typealias LocalList = APIList<Local>
+typealias NotiList = APIList<Noti>

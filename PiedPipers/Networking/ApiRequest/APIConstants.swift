@@ -38,6 +38,11 @@ struct EndPoint: RawRepresentable, Equatable, Hashable
     /// /profile/my-band
     static let myBand = EndPoint(rawValue: "/profile/my-band")
     
+
+    //MARK: Local
+    /// /local/      /local/:cuid
+    static let getLocal = EndPoint(rawValue: "/local/")
+
     //MARK: Searching
     /// /search/profile
     static let searchProfile = EndPoint(rawValue: "/search/profile")

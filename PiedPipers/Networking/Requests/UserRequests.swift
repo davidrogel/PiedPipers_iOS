@@ -16,7 +16,7 @@ struct CreateUserRequest: APIRequest
     
     var baseUrl: String { return urlToServer }
     
-    var path: Self.Endpoint { return userCreate }
+    var path: Self._Endpoint { return .userCreate }
     
     var headers: [String : String] {
         return ["Content-Type":"application/json"]
@@ -40,7 +40,7 @@ struct LoginUserRequest: APIRequest
     
     var baseUrl: String { return urlToServer }
     
-    var path: Self.Endpoint { return userLogin }
+    var path: Self._Endpoint { return .userLogin }
     
     var headers: [String : String] {
         return ["Content-Type":"application/json"]
@@ -65,7 +65,7 @@ struct UpdateUserRequest: APIRequest
     
     var baseUrl: String { return urlToServer }
     
-    var path: Self.Endpoint { return userUpdate }
+    var path: Self._Endpoint { return .userUpdate }
     
     var headers: [String : String] {
         let authToken = StoreManager.shared.getString(withKey: currentUserCuid)
@@ -92,7 +92,7 @@ struct DeleteUserRequest: APIRequest
     
     var baseUrl: String { return urlToServer }
      
-    var path: Self.Endpoint { return userDelete }
+    var path: Self._Endpoint { return .userDelete }
     
     var headers: [String : String] {
         let authToken = StoreManager.shared.getString(withKey: currentUserCuid)

@@ -6,6 +6,7 @@
 //  Copyright © 2019 david rogel pernas. All rights reserved.
 //
 
+import Foundation
 import UIKit
 
 // Darle una vuelta (O₂)
@@ -73,48 +74,23 @@ extension UIStackView
     }
 }
 
-extension UIImage
-{
-//    public static func load2(withImgPath imgPath: String) -> Data?
-//    {
-//        if let url = String.createUrl(fromImgPath: imgPath)
-//        {
-//            return try? Data(contentsOf: url)
-//        }
-//
-//        return nil
-//    }
-
-    public static func load(withImgPath imgPath: String, callback: @escaping (UIImage) -> Void)
-    {
-        // FIXME: Cuando se llega al Data da tirones y no carga bien aunque sea el fake Repo,
-        // esto no puede ir aqui, tiene que ir en el presenter y el Presentable de turno tiene que tener una Data en vez de un String con el nombre de la imagen y su ruta
-        
-        DispatchQueue.main.async {
-            if let url = String.createUrl(fromImgPath: imgPath)
-            {
-                if let img = try? UIImage(data: Data(contentsOf: url))
-                {
-                    callback(img)
-                }
-                else
-                {
-                    callback(UIImage(named: imgPath)!)
-                }
-            }
-        }
-        
-        
-        
-        // Aquí se llegaría si no se consigue ejecutar lo de arriba, por lo que se generaría con o el "placeholder" o la imagen del fake que está en los assets
-//        return UIImage(named: imgPath)!
-    }
-}
-
 extension String
 {
     public static func createUrl(fromImgPath imgPath: String) -> URL?
     {
         return URL(string: urlToServer + "/" + imgPath)
+    }
+}
+
+extension UIImage
+{
+    public func resize(size: CGSize) -> UIImage?
+    {
+        UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
+        self.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage
     }
 }
