@@ -197,6 +197,7 @@ class ProfileViewController: UIViewController {
         case .editing:
             setEditProfileView()
         case .other:
+            presenter.getCurrentUserFollowInvitations()
             presenter.loadSelectedUserProfile(with: userCuid)
             loading = true
         }
@@ -230,6 +231,10 @@ class ProfileViewController: UIViewController {
         contactText.text = ""
     }
     
+    @IBAction func followButtonTapped(_ sender: Any) {
+        presenter.followUser(with: userCuid)
+    }
+    
     @IBAction func closeCancelButtonTapped(_ sender: Any) {
         if presenter.profileStatus == .editing && !firstTimeEditing {
             //TODO: Si le damos a cancel y seguimos sin meter datos, mandarlo al tab Home
@@ -241,6 +246,7 @@ class ProfileViewController: UIViewController {
             let tokenDeleted = StoreManager.shared.deleteData(withKey: cuid)
             if tokenDeleted {
                 StoreManager.shared.removeStoreCuid()
+                StoreManager.shared.removeStoreInvitations()
                 self.dismiss(animated: true, completion: nil)
             } else {
                 let alert = createAlert(withTitle: "Error logging out.", message: "There was an error logging out. Please retry in a few minutes.")
@@ -327,7 +333,7 @@ class ProfileViewController: UIViewController {
             aboutMe = aboutMeText.text
         }
         
-        let newProfile = ProfilePresentable(name: name, city: city, avatar: nil, location: nil, contact: contact, instruments: updateInstruments, videos: updateVideos, aboutMe: aboutMe)
+        let newProfile = ProfilePresentable(name: name, city: city, avatar: nil, location: nil, contact: contact, instruments: updateInstruments, videos: updateVideos, aboutMe: aboutMe, invitations: profile.invitations)
         
 //        if newProfile == profile {
 //            
@@ -432,6 +438,7 @@ extension ProfileViewController: ProfileViewProtocol {
         closeCancelView.isHidden = false
         closeCancelButton.setTitle("Close session", for: .normal)
         contactButton.isHidden = true
+        StoreManager.shared.setUserInvitations(with: profile.invitations)
     }
     
     func setEditProfileView() {
@@ -478,7 +485,12 @@ extension ProfileViewController: ProfileViewProtocol {
         followView.isHidden = false
         closeCancelView.isHidden = true
         contactButton.isHidden = false
-        
+        let userInvitations = StoreManager.shared.getUserInvitations()
+        userInvitations.forEach { invitation in
+            if invitation == userCuid {
+                wantToFollow()
+            }
+        }
         loading = false
     }
     
@@ -494,10 +506,11 @@ extension ProfileViewController: ProfileViewProtocol {
                 StoreManager.shared.setMinimumDataIsInserted(for: cuid, with: true)
                 weak var pvc = self.presentingViewController
                 self.dismiss(animated: true, completion: {
-                    Assembler.provideView { (viewController) in
-                        pvc?.present(viewController, animated: true)
-                    }
-//                    pvc?.present(Assembler.provideView(), animated: true)
+                    print("He hecho dismiss")
+//                    Assembler.provideView { (viewController) in
+//                        pvc?.present(viewController, animated: true)
+//                    }
+                    pvc?.present(Assembler.provideInitialTabBarController(), animated: true)
                 })
             } else {
                 self.presenter.loadUserProfile()
@@ -506,6 +519,13 @@ extension ProfileViewController: ProfileViewProtocol {
             self.present(createAlert(withTitle: "Error updating.", message: "There was an error updating the profile."), animated: true)
             loading = false
         }
+    }
+    
+    func wantToFollow() {
+        followButton.backgroundColor = UIColor.systemGray3
+        followButton.setTitleColor(UIColor.black, for: .normal)
+        followButton.setTitle("Pending to accept", for: .normal)
+        followButton.isEnabled = false
     }
 }
 

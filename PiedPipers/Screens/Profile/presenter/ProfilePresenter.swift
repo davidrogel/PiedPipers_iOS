@@ -36,6 +36,7 @@ class ProfilePresenter {
         var instrumentPresentable: [String]?
         var videoPresentable: [VideoPresentable]?
         var aboutMePresentable: String?
+        var invitationsPresentable: [String]
         
         if let name = profile.name {
             namePresentable = name
@@ -87,7 +88,13 @@ class ProfilePresenter {
             aboutMePresentable = nil
         }
         
-        let profilePresentable = ProfilePresentable(name: namePresentable, city: cityPresentable, avatar: avatarPresentable, location: locationPresentable, contact: contactPresentable, instruments: instrumentPresentable, videos: videoPresentable, aboutMe: aboutMePresentable)
+        if let invitations = profile.invitations {
+            invitationsPresentable = invitations
+        } else {
+            invitationsPresentable = []
+        }
+        
+        let profilePresentable = ProfilePresentable(name: namePresentable, city: cityPresentable, avatar: avatarPresentable, location: locationPresentable, contact: contactPresentable, instruments: instrumentPresentable, videos: videoPresentable, aboutMe: aboutMePresentable, invitations: invitationsPresentable)
         
         return profilePresentable
     }
@@ -245,7 +252,29 @@ extension ProfilePresenter: ProfilePresenterProtocol {
             }, failure: { [weak self] (error) in
                 self?.ui?.showUpdateAlert(successfully: false)
         })
-        
+    }
+    
+    func followUser(with cuid: String) {
+        let currentUserCuid = StoreManager.shared.getLoggedUser()
+        profileService.followProfile(currentUserCUID: currentUserCuid, otherProfileCUID: cuid, success: { [weak self] (profile) in
+            var invitations = StoreManager.shared.getUserInvitations()
+            invitations.append(cuid)
+            StoreManager.shared.setUserInvitations(with: invitations)
+            self?.ui?.wantToFollow()
+        }, failure: { (error) in
+            //TODO: Lanzar alert con error al realizar la petición de seguir
+        })
+    }
+    
+    func getCurrentUserFollowInvitations() {
+        let currentUserCuid = StoreManager.shared.getLoggedUser()
+        profileService.getProfile(currenUserCUID: currentUserCuid, success: { [weak self] (profile) in
+            if let profileUnwrapped = profile {
+                
+            }
+        }, failure: { [weak self] (error) in
+                
+        })
     }
     
 }

@@ -42,9 +42,10 @@ struct ProfilePresentable
     let instruments: [String]?
     let videos: [VideoPresentable]?
     let aboutMe: String?
+    let invitations: [String]
     
     init(name: String? = nil, city: String? = nil, avatar: String? = nil, location: LocationPresentable?,
-         contact: ContactPresentable? = nil, instruments: [String]? = nil, videos: [VideoPresentable]? = nil, aboutMe: String? = nil)
+         contact: ContactPresentable? = nil, instruments: [String]? = nil, videos: [VideoPresentable]? = nil, aboutMe: String? = nil, invitations: [String])
     {
         self.name = name
         self.city = city
@@ -54,6 +55,7 @@ struct ProfilePresentable
         self.instruments = instruments
         self.videos = videos
         self.aboutMe = aboutMe
+        self.invitations = invitations
     }
 }
 

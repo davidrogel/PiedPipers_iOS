@@ -14,6 +14,7 @@ protocol ProfileViewProtocol: AnyObject {
     func setOtherUserProfileWith(model: ProfilePresentable)
     func setAvailableInstruments(with instruments: [String])
     func showUpdateAlert(successfully: Bool)
+    func wantToFollow()
     
 }
 
@@ -26,4 +27,6 @@ protocol ProfilePresenterProtocol: AnyObject {
     func updateProfile(with profilePresentable: ProfilePresentable)
     func updateProfileAvatar(with data: Data)
     func updateProfile(with profilePresentable: ProfilePresentable, image: Data)
+    func followUser(with cuid: String)
+    func getCurrentUserFollowInvitations()
 }

@@ -76,6 +76,18 @@ final class StoreManager
         return userDefaults.object(forKey: key) != nil
     }
     
+    func setUserInvitations(with data: [String]) {
+        userDefaults.set(data, forKey: "invitations")
+    }
+    
+    func getUserInvitations() -> [String] {
+        return userDefaults.array(forKey: "invitations") as! [String]
+    }
+    
+    func removeStoreInvitations() {
+        userDefaults.removeObject(forKey: "invitations")
+    }
+    
     /// True if the item was successfully deleted.
     public func deleteData(withKey key:String) -> Bool
     {
