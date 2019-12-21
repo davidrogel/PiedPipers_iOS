@@ -86,20 +86,4 @@ extension LoginPresenter: LoginPreseterProtocol {
         }
         
     }
-    
-    func getCurrentProfile() {
-        let cuid = StoreManager.shared.getLoggedUser()
-        loginService.getProfile(currenUserCUID: cuid, success: { [weak self] (profile) in
-            if profile?.name == "" || profile?.name == nil {
-                StoreManager.shared.setMinimumDataIsInserted(for: cuid, with: false)
-            } else {
-                StoreManager.shared.setMinimumDataIsInserted(for: cuid, with: true)
-            }
-            self?.ui?.provideNextView()
-        }, failure: { [weak self] (error) in
-            //TODO: Error al iniciar sesión, eliminar el cuid guardado
-            let err = error
-            print("Hola")
-        })
-    }
 }
