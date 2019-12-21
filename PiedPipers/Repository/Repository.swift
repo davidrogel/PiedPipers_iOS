@@ -159,11 +159,6 @@ final class FakeRepository: RepositoryFactory
         
     }
     
-    func updateAvatar(currentUserCUID cuid: String, image data: Data, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
-    {
-        
-    }
-    
     func searchProfiles(currentUserCUID cuid: String, withParameters parameters: SearchProfileParameters, limit: Int, offset: Int, success: @escaping (ProfileList?) -> Void, failure: @escaping (Error?) -> Void)
     {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {

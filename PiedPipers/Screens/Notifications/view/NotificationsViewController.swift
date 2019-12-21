@@ -46,7 +46,9 @@ class NotificationsViewController: UIViewController {
 extension NotificationsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedCuid = model[indexPath.item].userCuid
-        //TODO: Crear el controller de profile
+        let vc = Assembler.provideUserProfile(with: selectedCuid, status: .other)
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true)
     }
 }
 
