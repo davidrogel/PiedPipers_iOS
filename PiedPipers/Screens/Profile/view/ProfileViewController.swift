@@ -197,7 +197,6 @@ class ProfileViewController: UIViewController {
         case .editing:
             setEditProfileView()
         case .other:
-            presenter.getCurrentUserFollowInvitations()
             presenter.loadSelectedUserProfile(with: userCuid)
             loading = true
         }
@@ -246,7 +245,6 @@ class ProfileViewController: UIViewController {
             let tokenDeleted = StoreManager.shared.deleteData(withKey: cuid)
             if tokenDeleted {
                 StoreManager.shared.removeStoreCuid()
-                StoreManager.shared.removeStoreInvitations()
                 self.dismiss(animated: true, completion: nil)
             } else {
                 let alert = createAlert(withTitle: "Error logging out.", message: "There was an error logging out. Please retry in a few minutes.")
@@ -422,6 +420,13 @@ class ProfileViewController: UIViewController {
         instrumentsViewHeight.constant = calculateInstrumentCollectionHeight(withRows: rows)
         instrumentCollection.reloadData()
     }
+    
+    func following() {
+        followButton.backgroundColor = UIColor.systemGray3
+        followButton.setTitleColor(UIColor.systemGray6, for: .normal)
+        followButton.setTitle("Unfollow", for: .normal)
+        followButton.isEnabled = true
+    }
 
 }
 
@@ -438,7 +443,6 @@ extension ProfileViewController: ProfileViewProtocol {
         closeCancelView.isHidden = false
         closeCancelButton.setTitle("Close session", for: .normal)
         contactButton.isHidden = true
-        StoreManager.shared.setUserInvitations(with: profile.invitations)
     }
     
     func setEditProfileView() {
@@ -478,17 +482,20 @@ extension ProfileViewController: ProfileViewProtocol {
             firstTimeEditing = true
         }
     }
-    
-    func setOtherUserProfileWith(model: ProfilePresentable) {
+    func setOtherUserProfileWith(model: ProfilePresentable, invitations: [String], followers: [String]) {
         profile = model
         editButton.setImage(UIImage(named: "exitButton"), for: .normal)
         followView.isHidden = false
         closeCancelView.isHidden = true
         contactButton.isHidden = false
-        let userInvitations = StoreManager.shared.getUserInvitations()
-        userInvitations.forEach { invitation in
+        invitations.forEach { invitation in
             if invitation == userCuid {
                 wantToFollow()
+            }
+        }
+        followers.forEach { follower in
+            if follower == userCuid {
+                following()
             }
         }
         loading = false
@@ -523,7 +530,7 @@ extension ProfileViewController: ProfileViewProtocol {
     
     func wantToFollow() {
         followButton.backgroundColor = UIColor.systemGray3
-        followButton.setTitleColor(UIColor.black, for: .normal)
+        followButton.setTitleColor(UIColor.systemGray6, for: .normal)
         followButton.setTitle("Pending to accept", for: .normal)
         followButton.isEnabled = false
     }

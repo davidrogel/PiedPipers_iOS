@@ -191,15 +191,24 @@ extension ProfilePresenter: ProfilePresenterProtocol {
     
     func loadSelectedUserProfile(with cuid: String) {
         let currentCuid = StoreManager.shared.getLoggedUser()
-        profileService.getProfile(currentUserCUID: currentCuid, userPickedCUID: cuid, success: { [weak self] (profile) in
-            if let selectedProfile = profile {
-                let model = self?.convert2ProfilePresentable(profile: selectedProfile)
-                guard let modelUnwrapped = model else {
-                    //TODO
-                    return
+        profileService.getProfile(currentUserCUID: currentCuid, userPickedCUID: cuid, success: { [weak self] (selectedProfile) in
+            self?.profileService.getProfile(currenUserCUID: currentCuid, success: { [weak self] (currentProfile) in
+                if let selectedProfile = selectedProfile {
+                    let model = self?.convert2ProfilePresentable(profile: selectedProfile)
+                    guard let modelUnwrapped = model else {
+                        //TODO
+                        return
+                    }
+                    guard let currentProfile = currentProfile else {
+                        return
+                    }
+                    let invitations: [String] = currentProfile.invitations ?? []
+                    let followers: [String] = currentProfile.followers ?? []
+                    self?.ui?.setOtherUserProfileWith(model: modelUnwrapped, invitations: invitations, followers: followers)
                 }
-                self?.ui?.setOtherUserProfileWith(model: modelUnwrapped)
-            }
+            }, failure: { [weak self] (error) in
+                //TODO: Error al cargar perfil de usuario (vista de error)
+            })
         }, failure: { [weak self] (error) in
             //TODO: Error al cargar perfil de usuario (vista de error)
         })
@@ -257,24 +266,9 @@ extension ProfilePresenter: ProfilePresenterProtocol {
     func followUser(with cuid: String) {
         let currentUserCuid = StoreManager.shared.getLoggedUser()
         profileService.followProfile(currentUserCUID: currentUserCuid, otherProfileCUID: cuid, success: { [weak self] (profile) in
-            var invitations = StoreManager.shared.getUserInvitations()
-            invitations.append(cuid)
-            StoreManager.shared.setUserInvitations(with: invitations)
             self?.ui?.wantToFollow()
         }, failure: { (error) in
             //TODO: Lanzar alert con error al realizar la petición de seguir
         })
     }
-    
-    func getCurrentUserFollowInvitations() {
-        let currentUserCuid = StoreManager.shared.getLoggedUser()
-        profileService.getProfile(currenUserCUID: currentUserCuid, success: { [weak self] (profile) in
-            if let profileUnwrapped = profile {
-                
-            }
-        }, failure: { [weak self] (error) in
-                
-        })
-    }
-    
 }

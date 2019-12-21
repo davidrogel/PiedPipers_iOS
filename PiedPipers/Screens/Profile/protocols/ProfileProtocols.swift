@@ -11,7 +11,7 @@ import Foundation
 protocol ProfileViewProtocol: AnyObject {
     func setEditProfileView() //model: ProfilePresentable)
     func setCurrentUserProfileViewWith(model: ProfilePresentable)
-    func setOtherUserProfileWith(model: ProfilePresentable)
+    func setOtherUserProfileWith(model: ProfilePresentable, invitations: [String], followers: [String])
     func setAvailableInstruments(with instruments: [String])
     func showUpdateAlert(successfully: Bool)
     func wantToFollow()
@@ -28,5 +28,4 @@ protocol ProfilePresenterProtocol: AnyObject {
     func updateProfileAvatar(with data: Data)
     func updateProfile(with profilePresentable: ProfilePresentable, image: Data)
     func followUser(with cuid: String)
-    func getCurrentUserFollowInvitations()
 }
