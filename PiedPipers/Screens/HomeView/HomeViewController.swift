@@ -111,15 +111,13 @@ class HomeViewController: UIViewController
         localsCollectionView.delegate = self
         bandCollectionView.delegate = self
         
-        localsCollectionView.backgroundColor = .red
-        bandCollectionView.backgroundColor = .red
+        localsCollectionView.backgroundColor = .white
+        bandCollectionView.backgroundColor = .white
         
         bandCollectionView.register(BandProfileCustomCell.self, forCellWithReuseIdentifier: cellBandProfileId)
         localsCollectionView.register(LocalCustomCell.self, forCellWithReuseIdentifier: cellLocalId)
         
-        
-        scrollView.backgroundColor = .systemYellow
-//        scrollView.isScrollEnabled = true
+        scrollView.backgroundColor = .white
         
         scrollView.addSubview(logoImageView)
         scrollView.addSubview(localsTitleLbl)
@@ -150,11 +148,6 @@ class HomeViewController: UIViewController
         
         configureLocalsCollectionViewConstraints()
         configureBandCollectionViewConstraints()
-    }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        
     }
 }
 
@@ -270,23 +263,21 @@ extension HomeViewController
     
     private func configureLocalsCollectionViewConstraints()
     {
-        
         let safe = view.safeAreaLayoutGuide
         localsCollectionView.topAnchor.constraint(equalTo: localsTitleLbl.bottomAnchor, constant: 8).isActive = true
-        localsCollectionView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 8).isActive = true
-        localsCollectionView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -8).isActive = true
-//        localsCollectionView.bottomAnchor.constraint(equalTo: yourBandTitleLbl.topAnchor, constant: -8).isActive = true
+        localsCollectionView.leadingAnchor.constraint(equalTo: safe.leadingAnchor, constant: 8).isActive = true
+        localsCollectionView.trailingAnchor.constraint(equalTo: safe.trailingAnchor, constant: -8).isActive = true
+        localsCollectionView.bottomAnchor.constraint(equalTo: yourBandTitleLbl.topAnchor, constant: -16).isActive = true
         localsCollectionView.heightAnchor.constraint(equalToConstant: 250).isActive = true
     }
     
     private func configureBandCollectionViewConstraints()
     {
-        
         let safe = view.safeAreaLayoutGuide
         bandCollectionView.topAnchor.constraint(equalTo: yourBandTitleLbl.bottomAnchor, constant: 8).isActive = true
-        bandCollectionView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 8).isActive = true
-        bandCollectionView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -8).isActive = true
-//        localsCollectionView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -8).isActive = true
+        bandCollectionView.leadingAnchor.constraint(equalTo: safe.leadingAnchor, constant: 8).isActive = true
+        bandCollectionView.trailingAnchor.constraint(equalTo: safe.trailingAnchor, constant: -8).isActive = true
+        bandCollectionView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -8).isActive = true
         bandCollectionView.heightAnchor.constraint(equalToConstant: 250).isActive = true
     }
 }

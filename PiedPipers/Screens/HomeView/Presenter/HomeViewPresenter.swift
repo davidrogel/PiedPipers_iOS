@@ -35,7 +35,6 @@ final class HomeViewPresenter
             [weak self] (localList) in
             
             guard let locals = localList else {
-//                self?.showErrorNotFound(withMsg: "Error 404!")
                 self?.homeViewDelegate.hideLocals()
                 return
             }
@@ -43,17 +42,12 @@ final class HomeViewPresenter
             self?.showLocals(localList: locals)
         }) {
             [weak self] (error) in
-//            self?.showErrorNotFound(withMsg: "Error 404!")
+            
         }
     }
     
     public func requestBand(currentUserCuid cuid: String)
     {
-        homeViewDelegate.show(bandProfiles: [HomeProfilePresentable(cuid: "", profileName: "name", friendlyLocation: "here", image: "kojima", instruments: ["zambomba", "guitarra"]),
-                                             HomeProfilePresentable(cuid: "", profileName: "name", friendlyLocation: "here", image: "kojima", instruments: ["zambomba", "guitarra"]),
-                                             HomeProfilePresentable(cuid: "", profileName: "name", friendlyLocation: "here", image: "kojima", instruments: ["zambomba", "guitarra"]),
-                                             HomeProfilePresentable(cuid: "", profileName: "name", friendlyLocation: "here", image: "kojima", instruments: ["zambomba", "guitarra"])])
-        return
         repo.getProfileBand(currentUserCUID: cuid, success: {
             [weak self] (profileList) in
             
@@ -62,7 +56,7 @@ final class HomeViewPresenter
                 // all bad
                 return
             }
-            
+            self?.showBand(profileList: profiles)
             // all good
             
         }) { (error) in
@@ -77,5 +71,14 @@ final class HomeViewPresenter
         }
         
         homeViewDelegate.show(locals: presentables)
+    }
+    
+    private func showBand(profileList profiles: ProfileList)
+    {
+        let presentables:[HomeProfilePresentable] = profiles.items.map { (profile) -> HomeProfilePresentable in
+            HomeProfilePresentable.make(cuid: profile.cuid, name: profile.name, friendlyLocation: profile.friendlyLocation, photo: profile.photo, instruments: profile.instruments)
+        }
+        
+        homeViewDelegate.show(bandProfiles: presentables)
     }
 }
