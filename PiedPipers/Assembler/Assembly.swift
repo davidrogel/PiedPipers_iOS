@@ -71,4 +71,10 @@ final class Assembler {
 //            StoreManager.shared.setMinimumDataIsInserted(for: user, with: false)
 //        })
 //    }
+    static func provideLocalDetailView(withCuid local: String) -> UIViewController {
+        let localViewController = LocalViewController()
+        let presenter = LocalPresenter(with: localViewController, localService: Repository.fake)
+        localViewController.configure(with: presenter, local: local)
+        return localViewController
+    }
 }

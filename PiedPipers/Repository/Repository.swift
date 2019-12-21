@@ -61,6 +61,10 @@ protocol RepositoryFactory: class
     func searchProfiles(currentUserCUID cuid: String, withParameters parameters: SearchProfileParameters, limit: Int, offset: Int, success: @escaping (ProfileList?) -> Void, failure: @escaping (Error?) -> Void)
     
     func searchLocals(currentUserCUID cuid: String, withParameters parameters: SearchLocalParameters, limit: Int, offset: Int, success: @escaping (LocalList?) -> Void, failure: @escaping (Error?) -> Void)
+    
+    // LOCAL REQUESTS
+    /// Obtener un local
+    func getLocal(withCUID cuid: String, success: @escaping (Local?) -> Void, failure: @escaping (Error?) -> Void)
 }
 
 final class FakeRepository: RepositoryFactory
@@ -180,6 +184,12 @@ final class FakeRepository: RepositoryFactory
     {
         // TODO
     }
+    
+    // LOCALS
+    func getLocal(withCUID cuid: String, success: @escaping (Local?) -> Void, failure: @escaping (Error?) -> Void) {
+        success(local)
+    }
+    
 }
 
 final class RemoteRepository: RepositoryFactory
@@ -463,6 +473,11 @@ final class RemoteRepository: RepositoryFactory
                 failure(err)
             }
         }
+    }
+    
+    // LOCALS
+    func getLocal(withCUID cuid: String, success: @escaping (Local?) -> Void, failure: @escaping (Error?) -> Void) {
+        //TODO
     }
     
 }

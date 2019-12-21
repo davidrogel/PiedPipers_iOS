@@ -85,6 +85,13 @@
 		AC91935823940065000CA28E /* LoginProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC91935723940065000CA28E /* LoginProtocols.swift */; };
 		AC91935A23943286000CA28E /* String+IsValidEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC91935923943286000CA28E /* String+IsValidEmail.swift */; };
 		ACB3B51123A54DAD0037D9C7 /* ImagePickerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB3B51023A54DAD0037D9C7 /* ImagePickerManager.swift */; };
+		ACB3B51823A642650037D9C7 /* LocalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB3B51623A642650037D9C7 /* LocalViewController.swift */; };
+		ACB3B51923A642650037D9C7 /* LocalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACB3B51723A642650037D9C7 /* LocalViewController.xib */; };
+		ACB3B51B23A660DC0037D9C7 /* LocalProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB3B51A23A660DC0037D9C7 /* LocalProtocols.swift */; };
+		ACB3B51D23A660EE0037D9C7 /* LocalPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB3B51C23A660EE0037D9C7 /* LocalPresenter.swift */; };
+		ACB3B51F23A670600037D9C7 /* LocalPresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB3B51E23A670600037D9C7 /* LocalPresentable.swift */; };
+		ACB3B52723A6870A0037D9C7 /* ImagesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB3B52523A6870A0037D9C7 /* ImagesCollectionViewCell.swift */; };
+		ACB3B52823A6870A0037D9C7 /* ImagesCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACB3B52623A6870A0037D9C7 /* ImagesCollectionViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -181,6 +188,13 @@
 		AC91935723940065000CA28E /* LoginProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginProtocols.swift; sourceTree = "<group>"; };
 		AC91935923943286000CA28E /* String+IsValidEmail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+IsValidEmail.swift"; sourceTree = "<group>"; };
 		ACB3B51023A54DAD0037D9C7 /* ImagePickerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerManager.swift; sourceTree = "<group>"; };
+		ACB3B51623A642650037D9C7 /* LocalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalViewController.swift; sourceTree = "<group>"; };
+		ACB3B51723A642650037D9C7 /* LocalViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LocalViewController.xib; sourceTree = "<group>"; };
+		ACB3B51A23A660DC0037D9C7 /* LocalProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalProtocols.swift; sourceTree = "<group>"; };
+		ACB3B51C23A660EE0037D9C7 /* LocalPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalPresenter.swift; sourceTree = "<group>"; };
+		ACB3B51E23A670600037D9C7 /* LocalPresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalPresentable.swift; sourceTree = "<group>"; };
+		ACB3B52523A6870A0037D9C7 /* ImagesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesCollectionViewCell.swift; sourceTree = "<group>"; };
+		ACB3B52623A6870A0037D9C7 /* ImagesCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImagesCollectionViewCell.xib; sourceTree = "<group>"; };
 		AFF1BC005050C460CD36563D /* Pods_PiedPipers.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PiedPipers.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7F5047FA0520D4CC98BBA3D /* Pods-PiedPipers.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PiedPipers.debug.xcconfig"; path = "Target Support Files/Pods-PiedPipers/Pods-PiedPipers.debug.xcconfig"; sourceTree = "<group>"; };
 		BB656504F0920BB5058C1E37 /* Pods-PiedPipersTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PiedPipersTests.release.xcconfig"; path = "Target Support Files/Pods-PiedPipersTests/Pods-PiedPipersTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -445,6 +459,7 @@
 			isa = PBXGroup;
 			children = (
 				6348F6942392F24E005AA01B /* HomeView */,
+				ACB3B51223A6417F0037D9C7 /* Local */,
 				6348F6822392F24D005AA01B /* Login */,
 				6348F6862392F24D005AA01B /* Profile */,
 				63DC5C7523A6D75900895038 /* SearchView */,
@@ -572,6 +587,52 @@
 			path = imagePicker;
 			sourceTree = "<group>";
 		};
+		ACB3B51223A6417F0037D9C7 /* Local */ = {
+			isa = PBXGroup;
+			children = (
+				ACB3B51523A6420F0037D9C7 /* presenter */,
+				ACB3B51423A642070037D9C7 /* protocols */,
+				ACB3B51323A641FE0037D9C7 /* view */,
+			);
+			path = Local;
+			sourceTree = "<group>";
+		};
+		ACB3B51323A641FE0037D9C7 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				ACB3B52023A684E10037D9C7 /* cell */,
+				ACB3B51623A642650037D9C7 /* LocalViewController.swift */,
+				ACB3B51723A642650037D9C7 /* LocalViewController.xib */,
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
+		ACB3B51423A642070037D9C7 /* protocols */ = {
+			isa = PBXGroup;
+			children = (
+				ACB3B51A23A660DC0037D9C7 /* LocalProtocols.swift */,
+			);
+			path = protocols;
+			sourceTree = "<group>";
+		};
+		ACB3B51523A6420F0037D9C7 /* presenter */ = {
+			isa = PBXGroup;
+			children = (
+				ACB3B51C23A660EE0037D9C7 /* LocalPresenter.swift */,
+				ACB3B51E23A670600037D9C7 /* LocalPresentable.swift */,
+			);
+			path = presenter;
+			sourceTree = "<group>";
+		};
+		ACB3B52023A684E10037D9C7 /* cell */ = {
+			isa = PBXGroup;
+			children = (
+				ACB3B52523A6870A0037D9C7 /* ImagesCollectionViewCell.swift */,
+				ACB3B52623A6870A0037D9C7 /* ImagesCollectionViewCell.xib */,
+			);
+			path = cell;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -657,6 +718,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6348F6B42392F2D6005AA01B /* SF-Compact-Rounded-Ultralight.otf in Resources */,
+				ACB3B51923A642650037D9C7 /* LocalViewController.xib in Resources */,
 				6348F6B52392F2D6005AA01B /* SF-Compact-Rounded-Semibold.otf in Resources */,
 				6348F6A02392F24E005AA01B /* ProfileViewController.xib in Resources */,
 				6348F6B82392F2D6005AA01B /* SF-Compact-Rounded-Thin.otf in Resources */,
@@ -665,6 +727,7 @@
 				6348F6982392F24E005AA01B /* LoginViewController.xib in Resources */,
 				63F4E8072368E04A00C52D47 /* LaunchScreen.storyboard in Resources */,
 				6348F69D2392F24E005AA01B /* VideoCollectionViewCell.xib in Resources */,
+				ACB3B52823A6870A0037D9C7 /* ImagesCollectionViewCell.xib in Resources */,
 				6348F6B22392F2D6005AA01B /* SF-Compact-Rounded-Light.otf in Resources */,
 				6348F6B62392F2D6005AA01B /* SF-Compact-Rounded-Black.otf in Resources */,
 				63F4E8042368E04A00C52D47 /* Assets.xcassets in Resources */,
@@ -780,11 +843,17 @@
 				63DC5C9023A6D75900895038 /* FilterButton.swift in Sources */,
 				AC88CF34239842B40082F64D /* InstrumentsPickerViewController.swift in Sources */,
 				6348F69A2392F24E005AA01B /* ProfilePresenter.swift in Sources */,
+				ACB3B51B23A660DC0037D9C7 /* LocalProtocols.swift in Sources */,
+				ACB3B52723A6870A0037D9C7 /* ImagesCollectionViewCell.swift in Sources */,
+				AC88CF34239842B40082F64D /* InstrumentsPickerViewController.swift in Sources */,
+				6348F69A2392F24E005AA01B /* ProfilePresenter.swift in Sources */,
+				ACB3B51823A642650037D9C7 /* LocalViewController.swift in Sources */,
 				6348F6992392F24E005AA01B /* LoginViewController.swift in Sources */,
 				63E265B5236B738D007FEA74 /* UserRequests.swift in Sources */,
 				63EF8F0E23A503D100E518A4 /* ImageLoader.swift in Sources */,
 				63335AD7236CC69A00F8CC8F /* ProfileRequests.swift in Sources */,
 				AC91935A23943286000CA28E /* String+IsValidEmail.swift in Sources */,
+				ACB3B51D23A660EE0037D9C7 /* LocalPresenter.swift in Sources */,
 				63378A162381CB74000C7751 /* Utilities.swift in Sources */,
 				6348F69E2392F24E005AA01B /* VideoCollectionViewCell.swift in Sources */,
 				634126F123835DF300B7B45F /* Video.swift in Sources */,
@@ -804,6 +873,7 @@
 				63DC5C9123A6D75900895038 /* LoadingView.swift in Sources */,
 				63DC5C9823A7FE2800895038 /* Notification.swift in Sources */,
 				63DC5C9A23A953B300895038 /* NotificationTypes.swift in Sources */,
+				ACB3B51F23A670600037D9C7 /* LocalPresentable.swift in Sources */,
 				63E265B7236B73C0007FEA74 /* User.swift in Sources */,
 				63378A0D2381BF94000C7751 /* Lists.swift in Sources */,
 				63E265B0236B6400007FEA74 /* APIError.swift in Sources */,
