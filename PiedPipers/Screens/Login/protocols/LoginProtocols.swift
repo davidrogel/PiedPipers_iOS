@@ -13,9 +13,10 @@ protocol LoginViewProtocol: AnyObject {
     func setLoginView()
     func showEmptyFieldAlert(field: String)
     func showNotEmailAlert()
-    func dismissView()
     func showNonExistentUserAlert()
     func showRegisterErrorAlert()
+    func checkIfHasMinimumData()
+    func provideNextView()
 }
 
 protocol LoginPreseterProtocol: AnyObject {
@@ -23,4 +24,5 @@ protocol LoginPreseterProtocol: AnyObject {
     func prepareLoginView()
     var isLogging: Bool { get set }
     func logInRegisterUser(with email: String?, password: String?)
+    func getCurrentProfile()
 }

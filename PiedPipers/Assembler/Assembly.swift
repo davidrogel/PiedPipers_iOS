@@ -10,9 +10,26 @@ import UIKit
 
 final class Assembler {
     
+    static func provideView() -> UIViewController {
+        let cuid = StoreManager.shared.getLoggedUser()
+        
+        let hasData = StoreManager.shared.getMinimumDataIsInserted(for: cuid)
+        if hasData {
+            let tabBarView = provideInitialTabBarController()
+            tabBarView.modalPresentationStyle = .fullScreen
+            return tabBarView
+        } else {
+            let profileView = provideUserProfile(with: cuid, status: .editing)
+            profileView.presenter.profileStatus = .editing
+            profileView.modalPresentationStyle = .fullScreen
+            return profileView
+        }
+    }
+    
     static func provideInitialTabBarController() -> UITabBarController {
         let tabBarController = UITabBarController()
-        let profileViewController = provideCurrentUserProfile()
+        let cuid = StoreManager.shared.getLoggedUser()
+        let profileViewController = provideUserProfile(with: cuid, status: .current)
         let homeViewController = HomeViewController()
         
         let homeTabBarItem: UITabBarItem = UITabBarItem(title: "", image: UIImage(named: "Home"), selectedImage: UIImage(named: "HomeSelected"))
@@ -26,18 +43,32 @@ final class Assembler {
         return tabBarController
     }
     
-    static func provideCurrentUserProfile() -> UIViewController {
-        let currentUserViewController = ProfileViewController()
-        let presenter = ProfilePresenter(with: currentUserViewController, profileService: Repository.remote)
-        currentUserViewController.configure(with: presenter)
+    static func provideUserProfile(with cuid: String, status: ProfileState) -> ProfileViewController {
+        let vc = ProfileViewController()
+        let presenter = ProfilePresenter(with: vc, profileService: Repository.remote)
+        vc.configure(with: presenter)
+        vc.userCuid = cuid
+        vc.presenter.profileStatus = status
 
-        return currentUserViewController
+        return vc
     }
     
-    static func provideLoginScreen() -> UIViewController {
+    static func provideLoginScreen() -> LoginViewController {
         let loginViewController = LoginViewController()
         let presenter = LoginPresenter(with: loginViewController, loginService: Repository.remote)
         loginViewController.configure(with: presenter)
         return loginViewController
     }
+    
+//    private static func setFirstTimeMinimumData(user: String) {
+//        Repository.remote.getProfile(currenUserCUID: user, success: { (profile) in
+//            if profile?.name == "" || profile?.name == nil {
+//                StoreManager.shared.setMinimumDataIsInserted(for: user, with: false)
+//            } else {
+//                StoreManager.shared.setMinimumDataIsInserted(for: user, with: true)
+//            }
+//        }, failure: { (error) in
+//            StoreManager.shared.setMinimumDataIsInserted(for: user, with: false)
+//        })
+//    }
 }

@@ -64,7 +64,8 @@ extension LoginPresenter: LoginPreseterProtocol {
                     fatalError()
                 }
                 StoreManager.shared.setLoggedUser(userCuid: userLogged.id)
-                self?.ui?.dismissView()
+                self?.ui?.provideNextView()
+                
             }, failure: { [weak self] (error) in
                 //TODO: Mostrar error de usuario no existe o contraseña incorrecta
                 // Todavía no lo tiene implementado David (ECHAR UN VISTAZO EN CUANTO PUEDA)
@@ -84,5 +85,21 @@ extension LoginPresenter: LoginPreseterProtocol {
             })
         }
         
+    }
+    
+    func getCurrentProfile() {
+        let cuid = StoreManager.shared.getLoggedUser()
+        loginService.getProfile(currenUserCUID: cuid, success: { [weak self] (profile) in
+            if profile?.name == "" || profile?.name == nil {
+                StoreManager.shared.setMinimumDataIsInserted(for: cuid, with: false)
+            } else {
+                StoreManager.shared.setMinimumDataIsInserted(for: cuid, with: true)
+            }
+            self?.ui?.provideNextView()
+        }, failure: { [weak self] (error) in
+            //TODO: Error al iniciar sesión, eliminar el cuid guardado
+            let err = error
+            print("Hola")
+        })
     }
 }

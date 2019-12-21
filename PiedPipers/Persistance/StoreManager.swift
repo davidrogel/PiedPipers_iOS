@@ -63,6 +63,18 @@ final class StoreManager
         userDefaults.removeObject(forKey: "currentCuid")
     }
     
+    func getMinimumDataIsInserted(for user: String) -> Bool {
+        return userDefaults.bool(forKey: user)
+    }
+    
+    func setMinimumDataIsInserted(for user: String, with: Bool) {
+        userDefaults.set(with, forKey: user)
+    }
+    
+    func hasEverLogin(key: String) -> Bool {
+        return userDefaults.object(forKey: key) != nil
+    }
+    
     /// True if the item was successfully deleted.
     public func deleteData(withKey key:String) -> Bool
     {

@@ -13,7 +13,7 @@ import Alamofire
 
 class RequestsTests: XCTestCase
 {
-    let timeout: TimeInterval = 15000.0
+    let timeout: TimeInterval = 150000000.0
     
     let email = "otroCorreo2@correo.com"
     let pass = "vouteEsnaquizar"
