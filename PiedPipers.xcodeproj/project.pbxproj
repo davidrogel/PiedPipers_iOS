@@ -22,7 +22,6 @@
 		634126F123835DF300B7B45F /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634126F023835DF300B7B45F /* Video.swift */; };
 		6348F6982392F24E005AA01B /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6348F6842392F24D005AA01B /* LoginViewController.xib */; };
 		6348F6992392F24E005AA01B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6348F6852392F24D005AA01B /* LoginViewController.swift */; };
-		6348F69A2392F24E005AA01B /* ProfilePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6348F6882392F24D005AA01B /* ProfilePresenter.swift */; };
 		6348F69B2392F24E005AA01B /* ProfilePresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6348F6892392F24D005AA01B /* ProfilePresentable.swift */; };
 		6348F69C2392F24E005AA01B /* InstrumentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6348F68C2392F24D005AA01B /* InstrumentCollectionViewCell.swift */; };
 		6348F69D2392F24E005AA01B /* VideoCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6348F68D2392F24D005AA01B /* VideoCollectionViewCell.xib */; };
@@ -70,6 +69,8 @@
 		63DC5CB223AE829A00895038 /* NotificationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63DC5CAA23AE829A00895038 /* NotificationsViewController.xib */; };
 		63DC5CB323AE829A00895038 /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DC5CAB23AE829A00895038 /* NotificationsViewController.swift */; };
 		63DC5CB423AE829A00895038 /* NotificationsProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DC5CAD23AE829A00895038 /* NotificationsProtocols.swift */; };
+		63DC5CB623AE87B500895038 /* ProfilePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DC5CB523AE87B500895038 /* ProfilePresenter.swift */; };
+		63DC5CB823AE87BD00895038 /* InstrumentsPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DC5CB723AE87BD00895038 /* InstrumentsPickerViewController.swift */; };
 		63E265AE236B6400007FEA74 /* ApiSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E265AB236B6400007FEA74 /* ApiSession.swift */; };
 		63E265AF236B6400007FEA74 /* ApiRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E265AC236B6400007FEA74 /* ApiRequest.swift */; };
 		63E265B0236B6400007FEA74 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E265AD236B6400007FEA74 /* APIError.swift */; };
@@ -86,7 +87,6 @@
 		63F4E8122368E04A00C52D47 /* PiedPipersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F4E8112368E04A00C52D47 /* PiedPipersTests.swift */; };
 		63F57C372373660700C59F9E /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F57C362373660700C59F9E /* Repository.swift */; };
 		A3E7EE7450DE3CEA8023F0B2 /* Pods_PiedPipersTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33F0D6D30771D11ED6AE142F /* Pods_PiedPipersTests.framework */; };
-		AC88CF34239842B40082F64D /* InstrumentsPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC88CF32239842B40082F64D /* InstrumentsPickerViewController.swift */; };
 		AC88CF35239842B40082F64D /* InstrumentsPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC88CF33239842B40082F64D /* InstrumentsPickerViewController.xib */; };
 		AC9193552393FEF9000CA28E /* LoginPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9193542393FEF9000CA28E /* LoginPresenter.swift */; };
 		AC91935823940065000CA28E /* LoginProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC91935723940065000CA28E /* LoginProtocols.swift */; };
@@ -127,7 +127,6 @@
 		634126F023835DF300B7B45F /* Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
 		6348F6842392F24D005AA01B /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		6348F6852392F24D005AA01B /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		6348F6882392F24D005AA01B /* ProfilePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePresenter.swift; sourceTree = "<group>"; };
 		6348F6892392F24D005AA01B /* ProfilePresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePresentable.swift; sourceTree = "<group>"; };
 		6348F68C2392F24D005AA01B /* InstrumentCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstrumentCollectionViewCell.swift; sourceTree = "<group>"; };
 		6348F68D2392F24D005AA01B /* VideoCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -175,6 +174,8 @@
 		63DC5CAA23AE829A00895038 /* NotificationsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationsViewController.xib; sourceTree = "<group>"; };
 		63DC5CAB23AE829A00895038 /* NotificationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
 		63DC5CAD23AE829A00895038 /* NotificationsProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsProtocols.swift; sourceTree = "<group>"; };
+		63DC5CB523AE87B500895038 /* ProfilePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePresenter.swift; sourceTree = "<group>"; };
+		63DC5CB723AE87BD00895038 /* InstrumentsPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstrumentsPickerViewController.swift; sourceTree = "<group>"; };
 		63E265AB236B6400007FEA74 /* ApiSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiSession.swift; sourceTree = "<group>"; };
 		63E265AC236B6400007FEA74 /* ApiRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiRequest.swift; sourceTree = "<group>"; };
 		63E265AD236B6400007FEA74 /* APIError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
@@ -196,7 +197,6 @@
 		63F4E8132368E04A00C52D47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		63F57C362373660700C59F9E /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		89DC3482C4DC8880BF2323E5 /* Pods-PiedPipersTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PiedPipersTests.debug.xcconfig"; path = "Target Support Files/Pods-PiedPipersTests/Pods-PiedPipersTests.debug.xcconfig"; sourceTree = "<group>"; };
-		AC88CF32239842B40082F64D /* InstrumentsPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstrumentsPickerViewController.swift; sourceTree = "<group>"; };
 		AC88CF33239842B40082F64D /* InstrumentsPickerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InstrumentsPickerViewController.xib; sourceTree = "<group>"; };
 		AC9193542393FEF9000CA28E /* LoginPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPresenter.swift; sourceTree = "<group>"; };
 		AC91935723940065000CA28E /* LoginProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginProtocols.swift; sourceTree = "<group>"; };
@@ -306,7 +306,7 @@
 		6348F6872392F24D005AA01B /* presenter */ = {
 			isa = PBXGroup;
 			children = (
-				6348F6882392F24D005AA01B /* ProfilePresenter.swift */,
+				63DC5CB523AE87B500895038 /* ProfilePresenter.swift */,
 				6348F6892392F24D005AA01B /* ProfilePresentable.swift */,
 			);
 			path = presenter;
@@ -618,7 +618,7 @@
 		AC88CF31239842530082F64D /* instrumentsPicker */ = {
 			isa = PBXGroup;
 			children = (
-				AC88CF32239842B40082F64D /* InstrumentsPickerViewController.swift */,
+				63DC5CB723AE87BD00895038 /* InstrumentsPickerViewController.swift */,
 				AC88CF33239842B40082F64D /* InstrumentsPickerViewController.xib */,
 			);
 			path = instrumentsPicker;
@@ -906,12 +906,8 @@
 				63DC5CA123AAC62200895038 /* HomeViewPresenter.swift in Sources */,
 				63DC5C9023A6D75900895038 /* FilterButton.swift in Sources */,
 				63DC5CAF23AE829A00895038 /* NotificationCellPresentable.swift in Sources */,
-				AC88CF34239842B40082F64D /* InstrumentsPickerViewController.swift in Sources */,
-				6348F69A2392F24E005AA01B /* ProfilePresenter.swift in Sources */,
 				ACB3B51B23A660DC0037D9C7 /* LocalProtocols.swift in Sources */,
 				ACB3B52723A6870A0037D9C7 /* ImagesCollectionViewCell.swift in Sources */,
-				AC88CF34239842B40082F64D /* InstrumentsPickerViewController.swift in Sources */,
-				6348F69A2392F24E005AA01B /* ProfilePresenter.swift in Sources */,
 				ACB3B51823A642650037D9C7 /* LocalViewController.swift in Sources */,
 				6348F6992392F24E005AA01B /* LoginViewController.swift in Sources */,
 				63E265B5236B738D007FEA74 /* UserRequests.swift in Sources */,
@@ -925,9 +921,11 @@
 				634126F123835DF300B7B45F /* Video.swift in Sources */,
 				63DC5CB323AE829A00895038 /* NotificationsViewController.swift in Sources */,
 				63DC5C9623A7FC5400895038 /* NotificationRequests.swift in Sources */,
+				63DC5CB823AE87BD00895038 /* InstrumentsPickerViewController.swift in Sources */,
 				63F57C372373660700C59F9E /* Repository.swift in Sources */,
 				AC9193552393FEF9000CA28E /* LoginPresenter.swift in Sources */,
 				63335AD5236CBF8500F8CC8F /* APIConstants.swift in Sources */,
+				63DC5CB623AE87B500895038 /* ProfilePresenter.swift in Sources */,
 				63378A112381C1E7000C7751 /* Location.swift in Sources */,
 				63F4E7FB2368E04700C52D47 /* AppDelegate.swift in Sources */,
 				6348F69C2392F24E005AA01B /* InstrumentCollectionViewCell.swift in Sources */,
@@ -1113,6 +1111,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5GJ4N5ZR45;
 				INFOPLIST_FILE = PiedPipers/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1132,6 +1131,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5GJ4N5ZR45;
 				INFOPLIST_FILE = PiedPipers/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
