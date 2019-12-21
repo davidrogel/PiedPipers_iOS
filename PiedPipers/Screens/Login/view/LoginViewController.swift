@@ -77,25 +77,6 @@ class LoginViewController: UIViewController {
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        loading = true
-        emailBox.text = ""
-        passwordBox.text = ""
-        setLoginView()
-        
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(true)
-        let cuid = StoreManager.shared.getLoggedUser()
-        if cuid != "" {
-            self.present(Assembler.provideView(), animated: true)
-        } else {
-            loading = false
-        }
-    }
-    
     // MARK: Actions
     @IBAction func registerButtonTapped(_ sender: Any) {
         presenter.prepareRegisterView()
