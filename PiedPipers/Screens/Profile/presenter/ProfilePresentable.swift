@@ -56,3 +56,17 @@ struct ProfilePresentable
         self.aboutMe = aboutMe
     }
 }
+
+extension ProfilePresentable {
+    var proxyForEquality: String {
+        return ""
+    }
+}
+
+//extension ProfilePresentable: Equatable {
+//    static func == (lhs: ProfilePresentable, rhs: ProfilePresentable) -> Bool {
+//        return true
+//    }
+//
+//
+//}

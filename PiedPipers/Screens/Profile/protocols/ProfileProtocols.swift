@@ -13,14 +13,17 @@ protocol ProfileViewProtocol: AnyObject {
     func setCurrentUserProfileViewWith(model: ProfilePresentable)
     func setOtherUserProfileWith(model: ProfilePresentable)
     func setAvailableInstruments(with instruments: [String])
-    func showUpdateAlert(successfully: Bool) 
+    func showUpdateAlert(successfully: Bool)
     
 }
 
 protocol ProfilePresenterProtocol: AnyObject {
-    var isEditing: Bool { get set }
-    func loadCurrentUserProfile()
+    var profileStatus: ProfileState { get set }
+    func loadUserProfile()
+    func loadSelectedUserProfile(with cuid: String)
     func prepareEditView()
     func getAvailableInstruments()
     func updateProfile(with profilePresentable: ProfilePresentable)
+    func updateProfileAvatar(with data: Data)
+    func updateProfile(with profilePresentable: ProfilePresentable, image: Data)
 }

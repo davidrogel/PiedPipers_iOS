@@ -13,7 +13,7 @@ import Alamofire
 
 class RequestsTests: XCTestCase
 {
-    let timeout: TimeInterval = 15000.0
+    let timeout: TimeInterval = 150000000.0
     
     let email = "otroCorreo2@correo.com"
     let pass = "vouteEsnaquizar"
@@ -451,6 +451,41 @@ class RequestsTests: XCTestCase
     }
     
     // MARK: UPDATE AVATAR
+    
+    func testUpdateProfileAvatar()
+    {
+        let e = expectation(description: "UpdateAvatar")
+
+        let img = UIImage(named: "mads")
+        
+        let resizedImage = img?.resize(size: CGSize(width: 300, height: 300))
+        let data = resizedImage?.jpegData(compressionQuality: 1)
+        
+        guard let imgData = data else
+        {
+            XCTFail()
+            return
+        }
+        
+        let updateCurrentUserAvatar = UpdateProfileAvatarRequest(currentUserCuid: cuid, imgData: imgData)
+
+        updateCurrentUserAvatar.makeUpload { (result) in
+            switch result
+            {
+            case .success(let data):
+                print("Profile with updated profile:", data)
+            case .failure(let err):
+                print("Error:", err)
+//                print("Error:", CodeError(rawValue: err.statusCode).debugDescription)
+                XCTFail()
+            }
+            e.fulfill()
+        }
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    // MARK: - DECODE ENCODE PROFILE
     
     func testUpdateProfileAvatar()
     {

@@ -123,7 +123,7 @@ struct FollowOtherUserRequest: APIRequest
         let authToken = StoreManager.shared.getString(withKey: currentUserCuid)
         return ["Authorization":authToken, "Content-Type":"application/json"]
     }
-    
+
     var body: Any {
         return ["userId":followUserCuid]
     }
@@ -172,4 +172,5 @@ struct GetCurrentProfileBand: APIRequest
     }
     
     let currentUserCuid: String
+
 }

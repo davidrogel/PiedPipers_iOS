@@ -22,11 +22,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
         
-        let tabBarController = Assembler.provideInitialTabBarController()
-        tabBarController.delegate = self
+        let loginView = Assembler.provideLoginScreen()
         
         window?.makeKeyAndVisible()
-        window?.rootViewController = tabBarController
+        window?.rootViewController = loginView
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -62,23 +61,23 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 extension SceneDelegate: UITabBarControllerDelegate {
 
-    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-        switch viewController.nibName {
-        case "HomeViewController":
-            return true
-        case "ProfileViewController":
-            let userCuid = StoreManager.shared.getLoggedUser()
-            if userCuid == "" {
-                let loginViewController = Assembler.provideLoginScreen()
-                loginViewController.modalPresentationStyle = .fullScreen
-                tabBarController.present(loginViewController, animated: true, completion: nil)
-                return false
-            } else {
-                return true
-            }
-
-        default:
-            return true
-        }
-    }
+//    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+//        switch viewController.nibName {
+//        case "HomeViewController":
+//            return true
+//        case "ProfileViewController":
+//            let userCuid = StoreManager.shared.getLoggedUser()
+//            if userCuid == "" {
+//                let loginViewController = Assembler.provideLoginScreen()
+//                loginViewController.modalPresentationStyle = .fullScreen
+//                tabBarController.present(loginViewController, animated: true, completion: nil)
+//                return false
+//            } else {
+//                return true
+//            }
+//
+//        default:
+//            return true
+//        }
+//    }
 }
