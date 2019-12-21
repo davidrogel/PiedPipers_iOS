@@ -63,6 +63,7 @@ final class StoreManager
         userDefaults.removeObject(forKey: "currentCuid")
     }
     
+
     func getMinimumDataIsInserted(for user: String) -> Bool {
         return userDefaults.bool(forKey: user)
     }

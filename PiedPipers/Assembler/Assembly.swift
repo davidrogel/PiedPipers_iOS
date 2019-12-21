@@ -31,14 +31,17 @@ final class Assembler {
         let cuid = StoreManager.shared.getLoggedUser()
         let profileViewController = provideUserProfile(with: cuid, status: .current)
         let homeViewController = HomeViewController()
+        let notificationsController = provideNotificationsScreen()
         
-        let homeTabBarItem: UITabBarItem = UITabBarItem(title: "", image: UIImage(named: "Home"), selectedImage: UIImage(named: "HomeSelected"))
-        let profileTabBarItem = UITabBarItem(title: "", image: UIImage(named: "Profile"), selectedImage: UIImage(named: "ProfileSelected"))
+        let homeTabBarItem: UITabBarItem = UITabBarItem(title: "", image: UIImage(named: "Home"), tag: 0)
+        let profileTabBarItem = UITabBarItem(title: "", image: UIImage(named: "Profile"), tag: 3)
+        let notificationsTabBarItem = UITabBarItem(title: "", image: UIImage(named: "Notifications"), tag: 2)
         
         profileViewController.tabBarItem = profileTabBarItem
         homeViewController.tabBarItem = homeTabBarItem
+        notificationsController.tabBarItem = notificationsTabBarItem
         
-        tabBarController.viewControllers = [homeViewController, profileViewController]
+        tabBarController.viewControllers = [homeViewController, notificationsController, profileViewController]
         
         return tabBarController
     }
@@ -76,5 +79,12 @@ final class Assembler {
         let presenter = LocalPresenter(with: localViewController, localService: Repository.fake)
         localViewController.configure(with: presenter, local: local)
         return localViewController
+    }
+    
+    static func provideNotificationsScreen() -> UIViewController {
+        let notificationsViewController = NotificationsViewController()
+        let presenter = NotificationsPresenter(with: notificationsViewController, notificationsService: Repository.remote)
+        notificationsViewController.configure(with: presenter)
+        return notificationsViewController
     }
 }

@@ -69,6 +69,7 @@ protocol RepositoryFactory: class
 
 final class FakeRepository: RepositoryFactory
 {
+    
     func getLocalById(localCuid cuid: String, success: @escaping (Local?) -> Void, failure: @escaping (Error?) -> Void)
     {
         // TODO
@@ -123,6 +124,16 @@ final class FakeRepository: RepositoryFactory
     private let otherProfile = Profile(cuid: "", name: "name", location: Location(lat: 20.0, long: 20.0), contact: Contact(type: .email, data: "Correo.a.encodear@correo.com"), instruments: ["bateria", "guitarra", "voz"], videos: nil, description: "una descripción rexulona", photo: "una foto")
     
     private let local = Local(cuid: "", name: "un local", dateAdded: "", location: Location(lat: 10.0, long: 10.0), price: 29.99, contact: Contact(type: .email, data: "arroba@correo.ru"), photos: ["kojima", "dos fotos", "tres... fotos?"], description: "una descripción de un local molón con una descripción tope larga que lo flipas chorbo", shortDescription: "Una descripción corta para que esto no quede horrible en la celda", address: "Calle Buenavista, 9ºB")
+    
+    private var notifications: [NotificationCellPresentable] {
+        let noti1 = NotificationCellPresentable(cuid: "dgshiufagfdj8weh9c", image: "kojima", userCuid: "jlkdsahfo", userName: "Kojima", notiState: .pending)
+        let noti2 = NotificationCellPresentable(cuid: "dgshiufagfdj8weh9c", image: "norman", userCuid: "jlkdsahfo", userName: "Norman", notiState: .pending)
+        let noti3 = NotificationCellPresentable(cuid: "dgshiufagfdj8weh9c", image: "jongonzalez", userCuid: "jlkdsahfo", userName: "Jon", notiState: .redeemed)
+        let noti4 = NotificationCellPresentable(cuid: "dgshiufagfdj8weh9c", image: "mads", userCuid: "jlkdsahfo", userName: "Mads", notiState: .pending)
+        
+        
+        return [noti1, noti2, noti3, noti4, noti1, noti2, noti3, noti4, noti1, noti2, noti3, noti4]
+    }
 
     func getProfile(currenUserCUID cuid: String, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
     {
@@ -137,6 +148,10 @@ final class FakeRepository: RepositoryFactory
     func updateProfile(currentUserCUID cuid: String, newProfile profile: Profile, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)
     {
         success(userProfile)
+    }
+    // NOTIFICATIONS
+    func getNotifications(currentUserCUID cuid: String, success: @escaping ([NotificationCellPresentable]?) -> Void, failure: @escaping (Error?) -> Void) {
+        success(notifications)
     }
     
     func updateAvatar(currentUserCUID cuid: String, image data: Data, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)

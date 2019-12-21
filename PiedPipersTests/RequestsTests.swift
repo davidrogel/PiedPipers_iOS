@@ -237,7 +237,7 @@ class RequestsTests: XCTestCase
     {
         let e = expectation(description: "LoginUser")
         
-        let loginUserRequest = LoginUserRequest(email: email, password: pass)
+        let loginUserRequest = LoginUserRequest(email: notisEmail, password: notisPass)
         
         loginUserRequest.makeRequest { (result) in
             switch result
@@ -433,17 +433,16 @@ class RequestsTests: XCTestCase
     {
         let e = expectation(description: "FollowProfile")
                
-        let followOtherUserRequest = FollowOtherUserRequest(currentUserCuid: cuid, followUserCuid: "ck2avtjvi0000ajpcb5q44wgb")
+        let getProfilesBySearchingRequest = GetProfileBySearchingRequest(cuid: cuid, limit: 10, offset: 0)
 
-        followOtherUserRequest.makeRequest { (result) in
+        getProfilesBySearchingRequest.makeRequest { (result) in
            switch result
            {
            case .success(let data):
-                print("User to follow?:", data)
+               print("Profiles?:", data)
            case .failure(let err):
-                print("Error:", err.message)
-                print("Puede que ya le sigas...")
-                XCTFail()
+               print("Error:", CodeError(rawValue: err.statusCode).debugDescription)
+               XCTFail()
            }
            e.fulfill()
         }

@@ -63,6 +63,13 @@
 		63DC5C9C23AAAE2200895038 /* LocalRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DC5C9B23AAAE2200895038 /* LocalRequests.swift */; };
 		63DC5C9E23AAC60400895038 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DC5C9D23AAC60400895038 /* HomeViewController.swift */; };
 		63DC5CA123AAC62200895038 /* HomeViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DC5CA023AAC62200895038 /* HomeViewPresenter.swift */; };
+		63DC5CAE23AE829A00895038 /* NotificationsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DC5CA423AE829A00895038 /* NotificationsPresenter.swift */; };
+		63DC5CAF23AE829A00895038 /* NotificationCellPresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DC5CA523AE829A00895038 /* NotificationCellPresentable.swift */; };
+		63DC5CB023AE829A00895038 /* NotificationsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63DC5CA823AE829A00895038 /* NotificationsTableViewCell.xib */; };
+		63DC5CB123AE829A00895038 /* NotificationsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DC5CA923AE829A00895038 /* NotificationsTableViewCell.swift */; };
+		63DC5CB223AE829A00895038 /* NotificationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63DC5CAA23AE829A00895038 /* NotificationsViewController.xib */; };
+		63DC5CB323AE829A00895038 /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DC5CAB23AE829A00895038 /* NotificationsViewController.swift */; };
+		63DC5CB423AE829A00895038 /* NotificationsProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DC5CAD23AE829A00895038 /* NotificationsProtocols.swift */; };
 		63E265AE236B6400007FEA74 /* ApiSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E265AB236B6400007FEA74 /* ApiSession.swift */; };
 		63E265AF236B6400007FEA74 /* ApiRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E265AC236B6400007FEA74 /* ApiRequest.swift */; };
 		63E265B0236B6400007FEA74 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E265AD236B6400007FEA74 /* APIError.swift */; };
@@ -161,6 +168,13 @@
 		63DC5C9B23AAAE2200895038 /* LocalRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalRequests.swift; sourceTree = "<group>"; };
 		63DC5C9D23AAC60400895038 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		63DC5CA023AAC62200895038 /* HomeViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewPresenter.swift; sourceTree = "<group>"; };
+		63DC5CA423AE829A00895038 /* NotificationsPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsPresenter.swift; sourceTree = "<group>"; };
+		63DC5CA523AE829A00895038 /* NotificationCellPresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationCellPresentable.swift; sourceTree = "<group>"; };
+		63DC5CA823AE829A00895038 /* NotificationsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationsTableViewCell.xib; sourceTree = "<group>"; };
+		63DC5CA923AE829A00895038 /* NotificationsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsTableViewCell.swift; sourceTree = "<group>"; };
+		63DC5CAA23AE829A00895038 /* NotificationsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationsViewController.xib; sourceTree = "<group>"; };
+		63DC5CAB23AE829A00895038 /* NotificationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
+		63DC5CAD23AE829A00895038 /* NotificationsProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsProtocols.swift; sourceTree = "<group>"; };
 		63E265AB236B6400007FEA74 /* ApiSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiSession.swift; sourceTree = "<group>"; };
 		63E265AC236B6400007FEA74 /* ApiRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiRequest.swift; sourceTree = "<group>"; };
 		63E265AD236B6400007FEA74 /* APIError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
@@ -431,6 +445,52 @@
 			path = Presenter;
 			sourceTree = "<group>";
 		};
+		63DC5CA223AE829A00895038 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				63DC5CA323AE829A00895038 /* presenter */,
+				63DC5CA623AE829A00895038 /* view */,
+				63DC5CAC23AE829A00895038 /* protocols */,
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
+		63DC5CA323AE829A00895038 /* presenter */ = {
+			isa = PBXGroup;
+			children = (
+				63DC5CA423AE829A00895038 /* NotificationsPresenter.swift */,
+				63DC5CA523AE829A00895038 /* NotificationCellPresentable.swift */,
+			);
+			path = presenter;
+			sourceTree = "<group>";
+		};
+		63DC5CA623AE829A00895038 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				63DC5CA723AE829A00895038 /* cells */,
+				63DC5CAA23AE829A00895038 /* NotificationsViewController.xib */,
+				63DC5CAB23AE829A00895038 /* NotificationsViewController.swift */,
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
+		63DC5CA723AE829A00895038 /* cells */ = {
+			isa = PBXGroup;
+			children = (
+				63DC5CA823AE829A00895038 /* NotificationsTableViewCell.xib */,
+				63DC5CA923AE829A00895038 /* NotificationsTableViewCell.swift */,
+			);
+			path = cells;
+			sourceTree = "<group>";
+		};
+		63DC5CAC23AE829A00895038 /* protocols */ = {
+			isa = PBXGroup;
+			children = (
+				63DC5CAD23AE829A00895038 /* NotificationsProtocols.swift */,
+			);
+			path = protocols;
+			sourceTree = "<group>";
+		};
 		63E265AA236B63F0007FEA74 /* ApiRequest */ = {
 			isa = PBXGroup;
 			children = (
@@ -461,6 +521,7 @@
 				6348F6942392F24E005AA01B /* HomeView */,
 				ACB3B51223A6417F0037D9C7 /* Local */,
 				6348F6822392F24D005AA01B /* Login */,
+				63DC5CA223AE829A00895038 /* Notifications */,
 				6348F6862392F24D005AA01B /* Profile */,
 				63DC5C7523A6D75900895038 /* SearchView */,
 			);
@@ -717,6 +778,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63DC5CB223AE829A00895038 /* NotificationsViewController.xib in Resources */,
 				6348F6B42392F2D6005AA01B /* SF-Compact-Rounded-Ultralight.otf in Resources */,
 				ACB3B51923A642650037D9C7 /* LocalViewController.xib in Resources */,
 				6348F6B52392F2D6005AA01B /* SF-Compact-Rounded-Semibold.otf in Resources */,
@@ -733,6 +795,7 @@
 				63F4E8042368E04A00C52D47 /* Assets.xcassets in Resources */,
 				6348F6B32392F2D6005AA01B /* SF-Compact-Rounded-Regular.otf in Resources */,
 				6348F6B72392F2D6005AA01B /* SF-Compact-Rounded-Bold.otf in Resources */,
+				63DC5CB023AE829A00895038 /* NotificationsTableViewCell.xib in Resources */,
 				6348F6B02392F2D6005AA01B /* SF-Compact-Rounded-Medium.otf in Resources */,
 				63F4E8022368E04700C52D47 /* Main.storyboard in Resources */,
 				6348F6B12392F2D6005AA01B /* SF-Compact-Rounded-Heavy.otf in Resources */,
@@ -829,6 +892,7 @@
 				63DC5C8723A6D75900895038 /* LocalCustomCell.swift in Sources */,
 				6348F6BD2392F454005AA01B /* UIButton+ShadowsAndCornerRadius.swift in Sources */,
 				63DC5C8823A6D75900895038 /* ProfileCustomCell.swift in Sources */,
+				63DC5CB123AE829A00895038 /* NotificationsTableViewCell.swift in Sources */,
 				63378A132381C236000C7751 /* Contact.swift in Sources */,
 				AC91935823940065000CA28E /* LoginProtocols.swift in Sources */,
 				639650C12396E5EE0063C5DB /* AvailableInstruments.swift in Sources */,
@@ -841,6 +905,7 @@
 				63DC5C9323A6D75900895038 /* SearchInstrumentPickerViewController.swift in Sources */,
 				63DC5CA123AAC62200895038 /* HomeViewPresenter.swift in Sources */,
 				63DC5C9023A6D75900895038 /* FilterButton.swift in Sources */,
+				63DC5CAF23AE829A00895038 /* NotificationCellPresentable.swift in Sources */,
 				AC88CF34239842B40082F64D /* InstrumentsPickerViewController.swift in Sources */,
 				6348F69A2392F24E005AA01B /* ProfilePresenter.swift in Sources */,
 				ACB3B51B23A660DC0037D9C7 /* LocalProtocols.swift in Sources */,
@@ -850,6 +915,7 @@
 				ACB3B51823A642650037D9C7 /* LocalViewController.swift in Sources */,
 				6348F6992392F24E005AA01B /* LoginViewController.swift in Sources */,
 				63E265B5236B738D007FEA74 /* UserRequests.swift in Sources */,
+				63DC5CAE23AE829A00895038 /* NotificationsPresenter.swift in Sources */,
 				63EF8F0E23A503D100E518A4 /* ImageLoader.swift in Sources */,
 				63335AD7236CC69A00F8CC8F /* ProfileRequests.swift in Sources */,
 				AC91935A23943286000CA28E /* String+IsValidEmail.swift in Sources */,
@@ -857,6 +923,7 @@
 				63378A162381CB74000C7751 /* Utilities.swift in Sources */,
 				6348F69E2392F24E005AA01B /* VideoCollectionViewCell.swift in Sources */,
 				634126F123835DF300B7B45F /* Video.swift in Sources */,
+				63DC5CB323AE829A00895038 /* NotificationsViewController.swift in Sources */,
 				63DC5C9623A7FC5400895038 /* NotificationRequests.swift in Sources */,
 				63F57C372373660700C59F9E /* Repository.swift in Sources */,
 				AC9193552393FEF9000CA28E /* LoginPresenter.swift in Sources */,
@@ -869,6 +936,7 @@
 				63DC5C8B23A6D75900895038 /* SearchViewPresenter.swift in Sources */,
 				63335AD1236C9A6E00F8CC8F /* StoreManager.swift in Sources */,
 				63DC5C9C23AAAE2200895038 /* LocalRequests.swift in Sources */,
+				63DC5CB423AE829A00895038 /* NotificationsProtocols.swift in Sources */,
 				63378A0B2380A6A3000C7751 /* SearchRequests.swift in Sources */,
 				63DC5C9123A6D75900895038 /* LoadingView.swift in Sources */,
 				63DC5C9823A7FE2800895038 /* Notification.swift in Sources */,

@@ -478,6 +478,8 @@ extension ProfileViewController: ProfileViewProtocol {
         followView.isHidden = false
         closeCancelView.isHidden = true
         contactButton.isHidden = false
+        
+        loading = false
     }
     
     func setAvailableInstruments(with instruments: [String]) {
