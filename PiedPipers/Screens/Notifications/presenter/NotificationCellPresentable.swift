@@ -9,8 +9,9 @@
 import Foundation
 
 struct NotificationCellPresentable {
+    let cuid: String
     let image: String
     let userCuid: String
     let userName: String
-    let notificationAccepted: Bool
+    let notiState: Piper_Notification.State
 }

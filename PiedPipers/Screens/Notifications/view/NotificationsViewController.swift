@@ -44,7 +44,7 @@ class NotificationsViewController: UIViewController {
 }
 
 extension NotificationsViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {        
         let alert = UIAlertController(title: "Celda \(indexPath.item) pulsada", message: "", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Accept", style: .default, handler: nil))
         self.present(alert, animated: true)

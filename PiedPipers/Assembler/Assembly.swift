@@ -46,7 +46,7 @@ final class Assembler {
     
     static func provideNotificationsScreen() -> UIViewController {
         let notificationsViewController = NotificationsViewController()
-        let presenter = NotificationsPresenter(with: notificationsViewController, notificationsService: Repository.fake)
+        let presenter = NotificationsPresenter(with: notificationsViewController, notificationsService: Repository.remote)
         notificationsViewController.configure(with: presenter)
         return notificationsViewController
     }

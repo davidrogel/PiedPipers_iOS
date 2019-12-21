@@ -19,17 +19,42 @@ class NotificationsPresenter {
     }
 }
 
+private func convert2NotificationCellPresentable(noti: Piper_Notification) -> NotificationCellPresentable {
+    let cuid = noti.cuid
+    var image = ""
+    if let imageUnwrapped = noti.data.image {
+        image = imageUnwrapped
+    }
+    let originUserCuid = noti.data.origin
+    let originUserName = noti.data.originName
+    let notiState = noti.state
+    let notiPresentable = NotificationCellPresentable(cuid: cuid, image: image, userCuid: originUserCuid, userName: originUserName, notiState: notiState)
+    return notiPresentable
+}
+
 extension NotificationsPresenter: NotificationsPresenterProtocol {
     func getNotificationsList() {
         let cuid = StoreManager.shared.getLoggedUser()
-        notificationsService.getNotifications(currentUserCUID: cuid, success: { [weak self] (notifications) in
-            guard let notificationsUnwrapped = notifications else {
-                fatalError()
+        notificationsService.getListOfNotifications(currentUserCUID: cuid, limit: 10, offset: 0, success: { [weak self] (notiList) in
+            if notiList.total == 0 {
+                // No hay notificaciones
+            } else {
+                let notiListPresentable = notiList.items.map { (noti) in
+                    convert2NotificationCellPresentable(noti: noti)
+                }
+                self?.ui?.setNotifications(with: notiListPresentable)
             }
-            self?.ui?.setNotifications(with: notificationsUnwrapped)
-        }, failure: { [weak self] (error) in
+        }, failure: { (error) in
             
         })
+//        notificationsService.getNotifications(currentUserCUID: cuid,  success: { [weak self] (notifications) in
+//            guard let notificationsUnwrapped = notifications else {
+//                fatalError()
+//            }
+//            self?.ui?.setNotifications(with: notificationsUnwrapped)
+//        }, failure: { [weak self] (error) in
+//
+//        })
     }
     
     

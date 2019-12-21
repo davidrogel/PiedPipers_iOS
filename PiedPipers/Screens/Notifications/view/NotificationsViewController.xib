@@ -25,7 +25,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" pagingEnabled="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="bHy-G2-47B">
-                    <rect key="frame" x="20" y="100" width="374" height="742"/>
+                    <rect key="frame" x="0.0" y="100" width="414" height="742"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                 </tableView>
             </subviews>
@@ -34,9 +34,9 @@
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="bHy-G2-47B" secondAttribute="bottom" constant="20" id="8iU-Vx-PFu"/>
                 <constraint firstItem="H70-Ws-B9x" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="16" id="CC2-lG-wBU"/>
                 <constraint firstItem="H70-Ws-B9x" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="LB8-zl-tU9"/>
-                <constraint firstItem="bHy-G2-47B" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="ND5-Ge-zbq"/>
+                <constraint firstItem="bHy-G2-47B" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="ND5-Ge-zbq"/>
                 <constraint firstItem="bHy-G2-47B" firstAttribute="top" secondItem="H70-Ws-B9x" secondAttribute="bottom" constant="16" id="S6B-Lf-M9c"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="bHy-G2-47B" secondAttribute="trailing" constant="20" id="a9U-nd-dMw"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="bHy-G2-47B" secondAttribute="trailing" id="a9U-nd-dMw"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <point key="canvasLocation" x="132" y="119"/>

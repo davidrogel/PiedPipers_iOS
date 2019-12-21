@@ -69,6 +69,7 @@ protocol RepositoryFactory: class
 
 final class FakeRepository: RepositoryFactory
 {
+    
     func getLocalById(localCuid cuid: String, success: @escaping (Local?) -> Void, failure: @escaping (Error?) -> Void)
     {
         // TODO
@@ -125,13 +126,13 @@ final class FakeRepository: RepositoryFactory
     private let local = Local(cuid: "", name: "un local", dateAdded: "", location: Location(lat: 10.0, long: 10.0), price: 29.99, contact: Contact(type: .email, data: "arroba@correo.ru"), photos: ["kojima", "dos fotos", "tres... fotos?"], description: "una descripción de un local molón con una descripción tope larga que lo flipas chorbo", shortDescription: "Una descripción corta para que esto no quede horrible en la celda", address: "Calle Buenavista, 9ºB")
     
     private var notifications: [NotificationCellPresentable] {
-        let noti1 = NotificationCellPresentable(image: "kojima", userCuid: "jlkdsahfo", userName: "Kojima", notificationAccepted: false)
-        let noti2 = NotificationCellPresentable(image: "norman", userCuid: "jlkdsahfo", userName: "Norman", notificationAccepted: false)
-        let noti3 = NotificationCellPresentable(image: "jongonzalez", userCuid: "jlkdsahfo", userName: "Jon", notificationAccepted: true)
-        let noti4 = NotificationCellPresentable(image: "mads", userCuid: "jlkdsahfo", userName: "Mads", notificationAccepted: false)
+        let noti1 = NotificationCellPresentable(cuid: "dgshiufagfdj8weh9c", image: "kojima", userCuid: "jlkdsahfo", userName: "Kojima", notiState: .pending)
+        let noti2 = NotificationCellPresentable(cuid: "dgshiufagfdj8weh9c", image: "norman", userCuid: "jlkdsahfo", userName: "Norman", notiState: .pending)
+        let noti3 = NotificationCellPresentable(cuid: "dgshiufagfdj8weh9c", image: "jongonzalez", userCuid: "jlkdsahfo", userName: "Jon", notiState: .redeemed)
+        let noti4 = NotificationCellPresentable(cuid: "dgshiufagfdj8weh9c", image: "mads", userCuid: "jlkdsahfo", userName: "Mads", notiState: .pending)
         
         
-        return [noti1, noti2, noti3, noti4]
+        return [noti1, noti2, noti3, noti4, noti1, noti2, noti3, noti4, noti1, noti2, noti3, noti4]
     }
 
     func getProfile(currenUserCUID cuid: String, success: @escaping (Profile?) -> Void, failure: @escaping (Error?) -> Void)

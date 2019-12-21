@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class NotificationsTableViewCell: UITableViewCell {
     
@@ -20,9 +21,12 @@ class NotificationsTableViewCell: UITableViewCell {
     // MARK: Properties
     var model: NotificationCellPresentable! {
         didSet {
-            avatarImage.image = UIImage(named: model.image)
+            //TODO: Modificar esto, ya que en pricipio todos los usuarios van a tener foto
+            let url = String.createUrl(fromImgPath: model.image)
+            let placeholder = UIImage(named: "UserIcon")
+            avatarImage.kf.setImage(with: url, placeholder: placeholder)
             putAttributedTextin(label: notificationLabel, withuser: model.userName)
-            if model.notificationAccepted {
+            if model.notiState == .redeemed {
                 acceptButton.setTitle("Accepted", for: .normal)
             } else {
                 acceptButton.setTitle("Accept", for: .normal)
@@ -44,6 +48,11 @@ class NotificationsTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         contentView.backgroundColor = .systemBackground
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20))
     }
     
     // MARK: Functions

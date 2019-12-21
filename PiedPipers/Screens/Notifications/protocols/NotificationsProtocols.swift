@@ -14,4 +14,5 @@ protocol NotificationsViewProtocol: AnyObject {
 
 protocol NotificationsPresenterProtocol: AnyObject {
     func getNotificationsList()
+    //func loadSelectedUserProfile(with cuid: String)
 }
