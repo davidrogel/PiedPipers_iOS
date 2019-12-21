@@ -22,7 +22,7 @@ class LocalPresenter {
 extension LocalPresenter: LocalPreseterProtocol {
     
     func getLocal(with cuid: String) {
-        localService.getLocal(withCUID: cuid, success: { [weak self] (local) in
+        localService.getLocalById(localCuid: cuid, success: { [weak self] (local) in
             guard let localUnwrapped = local else {
                 fatalError()
             }

@@ -66,9 +66,6 @@ class HomeViewController: UIViewController
     
     private var presenter: HomeViewPresenter!
     
-    // TODO: Quitar esto de aqui y coger el que debería estar cacheado
-    let cuid = "ck2g3ps39000c93pcfox7e8jn"
-    
     // MARK: Presentables
     
     private var bandProfiles: [HomeProfilePresentable] = []
@@ -102,8 +99,10 @@ class HomeViewController: UIViewController
     {
         presenter = HomeViewPresenter(homeViewDelegate: self)
         
-        presenter.requestLocals(cuid: cuid, limit: 10, offset: 0)
-        presenter.requestBand(currentUserCuid: cuid)
+        let currentUserCuid = StoreManager.shared.getLoggedUser()
+        
+        presenter.requestLocals(cuid: currentUserCuid, limit: 10, offset: 0)
+        presenter.requestBand(currentUserCuid: currentUserCuid)
         
         localsCollectionView.dataSource = self
         bandCollectionView.dataSource = self
@@ -195,10 +194,18 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         if collectionView === localsCollectionView
         {
             print("selected local")
+            let cuid = locals[indexPath.item].cuid
+            let vc = Assembler.provideLocalDetailView(withCuid: cuid)
+            vc.modalPresentationStyle = .fullScreen
+            present(vc, animated: true, completion: nil)
         }
         else if collectionView === bandCollectionView
         {
             print("selected band profile")
+            let cuid = bandProfiles[indexPath.item].cuid
+            let vc = Assembler.provideUserProfile(with: cuid, status: .other)
+            vc.modalPresentationStyle = .fullScreen
+            present(vc, animated: true, completion: nil)
         }
     }
 }

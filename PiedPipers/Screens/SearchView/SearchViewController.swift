@@ -47,8 +47,7 @@ class SearchViewController: UIViewController
     
     private var presenter: SearchViewPresenter!
     
-    // TODO: Quitar esto de aqui y coger el que debería estar cacheado
-    let cuid = "ck2g3ps39000c93pcfox7e8jn"
+    private var cuid: String = StoreManager.shared.getLoggedUser()
     
     var profiles: [SearchProfilePresentable] = []
     {
@@ -156,6 +155,19 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
         print("selected")
+        switch displayState
+        {
+        case .LOCALS:
+            let cuid = locals[indexPath.item].cuid
+            let vc = Assembler.provideLocalDetailView(withCuid: cuid)
+            vc.modalPresentationStyle = .fullScreen
+            present(vc, animated: true, completion: nil)
+        case .PROFILES:
+            let cuid = profiles[indexPath.item].cuid
+            let vc = Assembler.provideUserProfile(with: cuid, status: .other)
+            vc.modalPresentationStyle = .fullScreen
+            present(vc, animated: true, completion: nil)
+        }
     }
 }
 

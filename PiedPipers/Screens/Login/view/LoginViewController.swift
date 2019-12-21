@@ -71,7 +71,9 @@ class LoginViewController: UIViewController {
         super.viewDidAppear(true)
         let cuid = StoreManager.shared.getLoggedUser()
         if cuid != "" {
-            self.present(Assembler.provideView(), animated: true)
+            Assembler.provideView { (viewController) in
+                self.present(viewController, animated: true)
+            }
         } else {
             loading = false
         }
@@ -139,7 +141,9 @@ extension LoginViewController: LoginViewProtocol {
     }
     
     func provideNextView() {
-        self.present(Assembler.provideView(), animated: true)
+        Assembler.provideView { (viewController) in
+            self.present(viewController, animated: true)
+        }
     }
 }
 

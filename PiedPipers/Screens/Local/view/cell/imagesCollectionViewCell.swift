@@ -20,10 +20,9 @@ class ImagesCollectionViewCell: UICollectionViewCell {
     // MARK: Properties
     var image: String! {
         didSet {
-//            let url = String.createUrl(fromImgPath: image)
-//            imageView.kf.setImage(with: url)
-            
-            imageView.image = UIImage(named: image)
+            let url = String.createUrl(fromImgPath: image)
+            imageView.kf.setImage(with: url)
+//            imageView.image = UIImage(named: image)
         }
     }
     

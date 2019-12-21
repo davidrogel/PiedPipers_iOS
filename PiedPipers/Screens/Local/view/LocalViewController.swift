@@ -83,16 +83,16 @@ class LocalViewController: UIViewController {
            let geocoder = CLGeocoder()
            
            // Look up the location and pass it to the completion handler
-           geocoder.reverseGeocodeLocation(location,
-                                           completionHandler: { (placemarks, error) in
-                                               if error == nil {
-                                                   let firstLocation = placemarks?[0]
-                                                   completionHandler(firstLocation)
-                                               }
-                                               else {
-                                                   // An error occurred during geocoding.
-                                                   completionHandler(nil)
-                                               }
+           geocoder.reverseGeocodeLocation(location, completionHandler: {
+                (placemarks, error) in
+                   if error == nil {
+                       let firstLocation = placemarks?[0]
+                       completionHandler(firstLocation)
+                   }
+                   else {
+                       // An error occurred during geocoding.
+                       completionHandler(nil)
+                   }
            })
        }
     
@@ -107,7 +107,7 @@ extension LocalViewController: LocalViewProtocol {
             guard let friendlyLocation = placemark?.locality else {
                 fatalError()
             }
-            self?.locationPriceLabel.text = "\(friendlyLocation) - \(local.price) €/h"
+            self?.locationPriceLabel.text = "\(friendlyLocation) - \(local.price.toCurrency()) /h"
             self?.setUpMapViewWith(lat: local.location.lat, long: local.location.long, pointName: local.name)
             self?.descriptionText.text = local.description
             guard let height = self?.descriptionText.calculeDescriptionViewHeight(leading: 20, trailing: 20) else {

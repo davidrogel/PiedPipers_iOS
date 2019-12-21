@@ -205,7 +205,7 @@ class ProfileViewController: UIViewController {
     
     // MARK: Actions
     @IBAction func editExitButtonTapped(_ sender: Any) {
-        if presenter.profileStatus == .editing {
+        if presenter.profileStatus == .current {
             presenter.prepareEditView()
         } else {
             self.dismiss(animated: true, completion: nil)
@@ -494,7 +494,10 @@ extension ProfileViewController: ProfileViewProtocol {
                 StoreManager.shared.setMinimumDataIsInserted(for: cuid, with: true)
                 weak var pvc = self.presentingViewController
                 self.dismiss(animated: true, completion: {
-                    pvc?.present(Assembler.provideView(), animated: true)
+                    Assembler.provideView { (viewController) in
+                        pvc?.present(viewController, animated: true)
+                    }
+//                    pvc?.present(Assembler.provideView(), animated: true)
                 })
             } else {
                 self.presenter.loadUserProfile()
