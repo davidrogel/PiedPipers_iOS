@@ -19,8 +19,8 @@ final class Assembler {
             tabBarView.modalPresentationStyle = .fullScreen
             return tabBarView
         } else {
-            let profileView = provideCurrentUserProfile()
-            profileView.presenter.isEditing = true
+            let profileView = provideUserProfile(with: cuid, status: .editing)
+            profileView.presenter.profileStatus = .editing
             profileView.modalPresentationStyle = .fullScreen
             return profileView
         }
@@ -28,7 +28,8 @@ final class Assembler {
     
     static func provideInitialTabBarController() -> UITabBarController {
         let tabBarController = UITabBarController()
-        let profileViewController = provideCurrentUserProfile()
+        let cuid = StoreManager.shared.getLoggedUser()
+        let profileViewController = provideUserProfile(with: cuid, status: .current)
         let homeViewController = HomeViewController()
         
         let homeTabBarItem: UITabBarItem = UITabBarItem(title: "", image: UIImage(named: "Home"), selectedImage: UIImage(named: "HomeSelected"))
@@ -42,12 +43,14 @@ final class Assembler {
         return tabBarController
     }
     
-    static func provideCurrentUserProfile() -> ProfileViewController {
-        let currentUserViewController = ProfileViewController()
-        let presenter = ProfilePresenter(with: currentUserViewController, profileService: Repository.remote)
-        currentUserViewController.configure(with: presenter)
+    static func provideUserProfile(with cuid: String, status: ProfileState) -> ProfileViewController {
+        let vc = ProfileViewController()
+        let presenter = ProfilePresenter(with: vc, profileService: Repository.remote)
+        vc.configure(with: presenter)
+        vc.userCuid = cuid
+        vc.presenter.profileStatus = status
 
-        return currentUserViewController
+        return vc
     }
     
     static func provideLoginScreen() -> LoginViewController {

@@ -12,12 +12,14 @@ import Kingfisher
 class ProfileViewController: UIViewController {
     
     // MARK: Properties
+    var userCuid: String = ""
     var userInstruments: [String] = []
     var userVideos: [VideoPresentable] = []
     var selectedInstruments: [Bool] = []
     var selectedVideos: [Bool] = []
     var availableInstruments: [String] = []
     var reloadFromCamera: Bool = false
+    var firstTimeEditing: Bool = false
     
     var profile: ProfilePresentable! {
         didSet {
@@ -104,7 +106,6 @@ class ProfileViewController: UIViewController {
             loading = false
         }
     }
-    var firstTimeEditing: Bool = false
     
     var loading: Bool! {
         didSet {
@@ -189,11 +190,14 @@ class ProfileViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         //TODO: Esto llamaría al back cada vez que accedamos al perfil (GUARDAR EL PERFIL EN USER DEFAULT)
-        if presenter.isEditing {
-            presenter.prepareEditView()
+        switch presenter.profileStatus {
+        case .current:
+            presenter.loadUserProfile()
+            loading = true
+        case .editing:
             setEditProfileView()
-        } else {
-            presenter.loadCurrentUserProfile()
+        case .other:
+            presenter.loadSelectedUserProfile(with: userCuid)
             loading = true
         }
         
@@ -201,7 +205,12 @@ class ProfileViewController: UIViewController {
     
     // MARK: Actions
     @IBAction func editExitButtonTapped(_ sender: Any) {
-        presenter.prepareEditView()
+        if presenter.profileStatus == .editing {
+            presenter.prepareEditView()
+        } else {
+            self.dismiss(animated: true, completion: nil)
+        }
+        
     }
     
     @IBAction func contactTypeChanged(_ sender: Any) {
@@ -222,10 +231,10 @@ class ProfileViewController: UIViewController {
     }
     
     @IBAction func closeCancelButtonTapped(_ sender: Any) {
-        if presenter.isEditing && !firstTimeEditing {
+        if presenter.profileStatus == .editing && !firstTimeEditing {
             //TODO: Si le damos a cancel y seguimos sin meter datos, mandarlo al tab Home
-            presenter.isEditing = false
-            presenter.loadCurrentUserProfile()
+            presenter.profileStatus = .current
+            presenter.loadUserProfile()
             loading = true
         } else {
             let cuid = StoreManager.shared.getLoggedUser()
@@ -416,7 +425,7 @@ extension ProfileViewController: ProfileViewProtocol {
     
     
     func setCurrentUserProfileViewWith(model: ProfilePresentable) {
-        presenter.isEditing = false
+        presenter.profileStatus = .current
         profile = model
         editButton.setImage(UIImage(named: "editButton"), for: .normal)
         followView.isHidden = true
@@ -426,7 +435,7 @@ extension ProfileViewController: ProfileViewProtocol {
     }
     
     func setEditProfileView() {
-        presenter.isEditing = true
+        presenter.profileStatus = .editing
         presenter.getAvailableInstruments()
         
         nameLabel.borderStyle = .roundedRect
@@ -486,21 +495,19 @@ extension ProfileViewController: ProfileViewProtocol {
                     pvc?.present(Assembler.provideView(), animated: true)
                 })
             } else {
-                self.presenter.loadCurrentUserProfile()
+                self.presenter.loadUserProfile()
             }
         } else {
             self.present(createAlert(withTitle: "Error updating.", message: "There was an error updating the profile."), animated: true)
             loading = false
         }
     }
-    
-    
 }
 
 extension ProfileViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if (presenter.isEditing) {
+        if (presenter.profileStatus == .editing) {
             if collectionView == self.instrumentCollection {
                 let cell = collectionView.cellForItem(at: indexPath) as! InstrumentCollectionViewCell
                 if userInstruments[indexPath.item] == "Add" {
@@ -608,7 +615,7 @@ extension ProfileViewController: UICollectionViewDataSource {
             if instrument == "Add" {
                 cell.showAddCell()
             } else {
-                if (presenter.isEditing) {
+                if (presenter.profileStatus == .editing) {
                     cell.showRemoveButton()
                     if selectedInstruments[indexPath.item] {
                         cell.selectedToRemove()
@@ -632,7 +639,8 @@ extension ProfileViewController: UICollectionViewDataSource {
                 cell.showAddCell()
             } else {
                 cell.image = video.thumbnail
-                if (presenter.isEditing) {
+                if (presenter.profileStatus == .editing
+                    ) {
                     cell.showRemoveButton()
                     if selectedVideos[indexPath.item - 1] {
                         cell.selectedToRemove()

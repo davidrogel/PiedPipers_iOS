@@ -18,8 +18,9 @@ protocol ProfileViewProtocol: AnyObject {
 }
 
 protocol ProfilePresenterProtocol: AnyObject {
-    var isEditing: Bool { get set }
-    func loadCurrentUserProfile()
+    var profileStatus: ProfileState { get set }
+    func loadUserProfile()
+    func loadSelectedUserProfile(with cuid: String)
     func prepareEditView()
     func getAvailableInstruments()
     func updateProfile(with profilePresentable: ProfilePresentable)

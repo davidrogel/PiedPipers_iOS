@@ -8,16 +8,22 @@
 
 import Foundation
 
+enum ProfileState {
+    case current
+    case editing
+    case other
+}
+
 class ProfilePresenter {
     
     public private(set) var profileService: RepositoryFactory
     public private(set) weak var ui: ProfileViewProtocol?
-    public private(set) var editing: Bool
+    public private(set) var state: ProfileState
     
-    init(with ui: ProfileViewProtocol, profileService: RepositoryFactory, editing: Bool = false) {
+    init(with ui: ProfileViewProtocol, profileService: RepositoryFactory, state: ProfileState = .current) {
         self.ui = ui
         self.profileService = profileService
-        self.editing = editing
+        self.state = state
     }
     
     private func convert2ProfilePresentable(profile: Profile) -> ProfilePresentable {
@@ -147,16 +153,16 @@ class ProfilePresenter {
 
 extension ProfilePresenter: ProfilePresenterProtocol {
     
-    var isEditing: Bool {
+    var profileStatus: ProfileState {
         get {
-            return editing
+            return state
         }
         set {
-            self.editing = newValue
+            state = newValue
         }
     }
     
-    func loadCurrentUserProfile() {
+    func loadUserProfile() {
         let cuid = StoreManager.shared.getLoggedUser()
         profileService.getProfile(currenUserCUID: cuid, success: { [weak self] (profile) in
             guard let currentProfile = profile else {
@@ -172,7 +178,23 @@ extension ProfilePresenter: ProfilePresenterProtocol {
             self?.ui?.setCurrentUserProfileViewWith(model: modelUnwrapped)
             
         }, failure: { (error) in
-            //TODO: En caso de que falle, mostrar vista de perfil no encontrado
+            //TODO: En caso de que falle, mostrar vista de problemas al cargar perfil (vista de error)
+        })
+    }
+    
+    func loadSelectedUserProfile(with cuid: String) {
+        let currentCuid = StoreManager.shared.getLoggedUser()
+        profileService.getProfile(currentUserCUID: currentCuid, userPickedCUID: cuid, success: { [weak self] (profile) in
+            if let selectedProfile = profile {
+                let model = self?.convert2ProfilePresentable(profile: selectedProfile)
+                guard let modelUnwrapped = model else {
+                    //TODO
+                    return
+                }
+                self?.ui?.setOtherUserProfileWith(model: modelUnwrapped)
+            }
+        }, failure: { [weak self] (error) in
+            //TODO: Error al cargar perfil de usuario (vista de error)
         })
     }
     

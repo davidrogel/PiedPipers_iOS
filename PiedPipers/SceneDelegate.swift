@@ -22,8 +22,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
         
-//        let tabBarController = Assembler.provideInitialTabBarController()
-//        tabBarController.delegate = self
         let loginView = Assembler.provideLoginScreen()
         
         window?.makeKeyAndVisible()
