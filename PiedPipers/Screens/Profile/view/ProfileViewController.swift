@@ -20,6 +20,7 @@ class ProfileViewController: UIViewController {
     var availableInstruments: [String] = []
     var reloadFromCamera: Bool = false
     var firstTimeEditing: Bool = false
+    var isFollowing: Bool = false
     
     var profile: ProfilePresentable! {
         didSet {
@@ -99,6 +100,7 @@ class ProfileViewController: UIViewController {
                 aboutMeText.text = profile.aboutMe
             }
             aboutMeText.layer.borderWidth = 0
+            aboutMeText.isScrollEnabled = false
             let height = calculeAboutMeHeight(textView: aboutMeText)
             aboutMeHeight.constant = height
             acceptView.isHidden = true
@@ -231,7 +233,12 @@ class ProfileViewController: UIViewController {
     }
     
     @IBAction func followButtonTapped(_ sender: Any) {
-        presenter.followUser(with: userCuid)
+        if !isFollowing {
+            presenter.followUser(with: userCuid)
+        } else {
+            presenter.unFollowUser(with: userCuid)
+        }
+        
     }
     
     @IBAction func closeCancelButtonTapped(_ sender: Any) {
@@ -331,11 +338,8 @@ class ProfileViewController: UIViewController {
             aboutMe = aboutMeText.text
         }
         
-        let newProfile = ProfilePresentable(name: name, city: city, avatar: nil, location: nil, contact: contact, instruments: updateInstruments, videos: updateVideos, aboutMe: aboutMe, invitations: profile.invitations)
-        
-//        if newProfile == profile {
-//            
-//        }
+        let newProfile = ProfilePresentable(name: name, city: city, avatar: nil, location: nil, contact: contact, instruments: updateInstruments, videos: updateVideos, aboutMe: aboutMe)
+
         loading = true
         let cache = ImageCache.default
         cache.clearMemoryCache()
@@ -386,8 +390,8 @@ class ProfileViewController: UIViewController {
     }
     
     private func configureImage() {
-        avatarView.layer.shadowColor = UIColor.black.cgColor
-        avatarView.layer.shadowOffset = .zero//CGSize(width: 0, height: 2.0)
+        avatarView.layer.shadowColor = UIColor.systemGray.cgColor
+        avatarView.layer.shadowOffset = .zero
         avatarView.layer.shadowOpacity = 0.8
         avatarView.layer.shadowRadius = 10
         avatarView.layer.cornerRadius = 20
@@ -406,7 +410,7 @@ class ProfileViewController: UIViewController {
     }
     
     fileprivate func calculateInstrumentCollectionHeight(withRows rows: CGFloat) -> CGFloat {
-        var height = CGFloat(75)//instrumentsViewHeight.constant
+        var height = CGFloat(75)
         if (rows > 1) {
             let additionalHeight: CGFloat = 45
             height += (additionalHeight * (rows - 1))
@@ -472,6 +476,8 @@ extension ProfileViewController: ProfileViewProtocol {
         aboutMeText.isEditable = true
         aboutMeText.layer.borderWidth = 1
         aboutMeText.layer.borderColor = UIColor.systemGray5.cgColor
+        aboutMeText.isScrollEnabled = true
+        aboutMeHeight.constant = 300
         acceptView.isHidden = false
         closeCancelButton.setTitle("Cancel", for: .normal)
         contactButton.isHidden = true
@@ -496,6 +502,7 @@ extension ProfileViewController: ProfileViewProtocol {
         followers.forEach { follower in
             if follower == userCuid {
                 following()
+                isFollowing = true
             }
         }
         loading = false
@@ -512,6 +519,7 @@ extension ProfileViewController: ProfileViewProtocol {
                 let cuid = StoreManager.shared.getLoggedUser()
                 StoreManager.shared.setMinimumDataIsInserted(for: cuid, with: true)
                 weak var pvc = self.presentingViewController
+                
                 self.dismiss(animated: true, completion: {
                     print("He hecho dismiss")
 //                    Assembler.provideView { (viewController) in
@@ -533,6 +541,14 @@ extension ProfileViewController: ProfileViewProtocol {
         followButton.setTitleColor(UIColor.systemGray6, for: .normal)
         followButton.setTitle("Pending to accept", for: .normal)
         followButton.isEnabled = false
+    }
+    
+    func dontFollow() {
+        followButton.backgroundColor = UIColor(red:0.93, green:0.41, blue:0.41, alpha:1.0)
+        followButton.setTitle("Follow", for: .normal)
+        followButton.setTitleColor(UIColor.white, for: .normal)
+        followButton.isEnabled = true
+        isFollowing = false
     }
 }
 

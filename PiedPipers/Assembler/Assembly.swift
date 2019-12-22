@@ -102,17 +102,6 @@ final class Assembler {
         return loginViewController
     }
     
-//    private static func setFirstTimeMinimumData(user: String) {
-//        Repository.remote.getProfile(currenUserCUID: user, success: { (profile) in
-//            if profile?.name == "" || profile?.name == nil {
-//                StoreManager.shared.setMinimumDataIsInserted(for: user, with: false)
-//            } else {
-//                StoreManager.shared.setMinimumDataIsInserted(for: user, with: true)
-//            }
-//        }, failure: { (error) in
-//            StoreManager.shared.setMinimumDataIsInserted(for: user, with: false)
-//        })
-//    }
     static func provideLocalDetailView(withCuid local: String) -> UIViewController {
         let localViewController = LocalViewController()
         let presenter = LocalPresenter(with: localViewController, localService: Repository.remote)

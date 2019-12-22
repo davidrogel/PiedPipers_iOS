@@ -15,7 +15,7 @@ protocol ProfileViewProtocol: AnyObject {
     func setAvailableInstruments(with instruments: [String])
     func showUpdateAlert(successfully: Bool)
     func wantToFollow()
-    
+    func dontFollow()
 }
 
 protocol ProfilePresenterProtocol: AnyObject {
@@ -28,4 +28,5 @@ protocol ProfilePresenterProtocol: AnyObject {
     func updateProfileAvatar(with data: Data)
     func updateProfile(with profilePresentable: ProfilePresentable, image: Data)
     func followUser(with cuid: String)
+    func unFollowUser(with cuid: String)
 }

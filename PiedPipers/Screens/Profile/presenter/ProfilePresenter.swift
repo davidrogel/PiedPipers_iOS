@@ -36,7 +36,6 @@ class ProfilePresenter {
         var instrumentPresentable: [String]?
         var videoPresentable: [VideoPresentable]?
         var aboutMePresentable: String?
-        var invitationsPresentable: [String]
         
         if let name = profile.name {
             namePresentable = name
@@ -88,13 +87,7 @@ class ProfilePresenter {
             aboutMePresentable = nil
         }
         
-        if let invitations = profile.invitations {
-            invitationsPresentable = invitations
-        } else {
-            invitationsPresentable = []
-        }
-        
-        let profilePresentable = ProfilePresentable(name: namePresentable, city: cityPresentable, avatar: avatarPresentable, location: locationPresentable, contact: contactPresentable, instruments: instrumentPresentable, videos: videoPresentable, aboutMe: aboutMePresentable, invitations: invitationsPresentable)
+        let profilePresentable = ProfilePresentable(name: namePresentable, city: cityPresentable, avatar: avatarPresentable, location: locationPresentable, contact: contactPresentable, instruments: instrumentPresentable, videos: videoPresentable, aboutMe: aboutMePresentable)
         
         return profilePresentable
     }
@@ -269,6 +262,15 @@ extension ProfilePresenter: ProfilePresenterProtocol {
             self?.ui?.wantToFollow()
         }, failure: { (error) in
             //TODO: Lanzar alert con error al realizar la petición de seguir
+        })
+    }
+    
+    func unFollowUser(with cuid: String) {
+        let currentUserCuid = StoreManager.shared.getLoggedUser()
+        profileService.unfollowProfile(currentUserCUID: currentUserCuid, otherProfileCUID: cuid, success: { [weak self] (profile) in
+            self?.ui?.dontFollow()
+        }, failure: { [weak self] (error) in
+            //TODO: Lanzar alert con error al realizar la petición de unfollow
         })
     }
 }

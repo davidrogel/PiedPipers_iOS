@@ -63,6 +63,7 @@ class LoginViewController: UIViewController {
         loading = true
         emailBox.text = ""
         passwordBox.text = ""
+        loading = true
         setLoginView()
         
     }
