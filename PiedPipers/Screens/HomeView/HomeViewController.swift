@@ -95,6 +95,14 @@ class HomeViewController: UIViewController
         setup()
     }
     
+    override func viewWillAppear(_ animated: Bool)
+    {
+        super.viewWillAppear(animated)
+        let currentUserCuid = StoreManager.shared.getLoggedUser()
+        
+        presenter.requestBand(currentUserCuid: currentUserCuid)
+    }
+    
     private func setup()
     {
         presenter = HomeViewPresenter(homeViewDelegate: self)
