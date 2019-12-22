@@ -214,6 +214,12 @@ class ProfileViewController: UIViewController {
     
     // MARK: Actions
     @IBAction func reloadButtonTapped(_ sender: Any) {
+        if presenter.profileMode == .current {
+            presenter.loadUserProfile()
+        }
+        if presenter.profileMode == .other {
+            presenter.loadSelectedUserProfile(with: userCuid)
+        }
     }
     @IBAction func editExitButtonTapped(_ sender: Any) {
         if presenter.profileMode == .current {
