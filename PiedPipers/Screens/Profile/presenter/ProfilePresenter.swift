@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum ProfileState {
+enum ProfileMode {
     case current
     case editing
     case other
@@ -18,9 +18,9 @@ class ProfilePresenter {
     
     public private(set) var profileService: RepositoryFactory
     public private(set) weak var ui: ProfileViewProtocol?
-    public private(set) var state: ProfileState
+    public private(set) var state: ProfileMode
     
-    init(with ui: ProfileViewProtocol, profileService: RepositoryFactory, state: ProfileState = .current) {
+    init(with ui: ProfileViewProtocol, profileService: RepositoryFactory, state: ProfileMode = .current) {
         self.ui = ui
         self.profileService = profileService
         self.state = state
@@ -153,7 +153,7 @@ class ProfilePresenter {
 
 extension ProfilePresenter: ProfilePresenterProtocol {
     
-    var profileStatus: ProfileState {
+    var profileMode: ProfileMode {
         get {
             return state
         }
@@ -166,19 +166,19 @@ extension ProfilePresenter: ProfilePresenterProtocol {
         let cuid = StoreManager.shared.getLoggedUser()
         profileService.getProfile(currenUserCUID: cuid, success: { [weak self] (profile) in
             guard let currentProfile = profile else {
-                fatalError()
+                self?.ui?.showErrorView()
+                return
             }
             let model = self?.convert2ProfilePresentable(profile: currentProfile)
             
             guard let modelUnwrapped = model else {
-                //TODO: En caso de que falle, mostrar vista de perfil no encontrado
-                
+                self?.ui?.showErrorView()
                 return
             }
             self?.ui?.setCurrentUserProfileViewWith(model: modelUnwrapped)
             
-        }, failure: { (error) in
-            //TODO: En caso de que falle, mostrar vista de problemas al cargar perfil (vista de error)
+        }, failure: { [weak self] (error) in
+            self?.ui?.showErrorView()
         })
     }
     
@@ -189,10 +189,11 @@ extension ProfilePresenter: ProfilePresenterProtocol {
                 if let selectedProfile = otherProfile {
                     let model = self?.convert2ProfilePresentable(profile: selectedProfile)
                     guard let modelUnwrapped = model else {
-                        //TODO
+                        self?.ui?.showErrorView()
                         return
                     }
                     guard let currentProfile = currentProfile else {
+                        self?.ui?.showErrorView()
                         return
                     }
                     var invitations: [String] = currentProfile.invitations ?? []
@@ -208,10 +209,10 @@ extension ProfilePresenter: ProfilePresenterProtocol {
                     self?.ui?.setOtherUserProfileWith(model: modelUnwrapped, invitations: invitations, followers: followers)
                 }
             }, failure: { [weak self] (error) in
-                //TODO: Error al cargar perfil de usuario (vista de error)
+                self?.ui?.showErrorView()
             })
         }, failure: { [weak self] (error) in
-            //TODO: Error al cargar perfil de usuario (vista de error)
+            self?.ui?.showErrorView()
         })
     }
     
@@ -223,7 +224,7 @@ extension ProfilePresenter: ProfilePresenterProtocol {
         let cuid = StoreManager.shared.getLoggedUser()
         profileService.getAvaliableInstruments(currentUserCUID: cuid, success: { [weak self] (instruments) in
             guard let unwrappedInstruments = instruments else {
-                fatalError()
+                return
             }
             self?.ui?.setAvailableInstruments(with: unwrappedInstruments)
         }, failure: { [weak self] (error) in
@@ -268,8 +269,8 @@ extension ProfilePresenter: ProfilePresenterProtocol {
         let currentUserCuid = StoreManager.shared.getLoggedUser()
         profileService.followProfile(currentUserCUID: currentUserCuid, otherProfileCUID: cuid, success: { [weak self] (profile) in
             self?.ui?.wantToFollow()
-        }, failure: { (error) in
-            //TODO: Lanzar alert con error al realizar la petición de seguir
+        }, failure: { [weak self] (error) in
+            self?.ui?.showFollowUnfollowError()
         })
     }
     
@@ -278,7 +279,7 @@ extension ProfilePresenter: ProfilePresenterProtocol {
         profileService.unfollowProfile(currentUserCUID: currentUserCuid, otherProfileCUID: cuid, success: { [weak self] (profile) in
             self?.ui?.dontFollow()
         }, failure: { [weak self] (error) in
-            //TODO: Lanzar alert con error al realizar la petición de unfollow
+            self?.ui?.showFollowUnfollowError()
         })
     }
 }

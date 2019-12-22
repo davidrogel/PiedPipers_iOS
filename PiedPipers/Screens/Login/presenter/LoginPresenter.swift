@@ -67,8 +67,7 @@ extension LoginPresenter: LoginPreseterProtocol {
                 self?.ui?.provideNextView()
                 
             }, failure: { [weak self] (error) in
-                //TODO: Mostrar error de usuario no existe o contraseña incorrecta
-                // Todavía no lo tiene implementado David (ECHAR UN VISTAZO EN CUANTO PUEDA)
+                //TODO: Faltaría diferenciar los diferentes errores
                 self?.ui?.showNonExistentUserAlert()
                 
             })

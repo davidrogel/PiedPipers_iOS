@@ -9,6 +9,12 @@
 import UIKit
 import Kingfisher
 
+enum ProfileState {
+    case loading
+    case error
+    case success
+}
+
 class ProfileViewController: UIViewController {
     
     // MARK: Properties
@@ -42,19 +48,12 @@ class ProfileViewController: UIViewController {
             addPhotoButton.isHidden = true
             avatarImage.alpha = 1
             
-            //TODO: Esto hay que quitarlo
-            if profile.avatar == nil {
-                avatarImage.image = UIImage(named: "LogoSobreNegro")
-            } else {
-                guard let image = profile.avatar else {
-                    fatalError() //Ahora mismo da error, hasta implementar el nuevo flujo (obligar a tener imagen)
-                }
+            if let image = profile.avatar  {
                 guard let url = String.createUrl(fromImgPath: image) else {
                     fatalError()
                 }
                 avatarImage.kf.setImage(with: url)
             }
-            
             
             contactView.isHidden = true
             if profile.contact != nil {
@@ -105,20 +104,27 @@ class ProfileViewController: UIViewController {
             aboutMeHeight.constant = height
             acceptView.isHidden = true
             
-            loading = false
+            state = .success
         }
     }
     
-    var loading: Bool! {
+    var state: ProfileState! {
         didSet {
-            if loading {
-                loadingView.isHidden = false
-            } else {
-                loadingView.isHidden = true
+            switch state {
+            case .loading:
+                stateView.isHidden = false
+                infoView.isHidden = true
+            case .error:
+                stateLabel.text = "There was a problem loading the profile"
+                infoView.isHidden = false
+                stateView.isHidden = false
+            case .success:
+                stateView.isHidden = true
+            case .none:
+                stateView.isHidden = true
             }
         }
     }
-    
     
     // MARK: Presenter elements
     public private(set) var presenter: ProfilePresenterProtocol!
@@ -162,7 +168,9 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var closeCancelView: UIView!
     @IBOutlet weak var closeCancelButton: UIButton!
     @IBOutlet weak var contactButton: UIButton!
-    @IBOutlet weak var loadingView: UIView!
+    @IBOutlet weak var stateView: UIView!
+    @IBOutlet weak var stateLabel: UILabel!
+    @IBOutlet weak var infoView: UIView!
     
     
     @IBOutlet weak var aboutMeHeight: NSLayoutConstraint!
@@ -192,22 +200,24 @@ class ProfileViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         //TODO: Esto llamaría al back cada vez que accedamos al perfil (GUARDAR EL PERFIL EN USER DEFAULT)
-        switch presenter.profileStatus {
+        switch presenter.profileMode {
         case .current:
             presenter.loadUserProfile()
-            loading = true
+            state = .loading
         case .editing:
             setEditProfileView()
         case .other:
             presenter.loadSelectedUserProfile(with: userCuid)
-            loading = true
+            state = .loading
         }
         
     }
     
     // MARK: Actions
+    @IBAction func reloadButtonTapped(_ sender: Any) {
+    }
     @IBAction func editExitButtonTapped(_ sender: Any) {
-        if presenter.profileStatus == .current {
+        if presenter.profileMode == .current {
             presenter.prepareEditView()
         } else {
             self.dismiss(animated: true, completion: nil)
@@ -242,11 +252,10 @@ class ProfileViewController: UIViewController {
     }
     
     @IBAction func closeCancelButtonTapped(_ sender: Any) {
-        if presenter.profileStatus == .editing && !firstTimeEditing {
-            //TODO: Si le damos a cancel y seguimos sin meter datos, mandarlo al tab Home
-            presenter.profileStatus = .current
+        if presenter.profileMode == .editing && !firstTimeEditing {
+            presenter.profileMode = .current
             presenter.loadUserProfile()
-            loading = true
+            state = .loading
         } else {
             let cuid = StoreManager.shared.getLoggedUser()
             let tokenDeleted = StoreManager.shared.deleteData(withKey: cuid)
@@ -340,7 +349,7 @@ class ProfileViewController: UIViewController {
         
         let newProfile = ProfilePresentable(name: name, city: city, avatar: nil, location: nil, contact: contact, instruments: updateInstruments, videos: updateVideos, aboutMe: aboutMe)
 
-        loading = true
+        state = .loading
         let cache = ImageCache.default
         cache.clearMemoryCache()
         cache.clearDiskCache()
@@ -436,11 +445,9 @@ class ProfileViewController: UIViewController {
 
 // MARK: Extension
 extension ProfileViewController: ProfileViewProtocol {
-
-    
     
     func setCurrentUserProfileViewWith(model: ProfilePresentable) {
-        presenter.profileStatus = .current
+        presenter.profileMode = .current
         profile = model
         editButton.setImage(UIImage(named: "editButton"), for: .normal)
         followView.isHidden = true
@@ -450,7 +457,7 @@ extension ProfileViewController: ProfileViewProtocol {
     }
     
     func setEditProfileView() {
-        presenter.profileStatus = .editing
+        presenter.profileMode = .editing
         presenter.getAvailableInstruments()
         
         nameLabel.borderStyle = .roundedRect
@@ -481,7 +488,7 @@ extension ProfileViewController: ProfileViewProtocol {
         acceptView.isHidden = false
         closeCancelButton.setTitle("Cancel", for: .normal)
         contactButton.isHidden = true
-        loading = false
+        state = .success
         let cuid = StoreManager.shared.getLoggedUser()
         let hasData = StoreManager.shared.getMinimumDataIsInserted(for: cuid)
         if !hasData {
@@ -505,7 +512,7 @@ extension ProfileViewController: ProfileViewProtocol {
                 isFollowing = true
             }
         }
-        loading = false
+        state = .success
     }
     
     func setAvailableInstruments(with instruments: [String]) {
@@ -528,7 +535,7 @@ extension ProfileViewController: ProfileViewProtocol {
             }
         } else {
             self.present(createAlert(withTitle: "Error updating.", message: "There was an error updating the profile."), animated: true)
-            loading = false
+            state = .success
         }
     }
     
@@ -546,12 +553,21 @@ extension ProfileViewController: ProfileViewProtocol {
         followButton.isEnabled = true
         isFollowing = false
     }
+    
+    func showErrorView() {
+        state = .error
+    }
+    
+    func showFollowUnfollowError() {
+        let alert = createAlert(withTitle: "There was an error", message: "An error occurred while performing the operation.")
+        self.present(alert, animated: true)
+    }
 }
 
 extension ProfileViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if (presenter.profileStatus == .editing) {
+        if (presenter.profileMode == .editing) {
             if collectionView == self.instrumentCollection {
                 let cell = collectionView.cellForItem(at: indexPath) as! InstrumentCollectionViewCell
                 if userInstruments[indexPath.item] == "Add" {
@@ -659,7 +675,7 @@ extension ProfileViewController: UICollectionViewDataSource {
             if instrument == "Add" {
                 cell.showAddCell()
             } else {
-                if (presenter.profileStatus == .editing) {
+                if (presenter.profileMode == .editing) {
                     cell.showRemoveButton()
                     if selectedInstruments[indexPath.item] {
                         cell.selectedToRemove()
@@ -683,7 +699,7 @@ extension ProfileViewController: UICollectionViewDataSource {
                 cell.showAddCell()
             } else {
                 cell.image = video.thumbnail
-                if (presenter.profileStatus == .editing
+                if (presenter.profileMode == .editing
                     ) {
                     cell.showRemoveButton()
                     if selectedVideos[indexPath.item - 1] {

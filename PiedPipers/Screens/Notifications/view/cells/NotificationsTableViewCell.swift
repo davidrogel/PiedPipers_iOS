@@ -21,7 +21,6 @@ class NotificationsTableViewCell: UITableViewCell {
     // MARK: Properties
     var model: NotificationCellPresentable! {
         didSet {
-            //TODO: Modificar esto, ya que en pricipio todos los usuarios van a tener foto
             let url = String.createUrl(fromImgPath: model.image)
             let placeholder = UIImage(named: "UserIcon")
             avatarImage.kf.setImage(with: url, placeholder: placeholder)
@@ -79,7 +78,7 @@ class NotificationsTableViewCell: UITableViewCell {
             self?.acceptButton.isEnabled = false
         }, failure: { [weak self] (error) in
             self?.acceptButton.backgroundColor = UIColor.red
-            let timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (timer) in
+            let _ = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (timer) in
                 self?.acceptButton.backgroundColor = UIColor(red:0.96, green:0.96, blue:0.96, alpha:1.0)
             }
         })
