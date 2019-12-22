@@ -42,13 +42,21 @@ final class ProfileFiltersViewController : UIViewController
     }()
     
     private let addInstrumentBtn:UIButton = {
-//        let btn = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         let btn = UIButton(type: UIButton.ButtonType.contactAdd)
-//        btn.setTitle("Add", for: .normal)
-//        btn.setTitleColor(.black, for: .normal)
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(addInstrument), for: .touchUpInside)
         return btn
+    }()
+    
+    private let collectionView:UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumInteritemSpacing = 4
+        layout.minimumLineSpacing = 8
+        
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.translatesAutoresizingMaskIntoConstraints = false
+        cv.backgroundColor = .white
+        return cv
     }()
     
     // MARK: - Parameters
@@ -57,21 +65,11 @@ final class ProfileFiltersViewController : UIViewController
     
     private var filters:SearchProfileParameters = SearchProfileParameters()
     
-    public func setFilters(filters: SearchProfileParameters)
-    {
-        self.filters = filters
-    }
+    private var allAvailableInstruments:[String] = []
     
-    private var instruments:[String] = []
-    {
-        didSet
-        {
-            // collection.reloadData()
-        }
-    }
+    private let cellId = "cellId"
     
-    // TODO: Quitar esto de aqui y coger el que debería estar cacheado
-    let cuid = "ck2g3ps39000c93pcfox7e8jn"
+    private let cuid = StoreManager.shared.getLoggedUser()
     
     // MARK: - Presenter
     
@@ -83,22 +81,30 @@ final class ProfileFiltersViewController : UIViewController
     {
         super.viewDidLoad()
         view.backgroundColor = .white
+        
         presenter = FiltersViewPresenter(filtersViewDelegate: self)
         presenter.requestInstruments(cuid: cuid)
+        
         configure()
     }
     
     private func configure()
     {
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.register(InstrumentPickedCustomCell.self, forCellWithReuseIdentifier: cellId)
+        
         view.addSubview(closeBtn)
         view.addSubview(filtersLbl)
         view.addSubview(instrumentsLbl)
         view.addSubview(addInstrumentBtn)
+        view.addSubview(collectionView)
         
         configureCloseButtonConstraints()
         configureFiltersLabelConstraints()
         configureInstrumentsLabelConstraints()
         configureAddInstrumentButtonConstraints()
+        configureCollectionViewConstraints()
     }
     
     @objc func closeFilters()
@@ -109,20 +115,29 @@ final class ProfileFiltersViewController : UIViewController
     
     @objc func addInstrument()
     {
-        let vc = SearchInstrumentPickerViewController()
+        let vc = InstrumentsPickerViewController(with: allAvailableInstruments)
         vc.delegate = self
-        vc.instruments = self.instruments
-        print("show picker")
         present(vc, animated: true, completion: nil)
+    }
+    
+    public func setFilters(filters: SearchProfileParameters)
+    {
+        
+        self.filters = filters
     }
 }
 
-extension ProfileFiltersViewController : InstrumentsPickerDelegate
+extension ProfileFiltersViewController : InstrumentsPickerViewDelegate
 {
-    func getPickedInstrument(instrument: String)
+    func addSelectedInstrument(withName instrument: String)
     {
         print("instrument to append: \(instrument)")
+        if filters.instruments == nil
+        {
+            filters.instruments = []
+        }
         filters.instruments?.append(instrument)
+        collectionView.reloadData()
     }
 }
 
@@ -131,7 +146,39 @@ extension ProfileFiltersViewController : FiltersViewDelegate
     func set(instruments: [String])
     {
         print("setInstrument from presenter \(instruments)")
-        self.instruments = instruments
+        self.allAvailableInstruments = instruments
+    }
+}
+
+extension ProfileFiltersViewController : UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout
+{
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
+    {
+        return filters.instruments?.count ?? 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
+    {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! InstrumentPickedCustomCell
+        
+        cell.setText(withName: filters.instruments?[indexPath.item] ?? "")
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
+    {
+        
+        let spacing:CGFloat = 32.0
+        let totalWidth = UIScreen.main.bounds.width - 16.0
+        
+        return CGSize(width: (totalWidth - spacing) / 3.0, height: 30)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
+    {
+        filters.instruments?.remove(at: indexPath.item)
+        collectionView.deleteItems(at: [indexPath])
     }
 }
 
@@ -170,5 +217,46 @@ extension ProfileFiltersViewController
         addInstrumentBtn.centerYAnchor.constraint(equalTo: instrumentsLbl.centerYAnchor).isActive = true
 //        addInstrumentBtn.heightAnchor.constraint(equalToConstant: 30).isActive = true
 //        addInstrumentBtn.widthAnchor.constraint(equalToConstant: 30).isActive = true
+    }
+    
+    private func configureCollectionViewConstraints()
+    {
+        collectionView.topAnchor.constraint(equalTo: instrumentsLbl.bottomAnchor, constant: 8).isActive = true
+        collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
+        collectionView.heightAnchor.constraint(equalToConstant: 60).isActive = true
+    }
+}
+
+class InstrumentPickedCustomCell: UICollectionViewCell
+{
+    private let lbl:UILabel = {
+        let i = UILabel()
+        i.layer.cornerRadius = 14
+        i.textAlignment = .center
+        i.textColor = .white
+        i.layer.backgroundColor = UIColor(red: 0.514, green: 0.557, blue: 0.871, alpha: 1).cgColor
+        i.translatesAutoresizingMaskIntoConstraints = false
+        return i
+    }()
+    
+    override init(frame: CGRect)
+    {
+        super.init(frame: frame)
+        addSubview(lbl)
+        lbl.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
+        lbl.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
+        lbl.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor).isActive = true
+        lbl.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive = true
+    }
+    
+    required init?(coder: NSCoder)
+    {
+        super.init(coder: coder)
+    }
+    
+    public func setText(withName name: String)
+    {
+        lbl.text = name
     }
 }

@@ -40,8 +40,7 @@ final class HomeViewPresenter
             }
             
             self?.showLocals(localList: locals)
-        }) {
-            [weak self] (error) in
+        }) { (error) in
             
         }
     }
@@ -67,7 +66,7 @@ final class HomeViewPresenter
     private func showLocals(localList locals: LocalList)
     {
         let presentables:[HomeLocalPresentable] = locals.items.map { (local) -> HomeLocalPresentable in
-            HomeLocalPresentable.make(cuid: local.cuid, name: local.name, price: local.price, description: local.description, photos: local.photos)
+            HomeLocalPresentable.make(cuid: local.cuid, name: local.name, price: local.price, description: local.shortDescription, photos: local.photos)
         }
         
         homeViewDelegate.show(locals: presentables)

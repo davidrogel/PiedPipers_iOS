@@ -266,7 +266,11 @@ extension SearchViewController: TopViewDelegate
     
     private func presentLocalFilters()
     {
-        
+        let vc = LocalFiltersViewController()
+        vc.delegate = self
+        vc.setFilters(filters: localFilters)
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true, completion: nil)
     }
 }
 
@@ -295,9 +299,23 @@ extension SearchViewController: ProfileFiltersProtocol
     }
 }
 
-extension SearchViewController /* : LocalFiltersProtocol */
+extension SearchViewController: LocalFiltersProtocol
 {
-    
+    func applyLocalFilters(filters: SearchLocalParameters)
+    {
+        if let price = filters.price
+        {
+            localFilters.price = price
+        }
+        
+        if let lat = filters.lat, let long = filters.long
+        {
+            localFilters.lat = lat
+            localFilters.long = long
+        }
+        
+        presenter.requestLocals(cuid: cuid, parameters: localFilters, limit: 10, offset: 0)
+    }
 }
 
 // MARK: - Constraints

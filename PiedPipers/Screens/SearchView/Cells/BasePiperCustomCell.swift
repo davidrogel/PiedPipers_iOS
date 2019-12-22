@@ -30,6 +30,7 @@ class BasePiperCustomCell: UICollectionViewCell
     let nameLabel:UILabel = {
         let lbl = UILabel()
         lbl.text = "Name"
+        lbl.textAlignment = .left
         lbl.translatesAutoresizingMaskIntoConstraints = false
         return lbl
     }()
@@ -37,6 +38,7 @@ class BasePiperCustomCell: UICollectionViewCell
     let secondLabel:UILabel = {
         let lbl = UILabel()
         lbl.text = "00.00"
+        lbl.textAlignment = .right
         lbl.textColor = .lightGray
         lbl.translatesAutoresizingMaskIntoConstraints = false
         return lbl
@@ -56,7 +58,7 @@ class BasePiperCustomCell: UICollectionViewCell
         self.dataView.addSubview(secondLabel)
         
         configureNameLabelConstraints()
-        configureBandNameLabelConstraints()
+        configureSecondLabelConstraints()
     }
     
     required init?(coder: NSCoder)
@@ -85,6 +87,7 @@ extension BasePiperCustomCell
         dataView.layer.shadowOffset = CGSize(width: 0, height: 0.333)
         dataView.layer.bounds = dataView.bounds
         dataView.layer.position = dataView.center
+//        dataView.layer.masksToBounds = true
     }
     
     private func configurePortraitConstraints()
@@ -110,12 +113,11 @@ extension BasePiperCustomCell
         nameLabel.leadingAnchor.constraint(equalTo: dataView.leadingAnchor, constant: 16).isActive = true
     }
     
-    private func configureBandNameLabelConstraints()
+    private func configureSecondLabelConstraints()
     {
         secondLabel.topAnchor.constraint(equalTo: dataView.topAnchor, constant: 16).isActive = true
         secondLabel.trailingAnchor.constraint(equalTo: dataView.trailingAnchor, constant: -16).isActive = true
-        secondLabel.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor, constant: 8).isActive = true
-        secondLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        secondLabel.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor, constant: 0).isActive = true
     }
 }
 

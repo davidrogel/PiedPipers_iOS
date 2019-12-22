@@ -27,6 +27,7 @@ class LocalCustomCell: BasePiperCustomCell
         super.init(frame: frame)
         
         self.dataView.addSubview(descriptionLabel)
+        secondLabel.widthAnchor.constraint(equalToConstant: 60).isActive = true
         configureDescriptionLabelConstraints()
     }
     
