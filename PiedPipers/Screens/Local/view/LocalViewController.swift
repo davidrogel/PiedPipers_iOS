@@ -87,6 +87,7 @@ class LocalViewController: UIViewController {
     }
     
     @IBAction func reloadButtonTapped(_ sender: Any) {
+        presenter.getLocal(with: localCuid)
     }
     
     // MARK: Functions
