@@ -60,7 +60,6 @@ class LoginViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        print("login will appear")
         loading = true
         emailBox.text = ""
         passwordBox.text = ""
@@ -71,7 +70,6 @@ class LoginViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        print("Login did appear")
         let cuid = StoreManager.shared.getLoggedUser()
         if cuid != "" {
             Assembler.provideView { (viewController) in
@@ -140,8 +138,8 @@ extension LoginViewController: LoginViewProtocol {
     }
     
     func provideNextView() {
-        Assembler.provideView { (viewController) in
-            self.present(viewController, animated: true)
+        Assembler.provideView { [weak self] (viewController) in
+            self?.present(viewController, animated: true)
         }
     }
 }

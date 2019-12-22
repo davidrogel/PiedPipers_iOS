@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 final class Assembler {
     
@@ -62,7 +63,7 @@ final class Assembler {
     }
     
     static func provideInitialTabBarController() -> UITabBarController {
-        let tabBarController = UITabBarController()
+        let tabBarController = MyTabBarController()
         let cuid = StoreManager.shared.getLoggedUser()
         let profileViewController = provideUserProfile(with: cuid, status: .current)
         let homeViewController = HomeViewController()
@@ -114,5 +115,39 @@ final class Assembler {
         let presenter = NotificationsPresenter(with: notificationsViewController, notificationsService: Repository.remote)
         notificationsViewController.configure(with: presenter)
         return notificationsViewController
+    }
+}
+
+class MyTabBarController: UITabBarController {
+    let locationManager = CLLocationManager()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        locationManager.requestWhenInUseAuthorization()
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.startUpdatingLocation()
+        }
+    }
+}
+
+extension MyTabBarController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let currentUserCuid = StoreManager.shared.getLoggedUser()
+        guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
+        print("location: \(locValue.latitude) \(locValue.longitude)")
+        let repository = Repository.remote
+        repository.getProfile(currenUserCUID: currentUserCuid, success: { (profile) in
+            let newLocation = Location(lat: locValue.latitude, long: locValue.longitude)
+            let newProfile = Profile(cuid: currentUserCuid, name: profile?.name, location: newLocation, contact: profile?.contact, instruments: profile?.instruments, videos: profile?.videos, description: profile?.description, photo: profile?.photo, friendlyLocation: profile?.friendlyLocation, followers: profile?.followers, invitations: profile?.invitations)
+            repository.updateProfile(currentUserCUID: currentUserCuid, newProfile: newProfile, success: { (profile) in
+                
+            }, failure: { (error) in
+                
+            })
+        }, failure: { (error) in
+            
+        })
     }
 }
