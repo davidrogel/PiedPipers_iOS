@@ -16,6 +16,7 @@ final class SearchInstrumentLabel: UILabel
         
         isHidden = true
         textAlignment = .center
+        textColor = .white
         layer.backgroundColor = UIColor(red: 0.514, green: 0.557, blue: 0.871, alpha: 1).cgColor
         layer.cornerRadius = 10
         translatesAutoresizingMaskIntoConstraints = false
@@ -64,6 +65,7 @@ class ProfileCustomCell: BasePiperCustomCell
     {
         super.init(frame: frame)
         
+        secondLabel.widthAnchor.constraint(equalToConstant: 80).isActive = true
         configureInstrumentsLabelsConstraints()
     }
     

@@ -126,19 +126,7 @@ class HomeViewController: UIViewController
         
         view.addSubview(scrollView)
         
-//        view.addSubview(logoImageView)
-//        view.addSubview(localsTitleLbl)
-//        view.addSubview(yourBandTitleLbl)
-//        view.addSubview(bandCollectionView)
-//        view.addSubview(localsCollectionView)
-        
-        
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        
+        configureScrollViewConstraints()
         
         configureLogoImageViewConstraints()
         
@@ -245,15 +233,12 @@ extension HomeViewController
 {
     private func configureLogoImageViewConstraints()
     {
-        let safe = view.safeAreaLayoutGuide
         logoImageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16).isActive = true
         logoImageView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
     }
     
     private func configureLocalsTitleLabelConstraints()
     {
-        
-        let safe = view.safeAreaLayoutGuide
         localsTitleLbl.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 16).isActive = true
         localsTitleLbl.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 24).isActive = true
 //        localsTitleLbl.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
@@ -261,8 +246,6 @@ extension HomeViewController
     
     private func configureYourBandTitleLabelConstraints()
     {
-        
-        let safe = view.safeAreaLayoutGuide
         yourBandTitleLbl.topAnchor.constraint(equalTo: localsCollectionView.bottomAnchor, constant: 16).isActive = true
         yourBandTitleLbl.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 24).isActive = true
 //        yourBandTitleLbl.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
@@ -270,21 +253,28 @@ extension HomeViewController
     
     private func configureLocalsCollectionViewConstraints()
     {
-        let safe = view.safeAreaLayoutGuide
         localsCollectionView.topAnchor.constraint(equalTo: localsTitleLbl.bottomAnchor, constant: 8).isActive = true
-        localsCollectionView.leadingAnchor.constraint(equalTo: safe.leadingAnchor, constant: 8).isActive = true
-        localsCollectionView.trailingAnchor.constraint(equalTo: safe.trailingAnchor, constant: -8).isActive = true
+        localsCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
+        localsCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8).isActive = true
         localsCollectionView.bottomAnchor.constraint(equalTo: yourBandTitleLbl.topAnchor, constant: -16).isActive = true
         localsCollectionView.heightAnchor.constraint(equalToConstant: 250).isActive = true
     }
     
     private func configureBandCollectionViewConstraints()
     {
-        let safe = view.safeAreaLayoutGuide
         bandCollectionView.topAnchor.constraint(equalTo: yourBandTitleLbl.bottomAnchor, constant: 8).isActive = true
-        bandCollectionView.leadingAnchor.constraint(equalTo: safe.leadingAnchor, constant: 8).isActive = true
-        bandCollectionView.trailingAnchor.constraint(equalTo: safe.trailingAnchor, constant: -8).isActive = true
+        bandCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
+        bandCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8).isActive = true
         bandCollectionView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -8).isActive = true
         bandCollectionView.heightAnchor.constraint(equalToConstant: 250).isActive = true
+    }
+    
+    private func configureScrollViewConstraints()
+    {
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
 }
