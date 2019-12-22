@@ -9,6 +9,7 @@ target 'PiedPipers' do
   pod 'Alamofire','~> 5.0.0-rc.3'
   pod 'KeychainSwift', '~> 17.0'
   pod 'Kingfisher', '~> 5.0'
+  pod 'IQKeyboardManagerSwift'
   
   target 'PiedPipersTests' do
     inherit! :search_paths

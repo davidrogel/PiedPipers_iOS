@@ -148,7 +148,14 @@ extension LoginViewController: LoginViewProtocol {
 
 extension LoginViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
+        if textField == emailBox {
+            passwordBox.becomeFirstResponder()
+            print("emailBox")
+        } else {
+            textField.resignFirstResponder()
+            presenter.logInRegisterUser(with: emailBox.text, password: passwordBox.text)
+            print("passwordBox")
+        }
         return true
     }
 }
