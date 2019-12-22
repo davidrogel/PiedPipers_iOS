@@ -184,9 +184,9 @@ extension ProfilePresenter: ProfilePresenterProtocol {
     
     func loadSelectedUserProfile(with cuid: String) {
         let currentCuid = StoreManager.shared.getLoggedUser()
-        profileService.getProfile(currentUserCUID: currentCuid, userPickedCUID: cuid, success: { [weak self] (selectedProfile) in
+        profileService.getProfile(currentUserCUID: currentCuid, userPickedCUID: cuid, success: { [weak self] (otherProfile) in
             self?.profileService.getProfile(currenUserCUID: currentCuid, success: { [weak self] (currentProfile) in
-                if let selectedProfile = selectedProfile {
+                if let selectedProfile = otherProfile {
                     let model = self?.convert2ProfilePresentable(profile: selectedProfile)
                     guard let modelUnwrapped = model else {
                         //TODO
@@ -195,8 +195,16 @@ extension ProfilePresenter: ProfilePresenterProtocol {
                     guard let currentProfile = currentProfile else {
                         return
                     }
-                    let invitations: [String] = currentProfile.invitations ?? []
+                    var invitations: [String] = currentProfile.invitations ?? []
                     let followers: [String] = currentProfile.followers ?? []
+                    if let otherProfileInvi: [String] = otherProfile?.invitations {
+                        otherProfileInvi.forEach { invitation in
+                            if invitation == currentCuid {
+                                invitations.append(cuid)
+                            }
+                        }
+                    }
+                    
                     self?.ui?.setOtherUserProfileWith(model: modelUnwrapped, invitations: invitations, followers: followers)
                 }
             }, failure: { [weak self] (error) in

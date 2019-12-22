@@ -24,7 +24,7 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="user@domain.com" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7pe-hX-kE3" userLabel="emailBox">
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="user@domain.com" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="7pe-hX-kE3" userLabel="emailBox">
                     <rect key="frame" x="16" y="245" width="382" height="50"/>
                     <color key="backgroundColor" red="0.9625918269" green="0.96270698310000002" blue="0.96255260710000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
@@ -33,7 +33,7 @@
                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                     <textInputTraits key="textInputTraits" keyboardType="emailAddress" textContentType="email"/>
                 </textField>
-                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Your password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="eUc-tL-siR" userLabel="passwordBox">
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Your password" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="eUc-tL-siR" userLabel="passwordBox">
                     <rect key="frame" x="16" y="341" width="382" height="50"/>
                     <color key="backgroundColor" red="0.96079748870000004" green="0.96476429699999999" blue="0.96078509089999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <constraints>

@@ -37,6 +37,9 @@
                                 <state key="normal" title="Accept">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                 </state>
+                                <connections>
+                                    <action selector="acceptButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="bMr-FL-Xaa"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="wants to join your band!" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LyC-NW-U1i" userLabel="notificationLabel">
                                 <rect key="frame" x="58" y="16" width="164" height="18"/>

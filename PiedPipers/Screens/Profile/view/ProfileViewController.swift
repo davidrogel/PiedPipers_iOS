@@ -514,20 +514,16 @@ extension ProfileViewController: ProfileViewProtocol {
     
     func showUpdateAlert(successfully: Bool) {
         if successfully {
-            self.present(createAlert(withTitle: "Success updating.", message: "Your profile has updated successfully."), animated: true)
             if firstTimeEditing {
                 let cuid = StoreManager.shared.getLoggedUser()
                 StoreManager.shared.setMinimumDataIsInserted(for: cuid, with: true)
-                weak var pvc = self.presentingViewController
-                
-                self.dismiss(animated: true, completion: {
-                    print("He hecho dismiss")
-//                    Assembler.provideView { (viewController) in
-//                        pvc?.present(viewController, animated: true)
-//                    }
-                    pvc?.present(Assembler.provideInitialTabBarController(), animated: true)
-                })
+                let alert = UIAlertController(title: "Success updating.", message: "Your profile has updated successfully.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Accept", style: .default, handler: { _ in
+                    self.dismiss(animated: true, completion: nil)
+                }))
+                self.present(alert, animated: true)
             } else {
+                self.present(createAlert(withTitle: "Success updating.", message: "Your profile has updated successfully."), animated: true)
                 self.presenter.loadUserProfile()
             }
         } else {
