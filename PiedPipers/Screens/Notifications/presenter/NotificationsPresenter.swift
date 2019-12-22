@@ -37,7 +37,7 @@ extension NotificationsPresenter: NotificationsPresenterProtocol {
         let cuid = StoreManager.shared.getLoggedUser()
         notificationsService.getListOfNotifications(currentUserCUID: cuid, limit: 10, offset: 0, success: { [weak self] (notiList) in
             if notiList.total == 0 {
-                //TODO: No hay notificaciones
+                self?.ui?.showNotificationStateView(with: .empty)
             } else {
                 let notiListPresentable = notiList.items.map { (noti) in
                     convert2NotificationCellPresentable(noti: noti)
@@ -45,7 +45,7 @@ extension NotificationsPresenter: NotificationsPresenterProtocol {
                 self?.ui?.setNotifications(with: notiListPresentable)
             }
         }, failure: { (error) in
-            
+            self.ui?.showNotificationStateView(with: .error)
         })
     }
     

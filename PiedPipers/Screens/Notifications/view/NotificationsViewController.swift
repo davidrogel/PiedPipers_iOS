@@ -8,10 +8,42 @@
 
 import UIKit
 
+enum NotisState {
+    case empty
+    case error
+    case success
+    case loading
+}
+
 class NotificationsViewController: UIViewController {
     
     // MARK: Properties
     var model: [NotificationCellPresentable] = []
+    var state: NotisState! {
+        didSet {
+            switch state {
+            case .empty:
+                infoView.isHidden = false
+                stateView.isHidden = false
+                stateImage.image = UIImage(systemName: "info.circle.fill")
+                stateImage.tintColor = UIColor.systemGray
+                stateLabel.text = "You don't have any notification right now"
+            case .error:
+                infoView.isHidden = false
+                stateView.isHidden = false
+                stateImage.image = UIImage(systemName: "xmark.circle.fill")
+                stateImage.tintColor = UIColor.systemRed
+                stateLabel.text = "there was a problem loading your notifications"
+            case .success:
+                stateView.isHidden = true
+            case .loading:
+                stateView.isHidden = false
+                infoView.isHidden = true
+            case .none:
+                stateView.isHidden = true
+            }
+        }
+    }
     
     // MARK: Presenter elements
     public private(set) var presenter: NotificationsPresenterProtocol!
@@ -27,6 +59,10 @@ class NotificationsViewController: UIViewController {
             tableView.register(nib, forCellReuseIdentifier: NotificationsTableViewCell.defaultReuseableId)
         }
     }
+    @IBOutlet weak var stateView: UIView!
+    @IBOutlet weak var stateImage: UIImageView!
+    @IBOutlet weak var stateLabel: UILabel!
+    @IBOutlet weak var infoView: UIView!
     
     // MARK: Life Cycle
     override func viewDidLoad() {
@@ -38,9 +74,16 @@ class NotificationsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        
+        state = .loading
         presenter.getNotificationsList()
     }
+    
+    // MARK: Actions
+    @IBAction func reloadButtonTapped(_ sender: Any) {
+        presenter.getNotificationsList()
+        state = .loading
+    }
+    
 }
 
 extension NotificationsViewController: UITableViewDelegate {
@@ -69,10 +112,15 @@ extension NotificationsViewController: UITableViewDataSource {
 }
 
 extension NotificationsViewController: NotificationsViewProtocol {
+    
+    func showNotificationStateView(with state: NotisState) {
+        self.state = state
+    }
     func setNotifications(with notifications: [NotificationCellPresentable]) {
+        state = .success
         model = notifications
         tableView.reloadData()
     }
-    
-    
+
+
 }

@@ -10,6 +10,7 @@ import Foundation
 
 protocol NotificationsViewProtocol: AnyObject {
     func setNotifications(with notifications: [NotificationCellPresentable])
+    func showNotificationStateView(with state: NotisState)
 }
 
 protocol NotificationsPresenterProtocol: AnyObject {
