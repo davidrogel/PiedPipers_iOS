@@ -48,7 +48,6 @@ class LocalViewController: UIViewController {
         imageCollection.delegate = self
         imageCollection.dataSource = self
         imagesCollectionSetUpUI(height: 312, width: 312)
-        mapView.delegate = self
         presenter.getLocal(with: localCuid)
     }
     
@@ -118,12 +117,6 @@ extension LocalViewController: LocalViewProtocol {
             self?.imageCollection.reloadData()
         })
         
-    }
-}
-
-extension LocalViewController: MKMapViewDelegate {
-    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        //TODO: Si me da tiempo
     }
 }
 

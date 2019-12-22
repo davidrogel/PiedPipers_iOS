@@ -16,10 +16,12 @@ protocol ProfileViewProtocol: AnyObject {
     func showUpdateAlert(successfully: Bool)
     func wantToFollow()
     func dontFollow()
+    func showErrorView()
+    func showFollowUnfollowError()
 }
 
 protocol ProfilePresenterProtocol: AnyObject {
-    var profileStatus: ProfileState { get set }
+    var profileMode: ProfileMode { get set }
     func loadUserProfile()
     func loadSelectedUserProfile(with cuid: String)
     func prepareEditView()

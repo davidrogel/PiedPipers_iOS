@@ -29,7 +29,7 @@ final class Assembler {
                 callback(tabBarView)
             } else {
                 let profileView = provideUserProfile(with: cuid, status: .editing)
-                profileView.presenter.profileStatus = .editing
+                profileView.presenter.profileMode = .editing
                 profileView.modalPresentationStyle = .fullScreen
                 callback(profileView)
             }
@@ -50,7 +50,7 @@ final class Assembler {
                 else
                 {
                     let profileView = provideUserProfile(with: cuid, status: .editing)
-                    profileView.presenter.profileStatus = .editing
+                    profileView.presenter.profileMode = .editing
                     profileView.modalPresentationStyle = .fullScreen
                     callback(profileView)
                 }
@@ -85,12 +85,12 @@ final class Assembler {
         return tabBarController
     }
     
-    static func provideUserProfile(with cuid: String, status: ProfileState) -> ProfileViewController {
+    static func provideUserProfile(with cuid: String, status: ProfileMode) -> ProfileViewController {
         let vc = ProfileViewController()
         let presenter = ProfilePresenter(with: vc, profileService: Repository.remote)
         vc.configure(with: presenter)
         vc.userCuid = cuid
-        vc.presenter.profileStatus = status
+        vc.presenter.profileMode = status
 
         return vc
     }

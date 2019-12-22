@@ -28,12 +28,14 @@
                 <outlet property="followView" destination="ndJ-JI-970" id="tDO-dy-4OD"/>
                 <outlet property="friendlyLocationLabel" destination="dZb-hj-Dyf" id="YkN-gk-um0"/>
                 <outlet property="friendlyLocationView" destination="8XT-V0-lSS" id="F1N-Lq-pFk"/>
+                <outlet property="infoView" destination="a8m-so-uq9" id="F6t-Pb-RwG"/>
                 <outlet property="instrumentCollection" destination="w4E-zY-Cpl" id="KaL-dX-1Gh"/>
                 <outlet property="instrumentHorizontalSpacing" destination="cRV-jB-t4g" id="fM3-3X-Zkd"/>
                 <outlet property="instrumentView" destination="whl-iB-Ad5" id="Vvp-yh-3nf"/>
                 <outlet property="instrumentsViewHeight" destination="Noi-f2-8qB" id="iNf-7T-p6k"/>
-                <outlet property="loadingView" destination="ijk-fK-Fx6" id="blg-0b-245"/>
                 <outlet property="nameLabel" destination="OYF-0M-beN" id="4a4-f4-Z02"/>
+                <outlet property="stateLabel" destination="ez8-KX-rc3" id="CVx-iI-L1U"/>
+                <outlet property="stateView" destination="ijk-fK-Fx6" id="cQp-S0-zhR"/>
                 <outlet property="videoCollection" destination="aAB-82-6ga" id="LrS-Hn-ZZf"/>
                 <outlet property="videoView" destination="kRK-1Z-Icy" id="JMb-sY-BJj"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -403,17 +405,60 @@
                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                     <state key="normal" image="phoneConnect"/>
                 </button>
-                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ijk-fK-Fx6" userLabel="loadView">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ijk-fK-Fx6" userLabel="stateView">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="1145"/>
                     <subviews>
                         <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="np1-Vp-MUJ">
                             <rect key="frame" x="188.5" y="554" width="37" height="37"/>
                         </activityIndicatorView>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a8m-so-uq9" userLabel="infoView">
+                            <rect key="frame" x="0.0" y="497.5" width="414" height="150"/>
+                            <subviews>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="xmark.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="xtm-b3-pm2" userLabel="stateImage">
+                                    <rect key="frame" x="187" y="16.5" width="40" height="39"/>
+                                    <color key="tintColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="40" id="1fk-Y0-qNv"/>
+                                        <constraint firstAttribute="width" constant="40" id="g1b-bW-hJN"/>
+                                    </constraints>
+                                </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ez8-KX-rc3">
+                                    <rect key="frame" x="185.5" y="57" width="43.5" height="21.5"/>
+                                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="18"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bag-uS-QkM">
+                                    <rect key="frame" x="174" y="86.5" width="66" height="39"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                    <state key="normal" title="Reload">
+                                        <color key="titleColor" red="0.93060427899999998" green="0.4122609794" blue="0.41174682969999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="reloadButtonTapped:" destination="-1" eventType="touchUpInside" id="65Q-te-4x1"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            <constraints>
+                                <constraint firstItem="Bag-uS-QkM" firstAttribute="top" secondItem="ez8-KX-rc3" secondAttribute="bottom" constant="8" id="09i-ZR-XkK"/>
+                                <constraint firstItem="ez8-KX-rc3" firstAttribute="top" secondItem="xtm-b3-pm2" secondAttribute="bottom" constant="1" id="8if-xq-2vN"/>
+                                <constraint firstItem="Bag-uS-QkM" firstAttribute="centerX" secondItem="a8m-so-uq9" secondAttribute="centerX" id="JxQ-8R-LEW"/>
+                                <constraint firstItem="ez8-KX-rc3" firstAttribute="centerX" secondItem="a8m-so-uq9" secondAttribute="centerX" id="Qfc-CA-B7a"/>
+                                <constraint firstItem="xtm-b3-pm2" firstAttribute="centerX" secondItem="a8m-so-uq9" secondAttribute="centerX" id="XAN-Mf-M3x"/>
+                                <constraint firstItem="xtm-b3-pm2" firstAttribute="top" secondItem="a8m-so-uq9" secondAttribute="top" constant="16" id="cH0-6K-7rH"/>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="150" id="iR3-gH-DT5"/>
+                                <constraint firstAttribute="height" constant="150" id="yY7-JC-wYO"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                     <constraints>
                         <constraint firstItem="np1-Vp-MUJ" firstAttribute="centerX" secondItem="ijk-fK-Fx6" secondAttribute="centerX" id="ATs-oL-G6H"/>
+                        <constraint firstItem="a8m-so-uq9" firstAttribute="centerY" secondItem="ijk-fK-Fx6" secondAttribute="centerY" id="Zdz-Pk-KEZ"/>
                         <constraint firstItem="np1-Vp-MUJ" firstAttribute="centerY" secondItem="ijk-fK-Fx6" secondAttribute="centerY" id="ffU-VD-onf"/>
+                        <constraint firstItem="a8m-so-uq9" firstAttribute="leading" secondItem="ijk-fK-Fx6" secondAttribute="leading" id="x1f-GK-TQJ"/>
+                        <constraint firstAttribute="trailing" secondItem="a8m-so-uq9" secondAttribute="trailing" id="ySa-kb-P6v"/>
                     </constraints>
                 </view>
             </subviews>
@@ -432,12 +477,13 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <point key="canvasLocation" x="131.8840579710145" y="128.90625"/>
+            <point key="canvasLocation" x="131.25" y="128.3450704225352"/>
         </view>
     </objects>
     <resources>
         <image name="addPhoto" width="152" height="128"/>
         <image name="editButton" width="64" height="64"/>
         <image name="phoneConnect" width="64" height="66"/>
+        <image name="xmark.circle.fill" catalog="system" width="64" height="60"/>
     </resources>
 </document>
