@@ -56,9 +56,6 @@ class InstrumentsPickerViewController: UIViewController {
 }
 
 extension InstrumentsPickerViewController: UIPickerViewDelegate {
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        //TODO
-    }
 }
 
 extension InstrumentsPickerViewController: UIPickerViewDataSource {
@@ -78,7 +75,5 @@ extension InstrumentsPickerViewController: UIPickerViewDataSource {
 }
 
 protocol InstrumentsPickerViewDelegate: class {
-    //TODO
-    //func takeAvailableInstruments() -> [String]
     func addSelectedInstrument(withName instrument: String)
 }

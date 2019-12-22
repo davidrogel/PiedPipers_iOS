@@ -67,7 +67,6 @@ extension LoginPresenter: LoginPreseterProtocol {
                 self?.ui?.provideNextView()
                 
             }, failure: { [weak self] (error) in
-                //TODO: Faltaría diferenciar los diferentes errores
                 self?.ui?.showNonExistentUserAlert()
                 
             })
@@ -79,7 +78,6 @@ extension LoginPresenter: LoginPreseterProtocol {
                 self?.ui?.setLoginView()
                 
             }, failure: { [weak self] (error) in
-                //TODO: Poner los errores necesarios
                 self?.ui?.showRegisterErrorAlert()
             })
         }

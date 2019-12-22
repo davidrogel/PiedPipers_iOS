@@ -199,7 +199,6 @@ class ProfileViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        //TODO: Esto llamaría al back cada vez que accedamos al perfil (GUARDAR EL PERFIL EN USER DEFAULT)
         switch presenter.profileMode {
         case .current:
             presenter.loadUserProfile()
