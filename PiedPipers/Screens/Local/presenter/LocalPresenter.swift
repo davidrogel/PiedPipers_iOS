@@ -24,14 +24,16 @@ extension LocalPresenter: LocalPreseterProtocol {
     func getLocal(with cuid: String) {
         localService.getLocalById(localCuid: cuid, success: { [weak self] (local) in
             guard let localUnwrapped = local else {
-                fatalError()
+                self?.ui?.showError()
+                return
             }
             guard let localPresentable = self?.convert2LocalPresentable(local: localUnwrapped) else {
-                fatalError()
+                self?.ui?.showError()
+                return
             }
             self?.ui?.loadLocalData(with: localPresentable)
         }, failure: { [weak self] (error) in
-            //TODO
+            self?.ui?.showError()
         })
     }
 }

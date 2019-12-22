@@ -422,7 +422,7 @@
                                         <constraint firstAttribute="width" constant="40" id="g1b-bW-hJN"/>
                                     </constraints>
                                 </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ez8-KX-rc3">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ez8-KX-rc3">
                                     <rect key="frame" x="185.5" y="57" width="43.5" height="21.5"/>
                                     <fontDescription key="fontDescription" type="system" weight="light" pointSize="18"/>
                                     <nil key="textColor"/>

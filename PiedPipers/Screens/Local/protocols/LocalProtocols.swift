@@ -10,6 +10,7 @@ import Foundation
 
 protocol LocalViewProtocol: AnyObject {
     func loadLocalData(with local: LocalPresentable)
+    func showError()
 }
 
 protocol LocalPreseterProtocol: AnyObject {

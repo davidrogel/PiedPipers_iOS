@@ -10,11 +10,34 @@ import UIKit
 import MapKit
 import CoreLocation
 
+enum LocalState {
+    case loading
+    case error
+    case success
+}
+
 class LocalViewController: UIViewController {
 
     // MARK: Properties
     var images: [String] = []
     var localCuid: String!
+    
+    var state: LocalState! {
+        didSet {
+            switch state {
+            case .loading:
+                stateView.isHidden = false
+                infoView.isHidden = true
+            case .error:
+                infoView.isHidden = false
+                stateView.isHidden = false
+            case .success:
+                stateView.isHidden = true
+            case .none:
+                stateView.isHidden = true
+            }
+        }
+    }
     
     // MARK: Presenter elements
     public private(set) var presenter: LocalPreseterProtocol!
@@ -36,6 +59,8 @@ class LocalViewController: UIViewController {
         }
     }
     @IBOutlet weak var callButton: UIButton!
+    @IBOutlet weak var stateView: UIView!
+    @IBOutlet weak var infoView: UIView!
     
     @IBOutlet weak var aboutViewHeight: NSLayoutConstraint!
     
@@ -51,9 +76,17 @@ class LocalViewController: UIViewController {
         presenter.getLocal(with: localCuid)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        state = .loading
+    }
+    
     // MARK: Actions
     @IBAction func closeButtonTapped(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func reloadButtonTapped(_ sender: Any) {
     }
     
     // MARK: Functions
@@ -115,8 +148,12 @@ extension LocalViewController: LocalViewProtocol {
             self?.aboutViewHeight.constant = height
             self?.images = local.photos
             self?.imageCollection.reloadData()
+            self?.state = .success
         })
-        
+    }
+    
+    func showError() {
+        state = .error
     }
 }
 
