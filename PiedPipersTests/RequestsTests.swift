@@ -13,7 +13,7 @@ import Alamofire
 
 class RequestsTests: XCTestCase
 {
-    let timeout: TimeInterval = 150000000.0
+    let timeout: TimeInterval = 150000.0
     
     let email = "otroCorreo2@correo.com"
     let pass = "vouteEsnaquizar"
@@ -237,7 +237,7 @@ class RequestsTests: XCTestCase
     {
         let e = expectation(description: "LoginUser")
         
-        let loginUserRequest = LoginUserRequest(email: notisEmail, password: notisPass)
+        let loginUserRequest = LoginUserRequest(email: email, password: pass)
         
         loginUserRequest.makeRequest { (result) in
             switch result
